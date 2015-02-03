@@ -1,5 +1,9 @@
 #' Provides access to a BrandsEye account
 #' 
+#' @details
+#' Creates an object representing a BrandsEye account. It can be used to easily perform
+#' various queries on the account. 
+#' 
 #' @examples
 #' ac <- account("QUIR01BA", user = "rudy.neeser@@brandseye.com", 
 #'               password = "This is not my real password")
@@ -60,15 +64,44 @@ account.name.brandseye.account <- function(account) {
     account
 }
 
+#' Count mentions
+#' 
+#' \code{count} is used to count mentions in a BrandsEye account matching
+#' matching a particular filter. It's possible to group mentions, order the
+#' results, and to include various other bits of useful information.
+#' 
+#' @param account An account object to be queried.
 count <- function(account, ...) {
     UseMethod("count", account)
 }
 
-count.brandseye.account <- function(account, filter = NULL) {
+#' @describeIn count
+#' @param filter A filter string describing the mentions that should be counted by this query
+#' Count aggregate mention information from your BrandsEye account
+#' @param groupby A list of items that should be grouped by
+#' 
+#' @details
+#' Filters are described in the api documentation \url{https://api.brandseye.com/docs}
+#' 
+#' @examples
+#' ac <- account("QUIR01BA", key="<my key>")
+#' 
+#' # A single number counting the mentions published in the last week. 
+#' count(ac, "published inthelast week")
+#' 
+#' # The number of relevant mentions published in the last month
+#' count(ac, "published inthelast month and relevancy isnt irrelevant")
+#' 
+#' # As above, but grouped by publication day
+#' count(ac, "published inthelast month and relevancy isnt irrelevant", groupby="published")
+count.brandseye.account <- function(account, filter = NULL, groupby = NULL, 
+                                    include = NULL) {
     url <- paste0("https://api.brandseye.com/rest/accounts/", account$code, "/mentions/count")
     query <- list()
-    if (!is.null(filter)) query <- list(filter = filter, groupby="published")
+    if (!is.null(filter)) query <- list(filter = filter, groupby=groupby, include=include)
     
     data <- GET(url, authenticate(account$user, account$password), query = query)    
-    fromJSON(content(data, "text"))
+    results <- data.frame(fromJSON(content(data, "text")))
+    if ("published" %in% names(results)) results <- transform(results, published = as.POSIXct(published))
+    results
 }

@@ -9,6 +9,10 @@ account(code, key = NULL, user = NULL, password = NULL)
 \description{
 Provides access to a BrandsEye account
 }
+\details{
+Creates an object representing a BrandsEye account. It can be used to easily perform
+various queries on the account.
+}
 \examples{
 ac <- account("QUIR01BA", user = "rudy.neeser@brandseye.com",
               password = "This is not my real password")

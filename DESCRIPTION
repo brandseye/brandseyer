@@ -1,12 +1,14 @@
 Package: brandseyer
 Type: Package
-Title: What the package does (short line)
+Title: Provides access to data stored in a BrandsEye account
 Version: 1.0
 Date: 2015-02-02
 Author: Who wrote it
 Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Description: BrandsEye is a social media tracking and analytics company. This
+    library provides access to the data stored in BrandsEye account directly
+    from R itself.
+License: MIT
 Imports: 
     httr,
     jsonlite

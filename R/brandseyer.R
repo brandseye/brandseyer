@@ -35,7 +35,7 @@ print.brandseye.account <- function(account, ...) {
 account.load <- function(account) {
     if (is.null(account$data)) {
         url = paste0("https://api.brandseye.com/rest/accounts/", account$code)
-        data <- GET(url, authenticate(account$user, account$password))    
+        data <- httr::GET(url, httr::authenticate(account$user, account$password))    
         account$data <- content(data)        
         account.name(account) <- account$data$name
         
@@ -100,8 +100,8 @@ count.brandseye.account <- function(account, filter = NULL, groupby = NULL,
     query <- list()
     if (!is.null(filter)) query <- list(filter = filter, groupby=groupby, include=include)
     
-    data <- GET(url, authenticate(account$user, account$password), query = query)    
-    results <- data.frame(fromJSON(content(data, "text")))
+    data <- httr::GET(url, httr::authenticate(account$user, account$password), query = query)    
+    results <- data.frame(jsonlite::fromJSON(content(data, "text")))
     if ("published" %in% names(results)) results <- transform(results, published = as.POSIXct(published))
     results
 }

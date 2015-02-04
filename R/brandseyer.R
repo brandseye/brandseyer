@@ -36,7 +36,7 @@ account.load <- function(account) {
     if (is.null(account$data)) {
         url = paste0("https://api.brandseye.com/rest/accounts/", account$code)
         data <- httr::GET(url, httr::authenticate(account$user, account$password))    
-        account$data <- content(data)        
+        account$data <- httr::content(data)        
         account.name(account) <- account$data$name
         
     }

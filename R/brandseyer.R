@@ -105,3 +105,13 @@ count.brandseye.account <- function(account, filter = NULL, groupby = NULL,
     if ("published" %in% names(results)) results <- transform(results, published = as.POSIXct(published))
     results
 }
+
+
+
+mentions <- function(account, filter) {
+    url <- paste0("https://api.brandseye.com/rest/accounts/", account$code, "/mentions")
+    data <- httr::GET(url, httr::authenticate(account$user, account$password), 
+                      query = list(filter = filter))    
+    results <- jsonlite::fromJSON(httr::content(data, "text"))
+    results
+}

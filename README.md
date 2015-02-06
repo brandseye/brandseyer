@@ -20,5 +20,15 @@ Installation is currently fairly simple
     ac <- account("QUIR01BA", user = "my mash username", password="my mash password")
     count(ac, "published inthelast week")
     count(ac, "published inthelast week", groupby="published")
+    listAccounts(user = "my mash user", password = "my mash password")
+    
+## Documentation
+
+Documentation is in the early stages, but somewhat present and growing:
+
+    ?account
+    ?authenticate
+    ?listAccounts
+    ?mentions
 
 ## License

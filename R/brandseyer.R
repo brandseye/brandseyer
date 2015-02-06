@@ -34,7 +34,18 @@ print.brandseye.auth <- function(auth) {
 #' 
 #' This returns a data frame listing the accounts that you have access to,
 #' along with their name and status.
-listAccounts <- function(auth) {
+#' 
+#' @examples
+#' listAccounts(key = "my api key")
+#' 
+#' listAccounts(user = "rudy.neeser@@brandseye.com", 
+#'              password = "my brandseye password")
+#' 
+#' auth <- authenticate(user = "rudy.neeser@@brandseye.com", 
+#'                      password = "my brandseye password")
+#' listAccounts(auth)
+listAccounts <- function(auth = NULL, key = NULL, user = NULL, password = NULL) {
+    if (is.null(auth)) auth <- authenticate(key = key, user = user, password = password)
     url <- paste0("https://api.brandseye.com/rest/accounts/")
     data <- httr::GET(url, httr::authenticate(auth$user, auth$password))
     results <- jsonlite::fromJSON(httr::content(data, "text"))

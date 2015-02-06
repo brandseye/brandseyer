@@ -7,7 +7,7 @@ This is a small library for accessing data in your BrandsEye account.
 Installation is currently fairly simple
 
     # Install the devtools package
-    install.package(devtools)
+    install.packages(devtools)
    
     # Install the library
     install_bitbucket("brandseye/brandseyer", auth_user="my bitbucket user", password="my bitbucket password")

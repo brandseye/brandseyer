@@ -1,3 +1,16 @@
+#' Authenticate yourself with BrandsEye
+#' 
+#' Provides a means to authenticate yourself with the BrandsEye API. Most of the time
+#' you will want to do this using a BrandsEye API key
+#' 
+#' @examples
+#' # Authenticating with a key
+#' authenticate("adfd42345f534fgdfgd")
+#' authenticate(key = "adfd42345f534fgdfgd")
+#' 
+#' # Authenticating with a username and password
+#' authenticate(user = "jo.blogs@@brandseye.com", 
+#'              password ="This is a safe password!!")
 authenticate <- function(key = NULL, user = NULL, password = NULL) {
     if (!is.null(key) & (!is.null(user) | !is.null(password)))
         stop("You must choose to authenticate with an API key or a username / password pair")
@@ -15,6 +28,19 @@ authenticate <- function(key = NULL, user = NULL, password = NULL) {
 print.brandseye.auth <- function(auth) {
     cat("login: ", auth$username, "\n")
 }
+
+
+#' List accounts you have access to
+#' 
+#' This returns a data frame listing the accounts that you have access to,
+#' along with their name and status.
+listAccounts <- function(auth) {
+    url <- paste0("https://api.brandseye.com/rest/accounts/")
+    data <- httr::GET(url, httr::authenticate(auth$user, auth$password))
+    results <- jsonlite::fromJSON(httr::content(data, "text"))
+    results
+}
+
 
 #' Provides access to a BrandsEye account
 #' 

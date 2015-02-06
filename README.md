@@ -24,7 +24,8 @@ Installation is currently fairly simple
     
 ## Documentation
 
-Documentation is in the early stages, but somewhat present and growing:
+Documentation is in the early stages, but somewhat present and growing. It can be accessed in *R*
+like so:
 
     ?account
     ?authenticate

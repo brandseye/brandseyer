@@ -101,7 +101,7 @@ count.brandseye.account <- function(account, filter = NULL, groupby = NULL,
     if (!is.null(filter)) query <- list(filter = filter, groupby=groupby, include=include)
     
     data <- httr::GET(url, httr::authenticate(account$user, account$password), query = query)    
-    results <- data.frame(jsonlite::fromJSON(content(data, "text")))
+    results <- data.frame(jsonlite::fromJSON(httr::content(data, "text")))
     if ("published" %in% names(results)) results <- transform(results, published = as.POSIXct(published))
     results
 }

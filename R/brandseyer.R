@@ -122,6 +122,26 @@ count <- function(account, ...) {
     UseMethod("count", account)
 }
 
+count.character <- function(accounts, authentication, filter = NULL, groupby = NULL, include = NULL) {
+    if (length(accounts) == 1) {
+        url <- paste0("https://api.brandseye.com/rest/accounts/", accounts, "/mentions/count")
+        query <- list()
+        if (!is.null(filter)) query <- list(filter = filter, groupby=groupby, include=include)
+        
+        data <- httr::GET(url, httr::authenticate(authentication$user, authentication$password), query = query)    
+        results <- data.frame(jsonlite::fromJSON(httr::content(data, "text")))
+        if ("published" %in% names(results)) results <- transform(results, published = as.POSIXct(published))
+        return(results)
+    }    
+    
+    
+    
+    Reduce(rbind, lapply(accounts, function(code) {
+        data <- count(code, authentication, filter, groupby, include)
+        data <- transform(data, code = code)        
+    }))        
+}
+
 #' @describeIn count
 #' @param filter A filter string describing the mentions that should be counted by this query
 #' Count aggregate mention information from your BrandsEye account
@@ -143,14 +163,7 @@ count <- function(account, ...) {
 #' count(ac, "published inthelast month and relevancy isnt irrelevant", groupby="published")
 count.brandseye.account <- function(account, filter = NULL, groupby = NULL, 
                                     include = NULL) {
-    url <- paste0("https://api.brandseye.com/rest/accounts/", account$code, "/mentions/count")
-    query <- list()
-    if (!is.null(filter)) query <- list(filter = filter, groupby=groupby, include=include)
-    
-    data <- httr::GET(url, httr::authenticate(account$auth$user, account$auth$password), query = query)    
-    results <- data.frame(jsonlite::fromJSON(httr::content(data, "text")))
-    if ("published" %in% names(results)) results <- transform(results, published = as.POSIXct(published))
-    results
+    count(account$code, account$auth, filter = filter, groupby = groupby, include = include)
 }
 
 

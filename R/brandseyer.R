@@ -1,3 +1,21 @@
+authenticate <- function(key = NULL, user = NULL, password = NULL) {
+    if (!is.null(key) & (!is.null(user) | !is.null(password)))
+        stop("You must choose to authenticate with an API key or a username / password pair")
+    
+    if (is.null(user)) user = "API_KEY";
+    if (is.null(password)) password = key;
+    if (is.null(password)) stop("Please provide an API key");
+    
+    structure(list(
+        username = user,
+        password = password
+    ), class = "brandseye.auth")    
+}
+
+print.brandseye.auth <- function(auth) {
+    cat("login: ", auth$username, "\n")
+}
+
 #' Provides access to a BrandsEye account
 #' 
 #' @details
@@ -8,18 +26,10 @@
 #' ac <- account("QUIR01BA", user = "rudy.neeser@@brandseye.com", 
 #'               password = "This is not my real password")
 #' account("QUIR01BA", key="<api key here>")              
-account <- function (code, key = NULL, user = NULL, password = NULL) {    
-    if (!is.null(key) & (!is.null(user) | !is.null(password)))
-        stop("You must choose to authenticate with an API key or a username / password pair")
-    
-    if (is.null(user)) user = "API_KEY";
-    if (is.null(password)) password = key;
-    if (is.null(password)) stop("Please provide an API key");
-    
+account <- function (code, key = NULL, user = NULL, password = NULL) {        
     ac <- structure(list(
         code = code,
-        username = user,
-        password = password
+        auth = authenticate(user = user, password = password, key = key)
     ), class = "brandseye.account")
     
     ac <- account.load(ac)
@@ -29,13 +39,13 @@ account <- function (code, key = NULL, user = NULL, password = NULL) {
 print.brandseye.account <- function(account, ...) {
     cat("BrandsEye Account:", account$code, "\n")
     if (!is.null(account.name(account))) cat("Account name: ", account.name(account), "\n")
-    cat("login: ", account$username, "\n")
+    print(account$auth)
 }
 
 account.load <- function(account) {
     if (is.null(account$data)) {
         url = paste0("https://api.brandseye.com/rest/accounts/", account$code)
-        data <- httr::GET(url, httr::authenticate(account$user, account$password))    
+        data <- httr::GET(url, httr::authenticate(account$auth$user, account$auth$password))    
         account$data <- httr::content(data)        
         account.name(account) <- account$data$name
         
@@ -100,7 +110,7 @@ count.brandseye.account <- function(account, filter = NULL, groupby = NULL,
     query <- list()
     if (!is.null(filter)) query <- list(filter = filter, groupby=groupby, include=include)
     
-    data <- httr::GET(url, httr::authenticate(account$user, account$password), query = query)    
+    data <- httr::GET(url, httr::authenticate(account$auth$user, account$auth$password), query = query)    
     results <- data.frame(jsonlite::fromJSON(httr::content(data, "text")))
     if ("published" %in% names(results)) results <- transform(results, published = as.POSIXct(published))
     results
@@ -110,7 +120,7 @@ count.brandseye.account <- function(account, filter = NULL, groupby = NULL,
 
 mentions <- function(account, filter) {
     url <- paste0("https://api.brandseye.com/rest/accounts/", account$code, "/mentions")
-    data <- httr::GET(url, httr::authenticate(account$user, account$password), 
+    data <- httr::GET(url, httr::authenticate(account$auth$user, account$auth$password), 
                       query = list(filter = filter))    
     results <- jsonlite::fromJSON(httr::content(data, "text"))
     results

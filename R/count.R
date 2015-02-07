@@ -27,6 +27,12 @@ count.character <- function(accounts, authentication, filter = NULL, groupby = N
         if (!is.null(filter)) query <- list(filter = filter, groupby=groupby, include=include)
         
         data <- httr::GET(url, httr::authenticate(authentication$user, authentication$password), query = query)    
+        if (httr::status_code(data) == 401) stop("You are not authorised to access this account")
+        if (httr::status_code(data) != 200) {
+            message = jsonlite::fromJSON(httr::content(data, "text"))$error
+            stop(message)
+        }
+        
         results <- data.frame(jsonlite::fromJSON(httr::content(data, "text")))
         if ("published" %in% names(results)) results <- transform(results, published = as.POSIXct(published))
         return(results)

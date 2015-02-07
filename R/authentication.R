@@ -5,13 +5,13 @@
 #' 
 #' @examples
 #' # Authenticating with a key
-#' authenticate("adfd42345f534fgdfgd")
-#' authenticate(key = "adfd42345f534fgdfgd")
+#' authentication("adfd42345f534fgdfgd")
+#' authentication(key = "adfd42345f534fgdfgd")
 #' 
 #' # Authenticating with a username and password
-#' authenticate(user = "jo.blogs@@brandseye.com", 
-#'              password ="This is a safe password!!")
-authenticate <- function(key = NULL, user = NULL, password = NULL) {
+#' authentication(user = "jo.blogs@@brandseye.com", 
+#'                password ="This is a safe password!!")
+authentication <- function(key = NULL, user = NULL, password = NULL) {
     if (!is.null(key) & (!is.null(user) | !is.null(password)))
         stop("You must choose to authenticate with an API key or a username / password pair")
     

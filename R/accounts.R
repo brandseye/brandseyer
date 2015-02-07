@@ -11,7 +11,7 @@
 account <- function (code, key = NULL, user = NULL, password = NULL) {        
     ac <- structure(list(
         code = code,
-        auth = authenticate(user = user, password = password, key = key)
+        auth = authentication(user = user, password = password, key = key)
     ), class = "brandseye.account")
     
     ac <- account.load(ac)
@@ -68,11 +68,11 @@ account.name.brandseye.account <- function(account) {
 #' listAccounts(user = "rudy.neeser@@brandseye.com", 
 #'              password = "my brandseye password")
 #' 
-#' auth <- authenticate(user = "rudy.neeser@@brandseye.com", 
-#'                      password = "my brandseye password")
+#' auth <- authentication(user = "rudy.neeser@@brandseye.com", 
+#'                        password = "my brandseye password")
 #' listAccounts(auth)
 listAccounts <- function(auth = NULL, key = NULL, user = NULL, password = NULL) {
-    if (is.null(auth)) auth <- authenticate(key = key, user = user, password = password)
+    if (is.null(auth)) auth <- authentication(key = key, user = user, password = password)
     url <- paste0("https://api.brandseye.com/rest/accounts/")
     data <- httr::GET(url, httr::authenticate(auth$user, auth$password))
     results <- jsonlite::fromJSON(httr::content(data, "text"))

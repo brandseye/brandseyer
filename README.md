@@ -28,7 +28,7 @@ Documentation is in the early stages, but somewhat present and growing. It can b
 like so:
 
     ?account
-    ?authenticate
+    ?authentication
     ?listAccounts
     ?mentions
 

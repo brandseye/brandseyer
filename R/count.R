@@ -35,14 +35,13 @@ count.character <- function(accounts, authentication, filter = NULL, groupby = N
         
         results <- data.frame(jsonlite::fromJSON(httr::content(data, "text")))
         if ("published" %in% names(results)) results <- transform(results, published = as.POSIXct(published))
+        if ("sentiment" %in% names(results)) results <- transform(results,  sentiment = factor(sentiment))
         return(results)
     }    
     
-    
-    
     Reduce(rbind, lapply(accounts, function(code) {
         data <- count(code, authentication, filter, groupby, include)
-        data <- transform(data, code = code)        
+        data <- cbind(code = code, data)
     }))        
 }
 

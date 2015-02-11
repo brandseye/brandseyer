@@ -79,3 +79,15 @@ listAccounts <- function(auth = defaultAuthentication, key = NULL, user = NULL, 
     results <- jsonlite::fromJSON(httr::content(data, "text"))
     results
 }
+
+#' @describeIn listAccounts
+#' 
+#' Returns a character vector of account codes that you have access to.
+#'
+#' @examples
+#' # Get the number of mentions published in the last day across all 
+#' # of your accounts.
+#' count(listAccountCodes(), "published inthelast day")
+listAccountCodes <- function(auth = defaultAuthentication, key = NULL, user = NULL, password = NULL) {
+    listAccounts(auth, key, user, password)$code
+}

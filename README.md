@@ -8,6 +8,7 @@ Installation is currently fairly simple
 
     # Install the devtools package
     install.packages(devtools)
+    library(devtools)
    
     # Install the library
     install_bitbucket("brandseye/brandseyer", auth_user="my bitbucket user", password="my bitbucket password")

@@ -19,8 +19,20 @@ count <- function(account, ...) {
 #' Count aggregate mention information from your BrandsEye account
 #' @param groupby A list of items that should be grouped by
 #' @examples
-#' count("QUIR01BA", authentication(key = "my key"), "published inthelast month")
-count.character <- function(accounts, authentication = defaultAuthentication, filter = NULL, groupby = NULL, include = NULL) {
+#' count("QUIR01BA", "published inthelast month") # Uses default authentication, 
+#'                                                # if that has been set up.
+#' count("QUIR01BA", "published inthelast month", 
+#'       authentication = authentication(key = "<my key>"))
+#' # Return results for multiple accounts      
+#' count(c("QUIR01BA", "BEAD33AA"), "published inthelast month")      
+#' 
+#' # Return results for all accounts
+#' count(listAccounts()$code, "published inthelast month")            
+count.character <- function(accounts, 
+                            filter = NULL, 
+                            groupby = NULL, 
+                            include = NULL,
+                            authentication = defaultAuthentication) {
     if (length(accounts) == 1) {
         url <- paste0("https://api.brandseye.com/rest/accounts/", accounts, "/mentions/count")
         query <- list()
@@ -40,7 +52,7 @@ count.character <- function(accounts, authentication = defaultAuthentication, fi
     }    
     
     Reduce(rbind, lapply(accounts, function(code) {
-        data <- count(code, authentication, filter, groupby, include)
+        data <- count(code, filter, groupby, include, authentication)
         data <- cbind(code = code, data)
     }))        
 }
@@ -60,7 +72,8 @@ count.character <- function(accounts, authentication = defaultAuthentication, fi
 #' count(ac, "published inthelast month and relevancy isnt irrelevant")
 #' 
 #' # As above, but grouped by publication day
-#' count(ac, "published inthelast month and relevancy isnt irrelevant", groupby="published")
+#' count(ac, "published inthelast month and relevancy isnt irrelevant", 
+#'       groupby="published")
 count.brandseye.account <- function(account, filter = NULL, groupby = NULL, 
                                     include = NULL) {
     count(account$code, account$auth, filter = filter, groupby = groupby, include = include)

@@ -3,6 +3,28 @@
 #' Provides a means to authenticate yourself with the BrandsEye API. Most of the time
 #' you will want to do this using a BrandsEye API key.
 #' 
+#' @details
+#' It's possible to set up default authentication information as well. In your home directory,
+#' create the file \code{$HOME/.brandseyerd/authentication.json}. 
+#'     
+#' This file can contain either a key, or a user / password pair. For example, to
+#' specify your key, the file should contain:
+#' 
+#' \verb{
+#'  \{ 
+#'      "key": "12342342342354345"
+#'  \}
+#' }
+#' 
+#' To specify a username and password pair, the file should contain:
+#' 
+#' \verb{
+#'  \{ 
+#'      "user": "rudy.neeser@@brandseye.com",
+#'      "password": "This would be awkward if it were my real password"
+#'  \}
+#' }
+#' 
 #' @examples
 #' # Authenticating with a key
 #' authentication("adfd42345f534fgdfgd")

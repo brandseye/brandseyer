@@ -8,10 +8,11 @@
 #' ac <- account("QUIR01BA", user = "rudy.neeser@@brandseye.com", 
 #'               password = "This is not my real password")
 #' account("QUIR01BA", key="<api key here>")              
-account <- function (code, key = NULL, user = NULL, password = NULL) {        
+account <- function (code, auth = defaultAuthentication, key = NULL, user = NULL, password = NULL) {        
+    if (is.null(auth)) auth <- authentication(user = user, password = password, key = key)
     ac <- structure(list(
         code = code,
-        auth = authentication(user = user, password = password, key = key)
+        auth = auth
     ), class = "brandseye.account")
     
     ac <- account.load(ac)
@@ -71,7 +72,7 @@ account.name.brandseye.account <- function(account) {
 #' auth <- authentication(user = "rudy.neeser@@brandseye.com", 
 #'                        password = "my brandseye password")
 #' listAccounts(auth)
-listAccounts <- function(auth = NULL, key = NULL, user = NULL, password = NULL) {
+listAccounts <- function(auth = defaultAuthentication, key = NULL, user = NULL, password = NULL) {
     if (is.null(auth)) auth <- authentication(key = key, user = user, password = password)
     url <- paste0("https://api.brandseye.com/rest/accounts/")
     data <- httr::GET(url, httr::authenticate(auth$user, auth$password))

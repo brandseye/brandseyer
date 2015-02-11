@@ -20,7 +20,7 @@ count <- function(account, ...) {
 #' @param groupby A list of items that should be grouped by
 #' @examples
 #' count("QUIR01BA", authentication(key = "my key"), "published inthelast month")
-count.character <- function(accounts, authentication, filter = NULL, groupby = NULL, include = NULL) {
+count.character <- function(accounts, authentication = defaultAuthentication, filter = NULL, groupby = NULL, include = NULL) {
     if (length(accounts) == 1) {
         url <- paste0("https://api.brandseye.com/rest/accounts/", accounts, "/mentions/count")
         query <- list()

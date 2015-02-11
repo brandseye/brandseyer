@@ -27,7 +27,7 @@ count <- function(account, ...) {
 #' count(c("QUIR01BA", "BEAD33AA"), "published inthelast month")      
 #' 
 #' # Return results for all accounts
-#' count(listAccounts()$code, "published inthelast month")            
+#' count(listAccountCodes(), "published inthelast month")            
 count.character <- function(accounts, 
                             filter = NULL, 
                             groupby = NULL, 

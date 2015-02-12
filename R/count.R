@@ -46,8 +46,13 @@ count.character <- function(accounts,
         }
         
         results <- data.frame(jsonlite::fromJSON(httr::content(data, "text")))
-        if ("published" %in% names(results)) results <- transform(results, published = as.POSIXct(published))
-        if ("sentiment" %in% names(results)) results <- transform(results,  sentiment = factor(sentiment))
+        n <- names(results)
+        if ("published" %in% n) results <- transform(results, published = as.POSIXct(published))
+        if ("sentiment" %in% n) results <- transform(results,  sentiment = factor(sentiment))
+        if ("media" %in% n) results <- transform(results, media = factor(media))
+        if ("gender" %in% n) results <- transform(results, gender = factor(gender))
+        if ("country" %in% n) results <- transform(results, country = factor(country))
+        if ("language" %in% n) results <- transform(results, language = factor(language))
         return(results)
     }    
     

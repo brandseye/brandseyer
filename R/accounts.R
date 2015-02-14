@@ -20,9 +20,47 @@ account <- function (code, auth = defaultAuthentication, key = NULL, user = NULL
 }
 
 print.brandseye.account <- function(account, ...) {
-    cat("BrandsEye Account:", account$code, "\n")
-    if (!is.null(account.name(account))) cat("Account name: ", account.name(account), "\n")
-    print(account$auth)
+    output <- matrix(c(account$code, account.name(account), account$auth$user), ncol = 1)
+    colnames(output) <- ""
+    rownames(output) <- c("Code", "Name", "Login")    
+    print(output, quote=F)
+}
+
+summary.brandseye.account <- function(account, ...) {
+    lastMonthVolume <- count(ac, "published inthelast month", groupby="relevancy")
+    total <- sum(lastMonthVolume$count)
+    irrelevant <- lastMonthVolume[lastMonthVolume$relevancy == 'IRRELEVANT',]$count
+    relevant <- total - irrelevant
+    
+    counts <- matrix(c(total, relevant, irrelevant), ncol = 1)
+    rownames(counts) <- c("Total", "Relevant", "Irrelevant")
+    colnames(counts) <- c("Mentions")  
+    
+    published <- count(ac, "published inthelast month", groupby="published", 
+                       include="engagement")
+    averages <- matrix(c(mean(published$count), 
+                         sd(published$count),
+                         mean(published$engagement),
+                         sd(published$engagement)), 
+                       ncol = 1)
+    rownames(averages) <- c("Mean count", "SD count", "Mean engagement", "SD engagement")
+    colnames(averages) <- ""
+    
+    structure(list(
+        account = account,
+        counts = counts,
+        averages = averages
+    ), class = "summary.brandseye.account")
+}
+
+print.summary.brandseye.account <- function(s.ac, ...) {
+    cat("BrandsEye Account:\n")
+    print(s.ac$account)
+    cat("\n")
+    cat("Summary of the last month:\n")
+    print(s.ac$counts)
+    cat("\nDaily averages:\n")
+    print(round(s.ac$averages, 2))
 }
 
 account.load <- function(account) {

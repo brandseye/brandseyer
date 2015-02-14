@@ -26,6 +26,9 @@ print.brandseye.account <- function(account, ...) {
     print(output, quote=F)
 }
 
+#' Summarising accounts
+#' 
+#' \code{summary} method for class "\code{brandseye.account}".
 summary.brandseye.account <- function(account, ...) {
     lastMonthVolume <- count(ac, "published inthelast month", groupby="relevancy")
     total <- sum(lastMonthVolume$count)

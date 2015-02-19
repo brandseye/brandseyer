@@ -18,7 +18,7 @@ you will want to do this using a BrandsEye API key.
 }
 \details{
 It's possible to set up default authentication information as well. In your home directory,
-create the file \code{$HOME/.brandseyerd/authentication.json}.
+create the file \code{$HOME/.brandseyerd/authentication.json}. 
 
 This file can contain either a key, or a user / password pair. For example, to
 specify your key, the file should contain:
@@ -57,7 +57,7 @@ can read it.
 \itemize{
 \item \code{authentication.filename}: Returns the file name in which you can save your authentication information.
 
-\item \code{save.authentication}: Save your authentication information to a file for automatic loading by BrandsEyeR.
+\item \code{save.authentication}: Save your authentication information to a file for automatic loading by BrandsEyeR.
 
  
 }}

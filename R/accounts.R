@@ -30,7 +30,7 @@ print.brandseye.account <- function(account, ...) {
 #' 
 #' \code{summary} method for class "\code{brandseye.account}".
 summary.brandseye.account <- function(account, ...) {
-    lastMonthVolume <- count(ac, "published inthelast month", groupby="relevancy")
+    lastMonthVolume <- count(account, "published inthelast month", groupby="relevancy")
     total <- sum(lastMonthVolume$count)
     irrelevant <- lastMonthVolume[lastMonthVolume$relevancy == 'IRRELEVANT',]$count
     relevant <- total - irrelevant
@@ -39,14 +39,14 @@ summary.brandseye.account <- function(account, ...) {
     rownames(counts) <- c("Total", "Relevant", "Irrelevant")
     colnames(counts) <- c("Mentions")  
     
-    published <- count(ac, "published inthelast month", groupby="published", 
+    published <- count(account, "published inthelast month", groupby="published", 
                        include="engagement")
     averages <- matrix(c(mean(published$count), 
                          sd(published$count),
                          mean(published$engagement),
                          sd(published$engagement)), 
                        ncol = 1)
-    rownames(averages) <- c("Mean count", "SD count", "Mean engagement", "SD engagement")
+    rownames(averages) <- c("Count mean", "Count SD", "Engagement mean", "Engagement SD")
     colnames(averages) <- ""
     
     structure(list(

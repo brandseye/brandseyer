@@ -50,3 +50,33 @@ authentication <- function(key = NULL, user = NULL, password = NULL) {
 print.brandseye.auth <- function(auth) {
     cat("login: ", auth$username, "\n")
 }
+
+#' @describeIn authentication
+getAuthenticationFileName <- function() {
+    file.path(Sys.getenv("HOME"), ".brandseyerd", "authentication.json")
+}
+
+#' @describeIn authentication
+save.authentication <- function(key, user, password) {
+    contents <- NULL
+    if (!missing(key)) {
+        contents <- paste0('{ "key": "', key, '" }')
+    }
+    if (!missing(user) && !missing(password)) {
+        contents <- paste0('{ "user": "', user, '", "password": "', password, '" }')
+    }
+    
+    if (!file.exists(getAuthenticationFileName())) {
+        if (!is.null(contents)) {
+            fileConn<-file(getAuthenticationFileName())        
+            writeLines(contents, fileConn)                        
+            close(fileConn)        
+        }
+        else {
+            file.create(getAuthenticationFileName())
+        }
+                
+        invisible()
+    }
+    else stop("Authentication file already exists")
+}

@@ -2,9 +2,12 @@
 % Please edit documentation in R/authentication.R
 \name{authentication}
 \alias{authentication}
+\alias{getAuthenticationFile}
 \title{Authenticate yourself with BrandsEye}
 \usage{
 authentication(key = NULL, user = NULL, password = NULL)
+
+getAuthenticationFile()
 }
 \description{
 Provides a means to authenticate yourself with the BrandsEye API. Most of the time
@@ -32,6 +35,10 @@ To specify a username and password pair, the file should contain:
  \}
 }
 }
+\section{Functions}{
+\itemize{
+\item \code{getAuthenticationFile}: 
+}}
 \examples{
 # Authenticating with a key
 authentication("adfd42345f534fgdfgd")

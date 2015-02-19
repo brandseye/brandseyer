@@ -2,12 +2,15 @@
 % Please edit documentation in R/authentication.R
 \name{authentication}
 \alias{authentication}
-\alias{getAuthenticationFile}
+\alias{authentication.filename}
+\alias{save.authentication}
 \title{Authenticate yourself with BrandsEye}
 \usage{
 authentication(key = NULL, user = NULL, password = NULL)
 
-getAuthenticationFile()
+authentication.filename()
+
+save.authentication(key, user, password)
 }
 \description{
 Provides a means to authenticate yourself with the BrandsEye API. Most of the time
@@ -34,10 +37,29 @@ To specify a username and password pair, the file should contain:
      "password": "This would be awkward if it were my real password"
  \}
 }
+
+You can use the \code{save.authentication} function to save a stub file
+for you to edit in your home directory. On windows, this might be in your
+\code{My Documents} directory. You can use the \code{authentication.filename}
+function to find the directory and file name to save the authentication file in.
+
+You can also use the \code{save.authentication} file to create the file for
+you in the appropriate place. Call it with no arguments to just make an empty file.
+If you provide arguments, it will fill in the file for you, as needed.
+
+Be wary of calling it with arguments, since your key or password will
+land up in your R history file. The best practise is to call
+\code{save.authentication} with no arguments and edit the file manually.
+On a shared computer, set permissions on that file so that only your user
+can read it.
 }
 \section{Functions}{
 \itemize{
-\item \code{getAuthenticationFile}: 
+\item \code{authentication.filename}: Returns the file name in which you can save your authentication information.
+
+\item \code{save.authentication}: Save your authentication information to a file for automatic loading by BrandsEyeR.
+
+ 
 }}
 \examples{
 # Authenticating with a key

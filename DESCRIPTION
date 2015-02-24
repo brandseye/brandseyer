@@ -12,4 +12,5 @@ Description: BrandsEye is a social media tracking and analytics company. This
 License: MIT
 Imports: 
     httr,
-    jsonlite
+    jsonlite,
+    foreach

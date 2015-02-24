@@ -34,6 +34,17 @@ results, and to include various other bits of useful information. It's also
 possible to perform count operations across multiple accounts.
 }
 \details{
+It's possible to parallelise this call. This is only useful if you're querying multiple accounts:
+there will be no benefit when querying only a single account. Any parallel backend for
+the \code{foreach} package can be used to enable parallel functioning. For example, on
+a Linux or OX X based system, the following will work well:
+
+\verb{
+ library(doMC)
+ registerDoMC(8)
+ count(listAccountCodes(), "published inthelast day")
+}
+
 Filters are described in the api documentation \url{https://api.brandseye.com/docs}
 }
 \section{Methods (by class)}{

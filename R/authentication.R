@@ -12,11 +12,11 @@
 #' authentication(user = "jo.blogs@@brandseye.com", 
 #'                password ="This is a safe password!!")
 authentication <- function(key = NULL, user = NULL, password = NULL) {
-    if (!is.null(key) & (!is.null(user) | !is.null(password)))
+    if (is.null(key) & (is.null(user) | is.null(password)))
         stop("You must choose to authenticate with an API key or a username / password pair")
     
-    if (is.null(user)) user = "API_KEY";
-    if (is.null(password)) password = key;
+    if (is.null(user)) user <- "API_KEY";
+    if (is.null(password)) password <- key;
     if (is.null(password)) stop("Please provide an API key");
     
     structure(list(
@@ -36,10 +36,17 @@ authentication.filename <- function() {
 }
 
 #' @describeIn authentication
-#' Save your authentication information to a file for automatic loading by BrandsEyeR.
+#' Save your authentication for your current R session, or in a file for later R sessions. 
 #' 
-#'  @details
-#' It's possible to set up default authentication information as well. In your home directory,
+#' @details
+#' This function allows you to set a global variable holding your authentication details.
+#' The various BrandsEyeR functions will use these authentication details when communicating
+#' with the BrandsEye API. 
+#'  
+#' It's possible to set up default authentication information as well which will be
+#' loaded automatically every time you load the BrandsEyeR library.
+#' 
+#' In your home directory,
 #' create the file \code{$HOME/.brandseyerd/authentication.json}. 
 #'     
 #' This file can contain either a key, or a user / password pair. For example, to
@@ -60,43 +67,72 @@ authentication.filename <- function() {
 #'  \}
 #' }
 #' 
-#' You can use the \code{save.authentication} function to save a stub file 
+#' You can use the \code{authenticate} function to save a stub file 
 #' for you to edit in your home directory. On windows, this might be in your 
 #' \code{My Documents} directory. You can use the \code{authentication.filename}
 #' function to find the directory and file name to save the authentication file in.
 #' 
-#' You can also use the \code{save.authentication} file to create the file for 
+#' You can also use the \code{authenticate} file to create the file for 
 #' you in the appropriate place. Call it with no arguments to just make an empty file.
 #' If you provide arguments, it will fill in the file for you, as needed.
 #' 
 #' Be wary of calling it with arguments, since your key or password will
 #' land up in your R history file. The best practise is to call 
-#' \code{save.authentication} with no arguments and edit the file manually.
+#' \code{authenticate} with only \code{save = TRUE}  and 
+#' no other arguments set and edit the file manually.
 #' On a shared computer, set permissions on that file so that only your user 
-#' can read it.
-save.authentication <- function(key, user, password) {
-    contents <- NULL
-    if (!missing(key)) {
-        contents <- paste0('{ "key": "', key, '" }')
-    }
-    if (!missing(user) && !missing(password)) {
-        contents <- paste0('{ "user": "', user, '", "password": "', password, '" }')
-    }
-    if (missing(key) & missing(user) & missing(password)) {
-        contents <- '{ "key": "you API key goes here" }'
+#' can read it. Your authentication details are saved in plain text. 
+#' 
+#' @param key Your API key. Contact your client service representative if you do
+#'   not already have one. You do not need to have a username or password if you are
+#'   using an API key.
+#' @param user Your username, if you know it. This should be used with your password.
+#' @param password To be used in conjunction with a username
+#' @param save Set this to true if your authentication details should be saved
+#'   across sessions.
+#'   
+#' @examples
+#' # Create a json stub to fill in your authentication details:
+#' authenticate(save = TRUE)
+#' # And this will be created at:
+#' authentication.filename()
+#' 
+#' # Log in for the session
+#' authenticate(key = "this is my api key")
+#' # Use the API with those credentials
+#' count("QUIR01BA", "published inthelast month")
+authenticate <- function(key = NULL, user = NULL, password = NULL, save = FALSE) {
+    if (!is.null(key) | !is.null(user) | !is.null(password)) {
+        defaultAuthentication <<- authentication(key = key, user = user, password = password)
+    }    
+    
+    if (save) {
+        contents <- NULL
+        if (!missing(key)) {
+            contents <- paste0('{ "key": "', key, '" }')
+        }
+        if (!missing(user) && !missing(password)) {
+            contents <- paste0('{ "user": "', user, '", "password": "', password, '" }')
+        }
+        if (missing(key) & missing(user) & missing(password)) {            
+            contents <- '{ "key": "you API key goes here" }'
+        }
+        
+        if (!file.exists(authentication.filename())) {
+            message(paste("Authentication file created at", authentication.filename()))
+            if (!is.null(contents)) {
+                fileConn<-file(authentication.filename())        
+                writeLines(contents, fileConn)                        
+                close(fileConn)        
+            }
+            else {
+                file.create(authentication.filename())
+            }
+            
+            return (invisible())
+        }
+        else stop("Authentication file already exists")
     }
     
-    if (!file.exists(authentication.filename())) {
-        if (!is.null(contents)) {
-            fileConn<-file(authentication.filename())        
-            writeLines(contents, fileConn)                        
-            close(fileConn)        
-        }
-        else {
-            file.create(authentication.filename())
-        }
-                
-        invisible()
-    }
-    else stop("Authentication file already exists")
+    defaultAuthentication    
 }

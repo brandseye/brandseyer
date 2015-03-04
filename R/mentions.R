@@ -11,12 +11,13 @@ mentions <- function(account, ...) {
 #' # Read mentions using the default authentication
 #' mentions("QUIR01BA", "published inthelast day")
 mentions.character <- function(code, filter, 
-                               limit = 10000, offset = NULL,
+                               limit = 30, offset = 0,
+                               include = NULL,
                                authentication = defaultAuthentication) {
     url <- paste0("https://api.brandseye.com/rest/accounts/", code, "/mentions")
     data <- httr::GET(url, httr::authenticate(authentication$user, authentication$password), 
-                      query = list(filter = filter, limit = limit, offset = offset))    
-    results <- jsonlite::fromJSON(httr::content(data, "text"))
+                      query = list(filter = filter, limit = limit, offset = offset, include=include))    
+    results <- jsonlite::fromJSON(httr::content(data, "text"), flatten=TRUE)
     results$data
 }
 

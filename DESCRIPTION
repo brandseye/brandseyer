@@ -5,7 +5,7 @@ Version: 1.0
 Date: 2015-02-02
 Authors@R: c(
     person("Rudy", "Neeser", email = "rudy.neeser@brandseyecom", role = c("aut", "cre")),
-    person("BrandsEye", email = "contact@brandseyecom", role = "cph"))        
+    person("BrandsEye", email = "contact@brandseye.com", role = "cph"))        
 Description: BrandsEye is a social media tracking and analytics company. This
     library provides access to the data stored in BrandsEye account directly
     from R itself.

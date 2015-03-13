@@ -46,7 +46,7 @@ count.character <- function(accounts,
                             filter = NULL, 
                             groupby = NULL, 
                             include = NULL,
-                            authentication = defaultAuthentication) {
+                            authentication = defaultAuthentication) {        
     if (length(accounts) == 1) {
         url <- paste0("https://api.brandseye.com/rest/accounts/", accounts, "/mentions/count")
         query <- list()
@@ -70,10 +70,18 @@ count.character <- function(accounts,
         return(results)
     }    
     
-    foreach(code = accounts, .combine = rbind) %dopar% {
+    block <- function(code) {
+        message(paste("Querying account:", code))        
         data <- count(code, filter, groupby, include, authentication)
         data.frame(code = code, data)
-    }    
+    }
+    
+    if (require("foreach")) {
+        foreach(code = accounts, .combine = rbind) %dopar% block(code)    
+    }
+    else {
+        Reduce(rbind, lapply(accounts, block)) 
+    }
 }
 
 #' @describeIn count

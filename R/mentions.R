@@ -1,4 +1,4 @@
-#' Read mentions from your account
+glm#' Read mentions from your account
 mentions <- function(account, ...) {
     UseMethod("mentions", account)
 }

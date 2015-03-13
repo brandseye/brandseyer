@@ -13,5 +13,5 @@ License: MIT
 Imports: 
     httr,
     jsonlite
-Depends:
+Suggests:
     foreach

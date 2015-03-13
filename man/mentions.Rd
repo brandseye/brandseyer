@@ -8,8 +8,8 @@
 \usage{
 mentions(account, ...)
 
-\method{mentions}{character}(code, filter, limit = 10000, offset = NULL,
-  authentication = defaultAuthentication)
+\method{mentions}{character}(code, filter, limit = 30, offset = 0,
+  include = NULL, authentication = defaultAuthentication)
 
 \method{mentions}{brandseye.account}(account, filter)
 }

@@ -73,14 +73,14 @@ count.character <- function(accounts,
     block <- function(code) {
         message(paste("Querying account:", code))        
         data <- count(code, filter, groupby, include, authentication)
-        data.frame(code = code, data)
+        data.frame(code = factor(code, levels = accounts), data)
     }
     
     if (require("foreach")) {
-        foreach(code = accounts, .combine = rbind) %dopar% block(code)    
+        foreach(code = accounts, .combine = dplyr::bind_rows, .multicombine = TRUE) %dopar% block(code)    
     }
     else {
-        Reduce(rbind, lapply(accounts, block)) 
+        Reduce(dplyr::bind_rows, lapply(accounts, block)) 
     }
 }
 

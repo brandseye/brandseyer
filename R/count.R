@@ -18,6 +18,8 @@ count <- function(account, ...) {
 #' @param filter A filter string describing the mentions that should be counted by this query
 #' Count aggregate mention information from your BrandsEye account
 #' @param groupby A list of items that should be grouped by
+#' @param .process Indicates whether the types should be cleaned. For instance, date values transformed
+#'        from strings to POSIXct objects, NA values properly handled, etc. 
 #' 
 #' @details 
 #' It's possible to parallelise this call. This is only useful if you're querying multiple accounts:
@@ -46,7 +48,22 @@ count.character <- function(accounts,
                             filter = NULL, 
                             groupby = NULL, 
                             include = NULL,
-                            authentication = defaultAuthentication) {        
+                            authentication = defaultAuthentication,
+                            .process = TRUE) {        
+    
+    # Transforms a data.frame to clean up the various data types
+    # and so on returned as Strings from the API.
+    process <- function(results) {
+        n <- names(results)
+        if ("published" %in% n) results <- dplyr::mutate(results, published = ifelse(published == "UNKNOWN", NA, as.POSIXct(published)))
+        if ("sentiment" %in% n) results <- dplyr::mutate(results,  sentiment = factor(replace(sentiment, sentiment == "UNKNOWN", NA)))
+        if ("media" %in% n) results <- dplyr::mutate(results, media = factor(replace(media, media == "UNKNOWN", NA)))
+        if ("gender" %in% n) results <- dplyr::mutate(results, gender = factor(replace(gender, gender == "UNKNOWN", NA)))
+        if ("country" %in% n) results <- dplyr::mutate(results, country = factor(replace(country, country == "UN", NA)))
+        if ("language" %in% n) results <- dplyr::mutate(results, language = factor(replace(language, language == "UNKNOWN", NA)))
+        results
+    }
+    
     if (length(accounts) == 1) {
         url <- paste0("https://api.brandseye.com/rest/accounts/", accounts, "/mentions/count")
         query <- list()
@@ -60,28 +77,26 @@ count.character <- function(accounts,
         }
         
         results <- data.frame(jsonlite::fromJSON(httr::content(data, "text")))
-        n <- names(results)
-        if ("published" %in% n) results <- dplyr::mutate(results, published = ifelse(published == "UNKNOWN", NA, as.POSIXct(published)))
-        if ("sentiment" %in% n) results <- dplyr::mutate(results,  sentiment = factor(replace(sentiment, sentiment == "UNKNOWN", NA)))
-        if ("media" %in% n) results <- dplyr::mutate(results, media = factor(replace(media, media == "UNKNOWN", NA)))
-        if ("gender" %in% n) results <- dplyr::mutate(results, gender = factor(replace(gender, gender == "UNKNOWN", NA)))
-        if ("country" %in% n) results <- dplyr::mutate(results, country = factor(replace(country, country == "UN", NA)))
-        if ("language" %in% n) results <- dplyr::mutate(results, language = factor(replace(language, language == "UNKNOWN", NA)))
+        if (.process) results <- process(results)
         return(results)
     }    
     
     block <- function(code) {
         message(paste("Querying account:", code))        
-        data <- count(code, filter, groupby, include, authentication)
+        data <- count(code, filter, groupby, include, authentication, .process = FALSE)
         data.frame(code = factor(code, levels = accounts), data)
     }
     
+    results <- NULL
     if (require("foreach")) {
-        foreach(code = accounts, .combine = dplyr::bind_rows, .multicombine = TRUE) %dopar% block(code)    
+        results <- foreach(code = accounts, .combine = dplyr::bind_rows, .multicombine = TRUE) %dopar% block(code)    
     }
     else {
-        Reduce(dplyr::bind_rows, lapply(accounts, block)) 
+        results <- Reduce(dplyr::bind_rows, lapply(accounts, block)) 
     }
+    
+    if (.process) results <- process(results)    
+    results
 }
 
 #' @describeIn count

@@ -61,12 +61,12 @@ count.character <- function(accounts,
         
         results <- data.frame(jsonlite::fromJSON(httr::content(data, "text")))
         n <- names(results)
-        if ("published" %in% n) results <- transform(results, published = ifelse(published == "UNKNOWN", NA, as.POSIXct(published)))
-        if ("sentiment" %in% n) results <- transform(results,  sentiment = factor(sentiment))
-        if ("media" %in% n) results <- transform(results, media = factor(media))
-        if ("gender" %in% n) results <- transform(results, gender = factor(gender))
-        if ("country" %in% n) results <- transform(results, country = factor(country))
-        if ("language" %in% n) results <- transform(results, language = factor(language))
+        if ("published" %in% n) results <- dplyr::mutate(results, published = ifelse(published == "UNKNOWN", NA, as.POSIXct(published)))
+        if ("sentiment" %in% n) results <- dplyr::mutate(results,  sentiment = factor(replace(sentiment, sentiment == "UNKNOWN", NA)))
+        if ("media" %in% n) results <- dplyr::mutate(results, media = factor(replace(media, media == "UNKNOWN", NA)))
+        if ("gender" %in% n) results <- dplyr::mutate(results, gender = factor(replace(gender, gender == "UNKNOWN", NA)))
+        if ("country" %in% n) results <- dplyr::mutate(results, country = factor(replace(country, country == "UN", NA)))
+        if ("language" %in% n) results <- dplyr::mutate(results, language = factor(replace(language, language == "UNKNOWN", NA)))
         return(results)
     }    
     

@@ -81,9 +81,14 @@ count.character <- function(accounts,
         return(results)
     }    
     
-    block <- function(code) {
-        message(paste("Querying account:", code))        
-        data <- count(code, filter, groupby, include, authentication, .process = FALSE)
+    block <- function(code) {        
+        message(paste("Querying account:", code))
+        data <- count(code, filter, groupby, include, authentication, .process = FALSE)        
+        if (nrow(data) == 0) {
+            # We don't want to add a code to an empty data frame: this
+            # can cause errors
+            return(data.frame(code = factor(code, levels = accounts)))
+        }
         data.frame(code = factor(code, levels = accounts), data)
     }
     

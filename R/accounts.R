@@ -89,6 +89,12 @@ account.name.brandseye.account <- function(account) {
     account$name
 }
 
+account.name.character <- function(accounts) {
+    sapply(accounts, function(ac) {
+        account.name(account(ac))
+    })
+}
+
 'account.name<-' <- function(account, value) {
     UseMethod('account.name<-', account)
 }

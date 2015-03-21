@@ -32,5 +32,11 @@ like so:
     ?authentication
     ?listAccounts
     ?mentions
+    
+## Authentication
+
+See the documentation for the *authenticate* and *authentication* functions. 
+*authenticate* has functionality to store your authentication details on your 
+system so that you don't always have to enter it.
 
 ## License

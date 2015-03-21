@@ -20,6 +20,8 @@ count <- function(account, ...) {
 #' @param groupby A list of items that should be grouped by
 #' @param .process Indicates whether the types should be cleaned. For instance, date values transformed
 #'        from strings to POSIXct objects, NA values properly handled, etc. 
+#' @param .progress Set to true if you would like a progress bar to be shown when querying multiple
+#'        accounts.
 #' 
 #' @details 
 #' It's possible to parallelise this call. This is only useful if you're querying multiple accounts:
@@ -49,7 +51,8 @@ count.character <- function(accounts,
                             groupby = NULL, 
                             include = NULL,
                             authentication = defaultAuthentication,
-                            .process = TRUE) {        
+                            .progress = length(accounts) > 10,
+                            .process = TRUE) {  
     
     # Transforms a data.frame to clean up the various data types
     # and so on returned as Strings from the API.
@@ -81,9 +84,15 @@ count.character <- function(accounts,
         return(results)
     }    
     
+    pb <- NULL
+    if (.progress) pb <- txtProgressBar(min = 0, max = length(accounts), style=3)
+    i <- 0
+    
     block <- function(code) {        
-        message(paste("Querying account:", code))
-        data <- count(code, filter, groupby, include, authentication, .process = FALSE)        
+        data <- count(code, filter, groupby, include, authentication, 
+                      .process = FALSE, .progress = FALSE)        
+        i <<- i + 1
+        if (!is.null(pb)) setTxtProgressBar(pb, i)
         if (nrow(data) == 0) {
             # We don't want to add a code to an empty data frame: this
             # can cause errors
@@ -92,6 +101,8 @@ count.character <- function(accounts,
         data.frame(code = factor(code, levels = accounts), data)
     }
     
+    
+    
     results <- NULL
     if (require("foreach")) {
         results <- foreach(code = accounts, .combine = dplyr::bind_rows, .multicombine = TRUE) %dopar% block(code)    
@@ -99,6 +110,8 @@ count.character <- function(accounts,
     else {
         results <- Reduce(dplyr::bind_rows, lapply(accounts, block)) 
     }
+    
+    if (!is.null(pb)) close(pb)
     
     if (.process) results <- process(results)    
     results

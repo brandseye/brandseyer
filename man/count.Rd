@@ -9,7 +9,8 @@
 count(account, ...)
 
 \method{count}{character}(accounts, filter = NULL, groupby = NULL,
-  include = NULL, authentication = defaultAuthentication)
+  include = NULL, authentication = defaultAuthentication,
+  .progress = length(accounts) > 10, .process = TRUE)
 
 \method{count}{brandseye.account}(account, filter = NULL, groupby = NULL,
   include = NULL)
@@ -26,6 +27,12 @@ the account that the particular result is from.}
 Count aggregate mention information from your BrandsEye account}
 
 \item{groupby}{A list of items that should be grouped by}
+
+\item{.progress}{Set to true if you would like a progress bar to be shown when querying multiple
+       accounts.}
+
+\item{.process}{Indicates whether the types should be cleaned. For instance, date values transformed
+from strings to POSIXct objects, NA values properly handled, etc.}
 }
 \description{
 \code{count} is used to count mentions in a BrandsEye account matching

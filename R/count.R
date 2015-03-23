@@ -20,7 +20,7 @@ count <- function(account, ...) {
 #' @param groupby A list of items that should be grouped by
 #' @param .process Indicates whether the types should be cleaned. For instance, date values transformed
 #'        from strings to POSIXct objects, NA values properly handled, etc. 
-#' @param .progress Set to true if you would like a progress bar to be shown when querying multiple
+#' @param showProgress Set to true if you would like a progress bar to be shown when querying multiple
 #'        accounts.
 #' 
 #' @details 
@@ -51,7 +51,7 @@ count.character <- function(accounts,
                             groupby = NULL, 
                             include = NULL,
                             authentication = defaultAuthentication,
-                            .progress = length(accounts) > 10,
+                            showProgress = length(accounts) > 10,
                             .process = TRUE) {  
     
     # Transforms a data.frame to clean up the various data types
@@ -85,12 +85,12 @@ count.character <- function(accounts,
     }    
     
     pb <- NULL
-    if (.progress) pb <- txtProgressBar(min = 0, max = length(accounts), style=3)
+    if (showProgress) pb <- txtProgressBar(min = 0, max = length(accounts), style=3)
     i <- 0
     
     block <- function(code) {        
         data <- count(code, filter, groupby, include, authentication, 
-                      .process = FALSE, .progress = FALSE)        
+                      .process = FALSE, showProgress = FALSE)        
         i <<- i + 1
         if (!is.null(pb)) setTxtProgressBar(pb, i)
         if (nrow(data) == 0) {

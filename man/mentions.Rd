@@ -9,7 +9,7 @@
 mentions(account, ...)
 
 \method{mentions}{character}(code, filter, limit = 30, offset = 0,
-  include = NULL, authentication = defaultAuthentication)
+  include = NULL, authentication = pkg.env$defaultAuthentication)
 
 \method{mentions}{brandseye.account}(account, filter)
 }

@@ -5,11 +5,11 @@
 \alias{listAccounts}
 \title{List accounts you have access to}
 \usage{
-listAccounts(auth = defaultAuthentication, key = NULL, user = NULL,
-  password = NULL)
+listAccounts(auth = pkg.env$defaultAuthentication, key = NULL,
+  user = NULL, password = NULL)
 
-listAccountCodes(auth = defaultAuthentication, key = NULL, user = NULL,
-  password = NULL)
+listAccountCodes(auth = pkg.env$defaultAuthentication, key = NULL,
+  user = NULL, password = NULL)
 }
 \description{
 This returns a data frame listing the accounts that you have access to,

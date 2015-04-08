@@ -4,8 +4,8 @@
 \alias{account}
 \title{Provides access to a BrandsEye account}
 \usage{
-account(code, auth = defaultAuthentication, key = NULL, user = NULL,
-  password = NULL)
+account(code, auth = pkg.env$defaultAuthentication, key = NULL,
+  user = NULL, password = NULL)
 }
 \description{
 Provides access to a BrandsEye account

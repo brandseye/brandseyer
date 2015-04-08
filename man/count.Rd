@@ -9,7 +9,7 @@
 count(account, ...)
 
 \method{count}{character}(accounts, filter = NULL, groupby = NULL,
-  include = NULL, authentication = defaultAuthentication,
+  include = NULL, authentication = pkg.env$defaultAuthentication,
   showProgress = length(accounts) > 10, .process = TRUE)
 
 \method{count}{brandseye.account}(account, filter = NULL, groupby = NULL,

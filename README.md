@@ -7,7 +7,7 @@ This is a small library for accessing data in your BrandsEye account.
 Installation is currently fairly simple
 
     # Install the devtools package
-    install.packages(devtools)
+    install.packages("devtools")
     library(devtools)
    
     # Install the library
@@ -22,6 +22,20 @@ Installation is currently fairly simple
     count(ac, "published inthelast week")
     count(ac, "published inthelast week", groupby="published")
     listAccounts(user = "my mash user", password = "my mash password")
+    
+## Authentication
+
+You will likely find manually authenticating each query tedious. You can automate this
+using the authenticate function:
+
+    ?authenticate
+    
+Specifically, if you're happy having your credentials saved on your hard drive, 
+you can do this:
+
+    authenticate(key = "this is my key", save = TRUE)
+    
+Please see the documentation for *authenticate* for some advice on securing that file.    
     
 ## Documentation
 

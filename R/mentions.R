@@ -13,7 +13,7 @@ mentions <- function(account, ...) {
 mentions.character <- function(code, filter, 
                                limit = 30, offset = 0,
                                include = NULL,
-                               authentication = defaultAuthentication) {
+                               authentication = pkg.env$defaultAuthentication) {
     url <- paste0("https://api.brandseye.com/rest/accounts/", code, "/mentions")
     data <- httr::GET(url, httr::authenticate(authentication$user, authentication$password), 
                       query = list(filter = filter, limit = limit, offset = offset, include=include))    

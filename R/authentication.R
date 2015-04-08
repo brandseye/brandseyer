@@ -103,7 +103,7 @@ authentication.filename <- function() {
 #' count("QUIR01BA", "published inthelast month")
 authenticate <- function(key = NULL, user = NULL, password = NULL, save = FALSE) {
     if (!is.null(key) | !is.null(user) | !is.null(password)) {
-        defaultAuthentication <<- authentication(key = key, user = user, password = password)
+        pkg.env$defaultAuthentication <- authentication(key = key, user = user, password = password)        
     }    
     
     if (save) {
@@ -129,10 +129,9 @@ authenticate <- function(key = NULL, user = NULL, password = NULL, save = FALSE)
                 file.create(authentication.filename())
             }
             
-            return (invisible())
         }
         else stop("Authentication file already exists")
     }
     
-    defaultAuthentication    
+    pkg.env$defaultAuthentication    
 }

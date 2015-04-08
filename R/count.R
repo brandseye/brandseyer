@@ -50,7 +50,7 @@ count.character <- function(accounts,
                             filter = NULL, 
                             groupby = NULL, 
                             include = NULL,
-                            authentication = defaultAuthentication,
+                            authentication = pkg.env$defaultAuthentication,
                             showProgress = length(accounts) > 10,
                             .process = TRUE) {  
     

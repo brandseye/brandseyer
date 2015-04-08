@@ -8,7 +8,7 @@
 #' ac <- account("QUIR01BA", user = "rudy.neeser@@brandseye.com", 
 #'               password = "This is not my real password")
 #' account("QUIR01BA", key="<api key here>")              
-account <- function (code, auth = defaultAuthentication, key = NULL, user = NULL, password = NULL) {        
+account <- function (code, auth = pkg.env$defaultAuthentication, key = NULL, user = NULL, password = NULL) {        
     if (is.null(auth)) auth <- authentication(user = user, password = password, key = key)
     ac <- structure(list(
         code = code,
@@ -119,7 +119,7 @@ account.name.character <- function(accounts) {
 #' auth <- authentication(user = "rudy.neeser@@brandseye.com", 
 #'                        password = "my brandseye password")
 #' listAccounts(auth)
-listAccounts <- function(auth = defaultAuthentication, key = NULL, user = NULL, password = NULL) {
+listAccounts <- function(auth = pkg.env$defaultAuthentication, key = NULL, user = NULL, password = NULL) {
     if (is.null(auth)) auth <- authentication(key = key, user = user, password = password)
     url <- paste0("https://api.brandseye.com/rest/accounts/")
     data <- httr::GET(url, httr::authenticate(auth$user, auth$password))
@@ -135,6 +135,6 @@ listAccounts <- function(auth = defaultAuthentication, key = NULL, user = NULL, 
 #' # Get the number of mentions published in the last day across all 
 #' # of your accounts.
 #' count(listAccountCodes(), "published inthelast day")
-listAccountCodes <- function(auth = defaultAuthentication, key = NULL, user = NULL, password = NULL) {
+listAccountCodes <- function(auth = pkg.env$defaultAuthentication, key = NULL, user = NULL, password = NULL) {
     listAccounts(auth, key, user, password)$code
 }

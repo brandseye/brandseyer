@@ -13,6 +13,5 @@ License: MIT
 Imports: 
     httr,
     jsonlite,
-    dplyr
-Suggests:
+    dplyr,
     foreach

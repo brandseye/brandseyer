@@ -58,7 +58,7 @@ count.character <- function(accounts,
     # and so on returned as Strings from the API.
     process <- function(results) {
         n <- names(results)
-        if ("published" %in% n) results <- dplyr::mutate(results, published = ifelse(published == "UNKNOWN", NA, as.POSIXct(published)))
+        if ("published" %in% n) results <- dplyr::mutate(results, published = ifelse(published == "UNKNOWN", NA, as.POSIXct(published)))            
         if ("sentiment" %in% n) results <- dplyr::mutate(results,  sentiment = factor(replace(sentiment, sentiment == "UNKNOWN", NA)))
         if ("media" %in% n) results <- dplyr::mutate(results, media = factor(replace(media, media == "UNKNOWN", NA)))
         if ("gender" %in% n) results <- dplyr::mutate(results, gender = factor(replace(gender, gender == "UNKNOWN", NA)))
@@ -102,14 +102,10 @@ count.character <- function(accounts,
     }
     
     
+    dopar <- foreach::`%dopar%`
+    results <- dopar(foreach::foreach(code = accounts, .combine = dplyr::bind_rows, .multicombine = TRUE), 
+                     block(code))
     
-    results <- NULL
-    if (require("foreach")) {
-        results <- foreach(code = accounts, .combine = dplyr::bind_rows, .multicombine = TRUE) %dopar% block(code)    
-    }
-    else {
-        results <- Reduce(dplyr::bind_rows, lapply(accounts, block)) 
-    }
     
     if (!is.null(pb)) close(pb)
     

@@ -7,5 +7,11 @@ defaultAuthentication <- NULL
         auth_data <- jsonlite::fromJSON(txt = auth_file)
         defaultAuthentication <<- authentication(key = auth_data$key, user = auth_data$user, password = auth_data$password)
     }
+    
+    # Ensure that we have a backend for foreach registered
+    if (!foreach::getDoParRegistered()) {
+        foreach::registerDoSEQ()
+    }
+    
     invisible()
 }

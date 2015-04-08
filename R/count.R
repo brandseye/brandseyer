@@ -58,7 +58,7 @@ count.character <- function(accounts,
     # and so on returned as Strings from the API.
     process <- function(results) {
         n <- names(results)
-        if ("published" %in% n) results <- dplyr::mutate(results, published = ifelse(published == "UNKNOWN", NA, as.POSIXct(published)))            
+        if ("published" %in% n) results <- dplyr::mutate(results, published = as.POSIXct(ifelse(published == "UNKNOWN", NA, published)))
         if ("sentiment" %in% n) results <- dplyr::mutate(results,  sentiment = factor(replace(sentiment, sentiment == "UNKNOWN", NA)))
         if ("media" %in% n) results <- dplyr::mutate(results, media = factor(replace(media, media == "UNKNOWN", NA)))
         if ("gender" %in% n) results <- dplyr::mutate(results, gender = factor(replace(gender, gender == "UNKNOWN", NA)))

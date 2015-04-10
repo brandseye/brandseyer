@@ -34,7 +34,7 @@ count <- function(account, ...) {
 #' there will be no benefit when querying only a single account. Any parallel backend for 
 #' the \code{foreach} package can be used to enable parallel functioning. For example, on
 #' a Linux or OX X based system, the following will work well:
-#' 
+#'  
 #' \verb{
 #'  library(doMC)
 #'  registerDoMC(8)
@@ -42,6 +42,38 @@ count <- function(account, ...) {
 #' }
 #' 
 #' 
+#' @section Grouping:
+#' 
+#' The \code{count} function will by default return only a count of the mentions
+#' matching the given filter. If you would like more information, you should
+#' group by particular values. The following (possibly incomplete) list
+#' of fields can be grouped by:
+#' 
+#' action, alexaRank, assignee, author, authorName, brand, city, country, 
+#' credibility, extract, feed, gender, language, link, linked, media, pageRank,
+#' phrase, phraseMatches, pickedUp, process, published, region, relevancy, 
+#' relevancyVerified, sentiment, sentimentVerified, tag, title, updated, uri,
+#' replycount, resharecount, responsetime
+#' 
+#' @section Including extra data:
+#' 
+#' Grouping is the first step to include extra data. However, some data 
+#' cannot be grouped by, and are instead extra information added on to 
+#' each of the returned buckets. This might include information as simple
+#' as a new format for the country code (\code{countryISO3} being an example),
+#' or aggregate data for the group (\code{AVE} and \code{OTS} being examples).
+#' 
+#' An incomplete list of data that can be included are:
+#' 
+#' ave, ots, percentages, engagement, sentiment-reach, sentiment-count, countryISO3,
+#' latlon, scale, yaw, pitch, roll
+#' 
+#' @section API documentation:
+#' 
+#' The canonical documentation for the filter language, and what fields
+#' may be grouped and included, is the BrandsEye API documentation
+#' \url{https://api.brandseye.com/docs}.
+#'
 #' @examples
 #' \dontrun{
 #' count("QUIR01BA", "published inthelast month") # Uses default authentication, 
@@ -74,14 +106,19 @@ count.character <- function(accounts,
     
     # Transforms a data.frame to clean up the various data types
     # and so on returned as Strings from the API.
-    process <- function(results) {
-        n <- names(results)
-        if ("published" %in% n) results <- dplyr::mutate(results, published = as.POSIXct(ifelse(published == "UNKNOWN", NA, published)))
-        if ("sentiment" %in% n) results <- dplyr::mutate(results,  sentiment = factor(replace(sentiment, sentiment == "UNKNOWN", NA)))
-        if ("media" %in% n) results <- dplyr::mutate(results, media = factor(replace(media, media == "UNKNOWN", NA)))
-        if ("gender" %in% n) results <- dplyr::mutate(results, gender = factor(replace(gender, gender == "UNKNOWN", NA)))
-        if ("country" %in% n) results <- dplyr::mutate(results, country = factor(replace(country, country == "UN", NA)))
-        if ("language" %in% n) results <- dplyr::mutate(results, language = factor(replace(language, language == "UNKNOWN", NA)))
+    process <- function(results) {        
+        dates <- c("published", "pickedup", "updated")
+        factorItems <- c("action", "authorname", "country", "feed", "gender",
+                         "language", "media", "process", "region", "relevancy",
+                         "sentiment", "tag", "countryiso3")
+        
+        for (n in names(results)) {
+            if (tolower(n) %in% dates) results[, n] <- as.POSIXct(ifelse(results[, n] == "UNKNOWN", NA, results[, n]))
+            else if (n == "country") results[, n] <- factor(replace(results[, n], results[, n] == "UN", NA))
+            else if (tolower(n) %in% factorItems) results[, n] <- factor(replace(results[, n], results[, n] == "UNKNOWN", NA))
+            else results[, n] <- replace(results[, n], results[, n] == "UNKNOWN", NA)  
+        }
+        
         results
     }
     

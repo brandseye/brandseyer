@@ -64,6 +64,43 @@ a Linux or OX X based system, the following will work well:
 
 \item \code{brandseye.account}: 
 }}
+\section{Grouping}{
+
+
+The \code{count} function will by default return only a count of the mentions
+matching the given filter. If you would like more information, you should
+group by particular values. The following (possibly incomplete) list
+of fields can be grouped by:
+
+action, alexaRank, assignee, author, authorName, brand, city, country,
+credibility, extract, feed, gender, language, link, linked, media, pageRank,
+phrase, phraseMatches, pickedUp, process, published, region, relevancy,
+relevancyVerified, sentiment, sentimentVerified, tag, title, updated, uri,
+replycount, resharecount, responsetime
+}
+
+\section{Including extra data}{
+
+
+Grouping is the first step to include extra data. However, some data
+cannot be grouped by, and are instead extra information added on to
+each of the returned buckets. This might include information as simple
+as a new format for the country code (\code{countryISO3} being an example),
+or aggregate data for the group (\code{AVE} and \code{OTS} being examples).
+
+An incomplete list of data that can be included are:
+
+ave, ots, percentages, engagement, sentiment-reach, sentiment-count, countryISO3,
+latlon, scale, yaw, pitch, roll
+}
+
+\section{API documentation}{
+
+
+The canonical documentation for the filter language, and what fields
+may be grouped and included, is the BrandsEye API documentation
+\url{https://api.brandseye.com/docs}.
+}
 \examples{
 \dontrun{
 count("QUIR01BA", "published inthelast month") # Uses default authentication,

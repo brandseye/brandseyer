@@ -27,6 +27,9 @@
 #' 
 #' \code{summary} can be used to briefly summarise an account.
 #' 
+#' @seealso \code{\link{account.brands}} for listing the brands in an account.
+#' @seealso \code{\link{account.phrases}} for listing the phrases used in an account.
+#' 
 #' @examples
 #' \dontrun{
 #' ac <- account("QUIR01BA", user = "rudy.neeser@@brandseye.com", 
@@ -155,6 +158,15 @@ account.brands <- function(account, ...) {
 }
 
 #' @describeIn account.brands
+#' 
+#' Returns brand information for a particular \code{\link{account}} object.
+#' 
+#' @examples
+#' \dontrun{
+#' # Fetch brands for an \code{\link{account}} object.
+#' ac <- account("QUIR01BA")
+#' account.brands(ac)
+#' }
 account.brands.brandseye.account <- function(account, .process = TRUE) {
     id <- integer()
     name <- character()
@@ -186,6 +198,18 @@ account.brands.brandseye.account <- function(account, .process = TRUE) {
                              stringsAsFactors = FALSE))
 }
 
+#' @describeIn account.brands
+#' 
+#' Returns brand information for a list of accounts
+#' 
+#' @examples
+#' \dontrun{
+#' # Returns a data.frame containing brand information for two accounts
+#' account.brands(c("QUIR01BA", "BEAD33AA"))
+#' 
+#' # Return brand information for all accounts that you have access to
+#' account.brands(listAccountCodes())
+#' }
 account.brands.list <- function(accounts) {
     `%>%` <- dplyr::`%>%`    
     
@@ -201,6 +225,8 @@ account.brands.list <- function(accounts) {
 }
 
 #' @describeIn account.brands
+#' 
+#' Returns brand information for an account identified by an account code.
 #' 
 #' @examples
 #' 
@@ -224,6 +250,15 @@ account.phrases <- function(account, ...) {
 }
 
 #' @describeIn account.phrases
+#' 
+#' Returns phrase information for a particular account object.
+#' 
+#' @examples
+#' \dontrun{
+#' # Returns account information for an account object
+#' ac <- account("QUIR01BA")
+#' account.phrases(ac)
+#' }
 account.phrases.brandseye.account <- function(account, .process = TRUE) {
     id <- integer()
     brand.id <- character()
@@ -262,6 +297,13 @@ account.phrases.brandseye.account <- function(account, .process = TRUE) {
 }
 
 #' @describeIn account.phrases
+#' 
+#' Returns account information for an account identified using an account code
+#' 
+#' @examples
+#' \dontrun{
+#' account.phrases("QUIR01BA")
+#' }
 account.phrases.character <- function(account) {
     account.phrases(account(account))
 }
@@ -270,6 +312,11 @@ account.phrases.character <- function(account) {
 #' 
 #' Given a list of \code{account} objects, this will return
 #' a combined \code{data.frame} for the phrases in all of those accounts.
+#' 
+#' @examples
+#' \dontrun{
+#' account.phrases(c("QUIR01BA", "BEAD33AA"))
+#' }
 account.phrases.list <- function(accounts) {
     `%>%` <- dplyr::`%>%`    
         

@@ -22,11 +22,24 @@ with, and a flag indicating whether the phrase is inactive or deleted.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{brandseye.account}: 
+\item \code{brandseye.account}: Returns phrase information for a particular account object.
 
-\item \code{character}: 
+\item \code{character}: Returns account information for an account identified using an account code
 
 \item \code{list}: Given a list of \code{account} objects, this will return
 a combined \code{data.frame} for the phrases in all of those accounts.
 }}
+\examples{
+\dontrun{
+# Returns account information for an account object
+ac <- account("QUIR01BA")
+account.phrases(ac)
+}
+\dontrun{
+account.phrases("QUIR01BA")
+}
+\dontrun{
+account.phrases(c("QUIR01BA", "BEAD33AA"))
+}
+}
 

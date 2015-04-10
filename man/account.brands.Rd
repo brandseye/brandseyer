@@ -4,11 +4,14 @@
 \alias{account.brands}
 \alias{account.brands.brandseye.account}
 \alias{account.brands.character}
+\alias{account.brands.list}
 \title{Listing brands in an account}
 \usage{
 account.brands(account, ...)
 
 \method{account.brands}{brandseye.account}(account, .process = TRUE)
+
+\method{account.brands}{list}(accounts)
 
 \method{account.brands}{character}(account)
 }
@@ -18,11 +21,25 @@ whether they've been deleted or not, and the ID of the parent brand.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{brandseye.account}: 
+\item \code{brandseye.account}: Returns brand information for a particular \code{\link{account}} object.
 
-\item \code{character}: 
+\item \code{list}: Returns brand information for a list of accounts
+
+\item \code{character}: Returns brand information for an account identified by an account code.
 }}
 \examples{
+\dontrun{
+# Fetch brands for an \\code{\\link{account}} object.
+ac <- account("QUIR01BA")
+account.brands(ac)
+}
+\dontrun{
+# Returns a data.frame containing brand information for two accounts
+account.brands(c("QUIR01BA", "BEAD33AA"))
+
+# Return brand information for all accounts that you have access to
+account.brands(listAccountCodes())
+}
 \dontrun{
 # Fetching brands for a particular account
 account.brands("QUIR01BA")

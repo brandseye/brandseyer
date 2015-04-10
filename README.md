@@ -47,6 +47,10 @@ like so:
     ?listAccounts
     ?mentions
     
+The ultimate documentation for the filter language (the *filter* argument 
+taken by many of the functions for selecting data sets) and the various
+grouping and inclusions options is the [BrandsEye api documentation][api-docs]. 
+    
 ## Authentication
 
 See the documentation for the *authenticate* and *authentication* functions. 
@@ -54,3 +58,5 @@ See the documentation for the *authenticate* and *authentication* functions.
 system so that you don't always have to enter it.
 
 ## License
+
+[api-docs]: https://api.brandseye.com/docs

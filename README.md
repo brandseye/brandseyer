@@ -29,8 +29,7 @@ Installation is currently done via the [devtools package][devtools]:
     
 ## Authentication
 
-You will likely find manually authenticating each query tedious. You can automate this
-using the authenticate function:
+You can automate this using the authenticate function:
 
     ?authenticate
     
@@ -41,27 +40,22 @@ you can do this:
     
 Please see the documentation for *authenticate* for some advice on securing that file.
 
-Contact your client service representative to get your API key.
+Contact your client service representative to get your API key. If you are ever 
+concerned that others may have acquired your key, contact client service and they'll
+supply you with a new one (and invalidate your old).
     
 ## Documentation
 
-Documentation is in the early stages, but somewhat present and growing. It can be accessed in *R*
-like so:
+All functions are documented within *R* itself. Interesting functions to read
+up on are: 
 
-    ?account
-    ?authentication
-    ?listAccounts
-    ?mentions
+* *count*
+* *account*
+* *listAccountCodes*
     
 The ultimate documentation for the filter language (the *filter* argument 
 taken by many of the functions for selecting data sets) and the various
 grouping and inclusions options is the [BrandsEye api documentation][api-docs]. 
-    
-## Authentication
-
-See the documentation for the *authenticate* and *authentication* functions. 
-*authenticate* has functionality to store your authentication details on your 
-system so that you don't always have to enter it.
 
 ## License
 

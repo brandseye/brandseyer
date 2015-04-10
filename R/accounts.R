@@ -183,6 +183,56 @@ account.brands.character <- function(account) {
 }
 
 
+#' List phrases in an account
+#' 
+#' The returns a \code{data.frame} listing the phrases in an
+#' account, their IDs, the IDs of the brands that the phrase is associated
+#' with, and a flag indicating whether the phrase is inactive or deleted.
+account.phrases <- function(account) {
+    UseMethod("account.phrases", account)
+}
+
+#' @describeIn account.phrases
+account.phrases.brandseye.account <- function(account) {
+    id <- integer()
+    brand.id <- character()
+    phrase <- character()
+    inactive <- logical()
+    deleted <- logical()
+    
+    recurse <- function(brand) {    
+        
+        for (p in brand$phrases) {
+            id <<- c(id, p$id)
+            brand.id <<- c(brand.id, brand$id)
+            phrase <<- c(phrase, p$q)
+            deleted <<- c(deleted, ifelse(is.null(p$deleted) || p$deleted == FALSE, FALSE, TRUE))
+            inactive <<- c(inactive, ifelse(is.null(p$inactive) || p$inactive == FALSE, FALSE, TRUE))
+        }
+                        
+        if (length(brand$children)) {
+            for (b in brand$children) {
+                recurse(b)
+            }
+        }
+    }
+    
+    for (b in account$data$brands) {
+        recurse(b)
+    }
+    
+    
+    data.frame(id = id, brand.id = brand.id, 
+               phrase = phrase, inactive = inactive, 
+               deleted = deleted)
+}
+
+#' @describeIn account.phrases
+account.phrases.character <- function(account) {
+    account.phrases(account(account))
+}
+
+
 #' List accounts you have access to
 #' 
 #' This returns a data frame listing the accounts that you have access to,

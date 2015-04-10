@@ -16,7 +16,7 @@ count(account, ...)
   include = NULL)
 }
 \arguments{
-\item{account}{An account object to be queried.}
+\item{account}{An account to be queried.}
 
 \item{accounts}{A vector of account codes. If this is a single account code, this function
 will return a data frame of results just from that account. If it contains multiple accounts,
@@ -26,7 +26,11 @@ the account that the particular result is from.}
 \item{filter}{A filter string describing the mentions that should be counted by this query
 Count aggregate mention information from your BrandsEye account}
 
-\item{groupby}{A list of items that should be grouped by}
+\item{groupby}{A vector of items that should be grouped by. For example,
+\code{c("published", "language")}}
+
+\item{include}{A vector of items naming values that should be included.
+For example, \code{c("ots", "ave")}}
 
 \item{showProgress}{Set to true if you would like a progress bar to be shown when querying multiple
        accounts.}
@@ -41,6 +45,8 @@ results, and to include various other bits of useful information. It's also
 possible to perform count operations across multiple accounts.
 }
 \details{
+Filters are described in the api documentation \url{https://api.brandseye.com/docs}
+
 It's possible to parallelise this call. This is only useful if you're querying multiple accounts:
 there will be no benefit when querying only a single account. Any parallel backend for
 the \code{foreach} package can be used to enable parallel functioning. For example, on
@@ -51,8 +57,6 @@ a Linux or OX X based system, the following will work well:
  registerDoMC(8)
  count(listAccountCodes(), "published inthelast day")
 }
-
-Filters are described in the api documentation \url{https://api.brandseye.com/docs}
 }
 \section{Methods (by class)}{
 \itemize{
@@ -61,6 +65,7 @@ Filters are described in the api documentation \url{https://api.brandseye.com/do
 \item \code{brandseye.account}: 
 }}
 \examples{
+\dontrun{
 count("QUIR01BA", "published inthelast month") # Uses default authentication,
                                                # if that has been set up.
 count("QUIR01BA", "published inthelast month",
@@ -70,6 +75,17 @@ count(c("QUIR01BA", "BEAD33AA"), "published inthelast month")
 
 # Return results for all accounts
 count(listAccountCodes(), "published inthelast month")
+
+# Return results grouped by publication date
+count("QUIR01BA", "published inthelast month", groupby = "published)
+
+# Include Ad Value Equivalent (AVE) and Opportunity to See
+count("QUIR01BA", "published inthelast month", groupby = "published,
+      include = c("ave", "ots"))
+}
+\dontrun{
+# Not using global authentication, but authenticating directly in the call
+# itself.
 ac <- account("QUIR01BA", key="<my key>")
 
 # A single number counting the mentions published in the last week.
@@ -81,5 +97,6 @@ count(ac, "published inthelast month and relevancy isnt irrelevant")
 # As above, but grouped by publication day
 count(ac, "published inthelast month and relevancy isnt irrelevant",
       groupby="published")
+}
 }
 

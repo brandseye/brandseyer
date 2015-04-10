@@ -5,7 +5,10 @@
 #' results, and to include various other bits of useful information. It's also
 #' possible to perform count operations across multiple accounts. 
 #' 
-#' @param account An account object to be queried.
+#' @param account An account to be queried. 
+#' 
+#' @details
+#' Filters are described in the api documentation \url{https://api.brandseye.com/docs}
 count <- function(account, ...) {
     UseMethod("count", account)
 }
@@ -17,7 +20,10 @@ count <- function(account, ...) {
 #'  the account that the particular result is from. 
 #' @param filter A filter string describing the mentions that should be counted by this query
 #' Count aggregate mention information from your BrandsEye account
-#' @param groupby A list of items that should be grouped by
+#' @param groupby A vector of items that should be grouped by. For example, 
+#'        \code{c("published", "language")}
+#' @param include A vector of items naming values that should be included. 
+#'        For example, \code{c("ots", "ave")}
 #' @param .process Indicates whether the types should be cleaned. For instance, date values transformed
 #'        from strings to POSIXct objects, NA values properly handled, etc. 
 #' @param showProgress Set to true if you would like a progress bar to be shown when querying multiple
@@ -37,6 +43,7 @@ count <- function(account, ...) {
 #' 
 #' 
 #' @examples
+#' \dontrun{
 #' count("QUIR01BA", "published inthelast month") # Uses default authentication, 
 #'                                                # if that has been set up.
 #' count("QUIR01BA", "published inthelast month", 
@@ -45,7 +52,15 @@ count <- function(account, ...) {
 #' count(c("QUIR01BA", "BEAD33AA"), "published inthelast month")      
 #' 
 #' # Return results for all accounts
-#' count(listAccountCodes(), "published inthelast month")            
+#' count(listAccountCodes(), "published inthelast month") 
+#' 
+#' # Return results grouped by publication date
+#' count("QUIR01BA", "published inthelast month", groupby = "published)
+#' 
+#' # Include Ad Value Equivalent (AVE) and Opportunity to See
+#' count("QUIR01BA", "published inthelast month", groupby = "published, 
+#'       include = c("ave", "ots"))
+#' } 
 count.character <- function(accounts, 
                             filter = NULL, 
                             groupby = NULL, 
@@ -53,6 +68,9 @@ count.character <- function(accounts,
                             authentication = pkg.env$defaultAuthentication,
                             showProgress = length(accounts) > 10,
                             .process = TRUE) {  
+    
+    if (length(groupby) > 1) groupby <- do.call(stringr::str_c, as.list(c(groupby, sep = ',')))
+    if (length(include) > 1) include <- do.call(stringr::str_c, as.list(c(include, sep = ',')))
     
     # Transforms a data.frame to clean up the various data types
     # and so on returned as Strings from the API.
@@ -76,7 +94,7 @@ count.character <- function(accounts,
         if (httr::status_code(data) == 401) stop("You are not authorised to access this account")
         if (httr::status_code(data) != 200) {
             message = jsonlite::fromJSON(httr::content(data, "text"))$error
-            stop(message)
+            stop("BrandsEye API error: ", message)
         }
         
         results <- data.frame(jsonlite::fromJSON(httr::content(data, "text")))
@@ -105,8 +123,7 @@ count.character <- function(accounts,
     dopar <- foreach::`%dopar%`
     results <- dopar(foreach::foreach(code = accounts, .combine = dplyr::bind_rows, .multicombine = TRUE), 
                      block(code))
-    
-    
+        
     if (!is.null(pb)) close(pb)
     
     if (.process) results <- process(results)    
@@ -114,11 +131,11 @@ count.character <- function(accounts,
 }
 
 #' @describeIn count
-
-#' @details
-#' Filters are described in the api documentation \url{https://api.brandseye.com/docs}
 #' 
 #' @examples
+#' \dontrun{
+#' # Not using global authentication, but authenticating directly in the call
+#' # itself.
 #' ac <- account("QUIR01BA", key="<my key>")
 #' 
 #' # A single number counting the mentions published in the last week. 
@@ -130,6 +147,7 @@ count.character <- function(accounts,
 #' # As above, but grouped by publication day
 #' count(ac, "published inthelast month and relevancy isnt irrelevant", 
 #'       groupby="published")
+#' }
 count.brandseye.account <- function(account, filter = NULL, groupby = NULL, 
                                     include = NULL) {
     count(account$code, account$auth, filter = filter, groupby = groupby, include = include)

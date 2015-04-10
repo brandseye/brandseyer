@@ -39,6 +39,11 @@
 account <- function (code, key = NULL, user = NULL, password = NULL,
                      auth = pkg.env$defaultAuthentication) {        
     if (is.null(auth)) auth <- authentication(user = user, password = password, key = key)
+    
+    if (length(code) > 1) {
+        return(lapply(code, function(c) account(c, auth = auth)))
+    }
+    
     ac <- structure(list(
         code = code,
         auth = auth
@@ -107,7 +112,15 @@ account.load <- function(account) {
 }
 
 account.code <- function(account) {
+    UseMethod("account.code", account)
+}
+
+account.code.brandseye.account <- function(account) {
     account$code
+}
+
+account.code.list <- function(accounts) {
+    sapply(accounts, function(ac) account.code(ac))
 }
 
 account.name <- function(account) {
@@ -188,12 +201,12 @@ account.brands.character <- function(account) {
 #' The returns a \code{data.frame} listing the phrases in an
 #' account, their IDs, the IDs of the brands that the phrase is associated
 #' with, and a flag indicating whether the phrase is inactive or deleted.
-account.phrases <- function(account) {
+account.phrases <- function(account, ...) {
     UseMethod("account.phrases", account)
 }
 
 #' @describeIn account.phrases
-account.phrases.brandseye.account <- function(account) {
+account.phrases.brandseye.account <- function(account, .process = TRUE) {
     id <- integer()
     brand.id <- character()
     phrase <- character()
@@ -209,7 +222,7 @@ account.phrases.brandseye.account <- function(account) {
             deleted <<- c(deleted, ifelse(is.null(p$deleted) || p$deleted == FALSE, FALSE, TRUE))
             inactive <<- c(inactive, ifelse(is.null(p$inactive) || p$inactive == FALSE, FALSE, TRUE))
         }
-                        
+        
         if (length(brand$children)) {
             for (b in brand$children) {
                 recurse(b)
@@ -222,14 +235,35 @@ account.phrases.brandseye.account <- function(account) {
     }
     
     
-    data.frame(id = id, brand.id = brand.id, 
-               phrase = phrase, inactive = inactive, 
-               deleted = deleted)
+    dplyr::tbl_df(data.frame(id = ifelse(.process, factor(id), id), 
+                             brand.id = ifelse(.process, factor(brand.id), brand.id), 
+                             phrase = phrase, 
+                             inactive = inactive, 
+                             deleted = deleted, 
+                             stringsAsFactors = FALSE))
 }
 
 #' @describeIn account.phrases
 account.phrases.character <- function(account) {
     account.phrases(account(account))
+}
+
+#' @describeIn account.phrases
+#' 
+#' Given a list of \code{account} objects, this will return
+#' a combined \code{data.frame} for the phrases in all of those accounts.
+account.phrases.list <- function(accounts) {
+    `%>%` <- dplyr::`%>%`    
+    
+    
+    accounts %>% 
+        lapply(function(ac) data.frame(code = account.code(ac),                                                      
+                                       account.phrases(ac, .process = FALSE), 
+                                       stringsAsFactors = FALSE)) %>%
+        bind_rows() %>%
+        mutate(code = factor(code),
+               id = factor(id),
+               brand.id = factor(brand.id))
 }
 
 

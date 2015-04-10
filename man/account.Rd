@@ -4,8 +4,8 @@
 \alias{account}
 \title{Provides access to a BrandsEye account}
 \usage{
-account(code, auth = pkg.env$defaultAuthentication, key = NULL,
-  user = NULL, password = NULL)
+account(code, key = NULL, user = NULL, password = NULL,
+  auth = pkg.env$defaultAuthentication)
 }
 \description{
 Provides access to a BrandsEye account
@@ -15,8 +15,10 @@ Creates an object representing a BrandsEye account. It can be used to easily per
 various queries on the account.
 }
 \examples{
+\dontrun{
 ac <- account("QUIR01BA", user = "rudy.neeser@brandseye.com",
               password = "This is not my real password")
 account("QUIR01BA", key="<api key here>")
+}
 }
 

@@ -6,9 +6,9 @@
 \alias{account.brands.character}
 \title{Listing brands in an account}
 \usage{
-account.brands(account)
+account.brands(account, ...)
 
-\method{account.brands}{brandseye.account}(account)
+\method{account.brands}{brandseye.account}(account, .process = TRUE)
 
 \method{account.brands}{character}(account)
 }

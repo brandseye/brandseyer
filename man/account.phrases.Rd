@@ -4,13 +4,16 @@
 \alias{account.phrases}
 \alias{account.phrases.brandseye.account}
 \alias{account.phrases.character}
+\alias{account.phrases.list}
 \title{List phrases in an account}
 \usage{
-account.phrases(account)
+account.phrases(account, ...)
 
-\method{account.phrases}{brandseye.account}(account)
+\method{account.phrases}{brandseye.account}(account, .process = TRUE)
 
 \method{account.phrases}{character}(account)
+
+\method{account.phrases}{list}(accounts)
 }
 \description{
 The returns a \code{data.frame} listing the phrases in an
@@ -22,5 +25,8 @@ with, and a flag indicating whether the phrase is inactive or deleted.
 \item \code{brandseye.account}: 
 
 \item \code{character}: 
+
+\item \code{list}: Given a list of \code{account} objects, this will return
+a combined \code{data.frame} for the phrases in all of those accounts.
 }}
 

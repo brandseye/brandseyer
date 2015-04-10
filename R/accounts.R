@@ -150,12 +150,12 @@ account.name.character <- function(accounts) {
 #' 
 #' This returns a \code{data.frame} containing brand IDs, their names,
 #' whether they've been deleted or not, and the ID of the parent brand.
-account.brands <- function(account) {
+account.brands <- function(account, ...) {
     UseMethod("account.brands", account)
 }
 
 #' @describeIn account.brands
-account.brands.brandseye.account <- function(account) {
+account.brands.brandseye.account <- function(account, .process = TRUE) {
     id <- integer()
     name <- character()
     deleted <- logical()
@@ -179,7 +179,25 @@ account.brands.brandseye.account <- function(account) {
     }
     
     
-    data.frame(id = id, name = name, deleted = deleted, parent = parents)
+    dplyr::tbl_df(data.frame(id = ifelse(.process, factor(id), id), 
+                             name = name, 
+                             deleted = deleted, 
+                             parent = ifelse(.process, factor(parents), parents),
+                             stringsAsFactors = FALSE))
+}
+
+account.brands.list <- function(accounts) {
+    `%>%` <- dplyr::`%>%`    
+    
+    accounts %>% 
+        lapply(function(ac) data.frame(code = account.code(ac),                                                      
+                                       account.brands(ac, .process = FALSE), 
+                                       stringsAsFactors = FALSE)) %>%
+        bind_rows() %>%
+        mutate(code = factor(code),
+               id = factor(id),
+               parent = factor(parent))
+               
 }
 
 #' @describeIn account.brands
@@ -254,8 +272,7 @@ account.phrases.character <- function(account) {
 #' a combined \code{data.frame} for the phrases in all of those accounts.
 account.phrases.list <- function(accounts) {
     `%>%` <- dplyr::`%>%`    
-    
-    
+        
     accounts %>% 
         lapply(function(ac) data.frame(code = account.code(ac),                                                      
                                        account.phrases(ac, .process = FALSE), 

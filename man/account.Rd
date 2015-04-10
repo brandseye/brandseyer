@@ -13,12 +13,17 @@ Provides access to a BrandsEye account
 \details{
 Creates an object representing a BrandsEye account. It can be used to easily perform
 various queries on the account.
+
+\code{summary} can be used to briefly summarise an account.
 }
 \examples{
 \dontrun{
 ac <- account("QUIR01BA", user = "rudy.neeser@brandseye.com",
               password = "This is not my real password")
 account("QUIR01BA", key="<api key here>")
+
+# Have a brief summary of an account
+summary(ac)
 }
 }
 

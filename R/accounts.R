@@ -25,11 +25,16 @@
 #' Creates an object representing a BrandsEye account. It can be used to easily perform
 #' various queries on the account. 
 #' 
+#' \code{summary} can be used to briefly summarise an account.
+#' 
 #' @examples
 #' \dontrun{
 #' ac <- account("QUIR01BA", user = "rudy.neeser@@brandseye.com", 
 #'               password = "This is not my real password")
-#' account("QUIR01BA", key="<api key here>")              
+#' account("QUIR01BA", key="<api key here>")        
+#' 
+#' # Have a brief summary of an account
+#' summary(ac)      
 #' }
 account <- function (code, key = NULL, user = NULL, password = NULL,
                      auth = pkg.env$defaultAuthentication) {        
@@ -56,10 +61,10 @@ print.brandseye.account <- function(account, ...) {
 summary.brandseye.account <- function(account, ...) {
     lastMonthVolume <- count(account, "published inthelast month", groupby="relevancy")
     total <- sum(lastMonthVolume$count)
-    irrelevant <- lastMonthVolume[lastMonthVolume$relevancy == 'IRRELEVANT',]$count
+    irrelevant <- dplyr::filter(lastMonthVolume, relevancy == 'IRRELEVANT')$count
     relevant <- total - irrelevant
     
-    counts <- matrix(c(total, relevant, irrelevant), ncol = 1)
+    counts <- matrix(c(total, relevant, irrelevant), ncol = 1)    
     rownames(counts) <- c("Total", "Relevant", "Irrelevant")
     colnames(counts) <- c("Mentions")  
     

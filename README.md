@@ -1,10 +1,14 @@
 # BrandsEyeR
 
-This is a small library for accessing data in your BrandsEye account.
+[BrandsEye][brandseye] is a company that provides online monitoring, analytics,
+and insights for social media data. We provide an extensive JSON / RESTful API
+to access your data. This library is a wrapper for that data, providing 
+easy access to the data in your various BrandsEye accounts for use in 
+any R analyses and data visualisations. 
 
 # Installing
 
-Installation is currently fairly simple
+Installation is currently done via the [devtools package][devtools]:
 
     # Install the devtools package
     install.packages("devtools")
@@ -83,4 +87,6 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
+[brandseye]: http://www.brandseye.com
 [api-docs]: https://api.brandseye.com/docs
+[devtools]: http://www.rstudio.com/products/rpackages/devtools/

@@ -35,7 +35,9 @@ you can do this:
 
     authenticate(key = "this is my key", save = TRUE)
     
-Please see the documentation for *authenticate* for some advice on securing that file.    
+Please see the documentation for *authenticate* for some advice on securing that file.
+
+Contact your client service representative to get your API key.
     
 ## Documentation
 

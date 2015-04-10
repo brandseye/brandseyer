@@ -128,6 +128,55 @@ account.name.character <- function(accounts) {
     account
 }
 
+#' Listing brands in an account
+#' 
+#' This returns a \code{data.frame} containing brand IDs, their names,
+#' whether they've been deleted or not, and the ID of the parent brand.
+account.brands <- function(account) {
+    UseMethod("account.brands", account)
+}
+
+#' @describeIn account.brands
+account.brands.brandseye.account <- function(account) {
+    id <- integer()
+    name <- character()
+    deleted <- logical()
+    parents <- integer()
+    
+    recurse <- function(brand, parent = NA) {    
+        id <<- c(id, brand$id)
+        name <<- c(name, brand$name)
+        deleted <<- c(deleted, ifelse(is.null(brand$deleted) || brand$deleted == FALSE, FALSE, TRUE))
+        parents <<- c(parents, parent)
+        
+        if (length(brand$children)) {
+            for (b in brand$children) {
+                recurse(b, parent = brand$id)
+            }
+        }
+    }
+    
+    for (b in account$data$brands) {
+        recurse(b)
+    }
+    
+    
+    data.frame(id = id, name = name, deleted = deleted, parent = parents)
+}
+
+#' @describeIn account.brands
+#' 
+#' @examples
+#' 
+#' \dontrun{
+#' # Fetching brands for a particular account
+#' account.brands("QUIR01BA")
+#' }
+#' 
+account.brands.character <- function(account) {
+    account.brands(account(account))
+}
+
 
 #' List accounts you have access to
 #' 

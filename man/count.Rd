@@ -40,7 +40,8 @@ from strings to POSIXct objects, NA values properly handled, etc.}
 }
 \description{
 \code{count} is used to count mentions in a BrandsEye account matching
-matching a particular filter. It's possible to group mentions, order the
+matching a particular filter, and to produce aggreagate data related to them.
+It's possible to group mentions, order the
 results, and to include various other bits of useful information. It's also
 possible to perform count operations across multiple accounts.
 }
@@ -49,7 +50,7 @@ Filters are described in the api documentation \url{https://api.brandseye.com/do
 
 It's possible to parallelise this call. This is only useful if you're querying multiple accounts:
 there will be no benefit when querying only a single account. Any parallel backend for
-the \code{foreach} package can be used to enable parallel functioning. For example, on
+the \code{\link{foreach}} package can be used to enable parallel functioning. For example, on
 a Linux or OX X based system, the following will work well:
 
 \verb{
@@ -135,5 +136,11 @@ count(ac, "published inthelast month and relevancy isnt irrelevant")
 count(ac, "published inthelast month and relevancy isnt irrelevant",
       groupby="published")
 }
+}
+\seealso{
+\code{\link{account}} for information on querying account information, including
+     seeing the brands and phrases associated with an account.
+
+\code{\link{mentions}} for querying raw mention data.
 }
 

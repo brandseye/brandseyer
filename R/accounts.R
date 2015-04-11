@@ -27,6 +27,8 @@
 #' 
 #' \code{summary} can be used to briefly summarise an account.
 #' 
+#' @seealso \code{\link{listAccounts}} to see the accounts that you have access to.
+#' @seealso \code{\link{listAccountCodes}} for a vector of account codes that you have
 #' @seealso \code{\link{account.brands}} for listing the brands in an account.
 #' @seealso \code{\link{account.phrases}} for listing the phrases used in an account.
 #' 

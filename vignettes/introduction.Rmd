@@ -1,0 +1,47 @@
+---
+title: "An Introduction to BrandsEyeR"
+author: "Rudy Neeser"
+date: "`r Sys.Date()`"
+output: 
+    rmarkdown::html_vignette:
+        fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{An Introduction to BrandsEyeR}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+[BrandsEye][brandseye] provides online monitoring, analytics,
+and insights for social media data. We have a dedicated front end app that can be
+used to up the *brands* (very much like topics) and *phrases* that you are interested
+in tracking, and that also provides a suite of visualisation and anlytic tools for
+examining the social media data that the account will now begin pulling in from
+sources such as Twitter, Facebook, Google+, blogs, websites, and so on. 
+
+
+
+# Authenticating
+
+- Get your API key
+- *authenticate* function
+
+
+# Accounts
+
+- Seeing the accounts that you have access to
+- Getting basic account information: names, code
+- Brands
+- Phrases
+- Tags
+
+## Aggregating and counting mentions
+
+
+# Other resources
+
+- API documentation
+- Client service person
+
+
+
+[brandseye]: http://www.brandseye.com

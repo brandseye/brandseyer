@@ -16,6 +16,19 @@ various queries on the account.
 
 \code{summary} can be used to briefly summarise an account.
 }
+\section{Querying an account}{
+
+
+\code{\link{account_count}} allows you to pull statistics from your account
+matching a filter. For example,
+
+\verb{
+ ac <- account("QUIR01BA")
+ account_count(ac, "published inthelast week", groupby="country")
+}
+
+The above sums the number of mentions per country in the given account.
+}
 \examples{
 \dontrun{
 ac <- account("QUIR01BA", user = "rudy.neeser@brandseye.com",

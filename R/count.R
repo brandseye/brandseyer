@@ -21,7 +21,7 @@
 
 #' Count mentions
 #' 
-#' \code{count} is used to count mentions in a BrandsEye account matching
+#' \code{account_count} is used to count mentions in a BrandsEye account matching
 #' matching a particular filter, and to produce aggreagate data related to them.
 #' It's possible to group mentions, order the
 #' results, and to include various other bits of useful information. It's also
@@ -35,11 +35,11 @@
 #' @seealso \code{\link{account}} for information on querying account information, including
 #'      seeing the brands and phrases associated with an account.
 #' @seealso \code{\link{mentions}} for querying raw mention data.
-count <- function(account, ...) {
-    UseMethod("count", account)
+account_count <- function(account, ...) {
+    UseMethod("account_count", account)
 }
 
-#' @describeIn count
+#' @describeIn account_count
 #' @param accounts A vector of account codes. If this is a single account code, this function
 #'  will return a data frame of results just from that account. If it contains multiple accounts,
 #'  this will return a data frame containing all the results across accounts, and a column indicating
@@ -64,13 +64,13 @@ count <- function(account, ...) {
 #' \verb{
 #'  library(doMC)
 #'  registerDoMC(8)
-#'  count(list_account_codes(), "published inthelast day")
+#'  account_count(list_account_codes(), "published inthelast day")
 #' }
 #' 
 #' 
 #' @section Grouping:
 #' 
-#' The \code{count} function will by default return only a count of the mentions
+#' The \code{account_count} function will by default return only a count of the mentions
 #' matching the given filter. If you would like more information, you should
 #' group by particular values. The following (possibly incomplete) list
 #' of fields can be grouped by:
@@ -102,30 +102,30 @@ count <- function(account, ...) {
 #'
 #' @examples
 #' \dontrun{
-#' count("QUIR01BA", "published inthelast month") # Uses default authentication, 
-#'                                                # if that has been set up.
-#' count("QUIR01BA", "published inthelast month", 
-#'       authentication = authentication(key = "<my key>"))
+#' account_count("QUIR01BA", "published inthelast month") # Uses default authentication, 
+#'                                                  # if that has been set up.
+#' account_count("QUIR01BA", "published inthelast month", 
+#'         authentication = authentication(key = "<my key>"))
 #' # Return results for multiple accounts      
-#' count(c("QUIR01BA", "BEAD33AA"), "published inthelast month")      
+#' account_count(c("QUIR01BA", "BEAD33AA"), "published inthelast month")      
 #' 
 #' # Return results for all accounts
-#' count(list_account_codes(), "published inthelast month") 
+#' account_count(list_account_codes(), "published inthelast month") 
 #' 
 #' # Return results grouped by publication date
-#' count("QUIR01BA", "published inthelast month", groupby = "published)
+#' account_count("QUIR01BA", "published inthelast month", groupby = "published)
 #' 
 #' # Include Ad Value Equivalent (AVE) and Opportunity to See
-#' count("QUIR01BA", "published inthelast month", groupby = "published, 
-#'       include = c("ave", "ots"))
+#' account_count("QUIR01BA", "published inthelast month", groupby = "published, 
+#'         include = c("ave", "ots"))
 #' } 
-count.character <- function(accounts, 
-                            filter = NULL, 
-                            groupby = NULL, 
-                            include = NULL,
-                            authentication = pkg.env$defaultAuthentication,
-                            showProgress = length(accounts) > 10,
-                            .process = TRUE) {  
+account_count.character <- function(accounts, 
+                                    filter = NULL, 
+                                    groupby = NULL, 
+                                    include = NULL,
+                                    authentication = pkg.env$defaultAuthentication,
+                                    showProgress = length(accounts) > 10,
+                                    .process = TRUE) {  
     
     if (length(groupby) > 1) groupby <- do.call(stringr::str_c, as.list(c(groupby, sep = ',')))
     if (length(include) > 1) include <- do.call(stringr::str_c, as.list(c(include, sep = ',')))
@@ -170,8 +170,8 @@ count.character <- function(accounts,
     i <- 0
     
     block <- function(code) {        
-        data <- count(code, filter, groupby, include, authentication, 
-                      .process = FALSE, showProgress = FALSE)        
+        data <- account_count(code, filter, groupby, include, authentication, 
+                        .process = FALSE, showProgress = FALSE)        
         i <<- i + 1
         if (!is.null(pb)) setTxtProgressBar(pb, i)
         if (nrow(data) == 0) {
@@ -193,7 +193,7 @@ count.character <- function(accounts,
     results
 }
 
-#' @describeIn count
+#' @describeIn account_count
 #' 
 #' @examples
 #' \dontrun{
@@ -202,16 +202,16 @@ count.character <- function(accounts,
 #' ac <- account("QUIR01BA", key="<my key>")
 #' 
 #' # A single number counting the mentions published in the last week. 
-#' count(ac, "published inthelast week")
+#' account_count(ac, "published inthelast week")
 #' 
 #' # The number of relevant mentions published in the last month
-#' count(ac, "published inthelast month and relevancy isnt irrelevant")
+#' account_count(ac, "published inthelast month and relevancy isnt irrelevant")
 #' 
 #' # As above, but grouped by publication day
-#' count(ac, "published inthelast month and relevancy isnt irrelevant", 
-#'       groupby="published")
+#' account_count(ac, "published inthelast month and relevancy isnt irrelevant", 
+#'         groupby="published")
 #' }
-count.brandseye.account <- function(account, filter = NULL, groupby = NULL, 
+account_count.brandseye.account <- function(account, filter = NULL, groupby = NULL, 
                                     include = NULL) {
-    count(account$code, account$auth, filter = filter, groupby = groupby, include = include)
+    account_count(account$code, account$auth, filter = filter, groupby = groupby, include = include)
 }

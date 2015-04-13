@@ -27,6 +27,18 @@
 #' 
 #' \code{summary} can be used to briefly summarise an account.
 #' 
+#' @section Querying an account:
+#' 
+#' \code{\link{account_count}} allows you to pull statistics from your account 
+#' matching a filter. For example,
+#' 
+#' \verb{
+#'  ac <- account("QUIR01BA")
+#'  account_count(ac, "published inthelast week", groupby="country")
+#' }
+#' 
+#' The above sums the number of mentions per country in the given account.
+#' 
 #' @seealso \code{\link{list_accounts}} to see the accounts that you have access to.
 #' @seealso \code{\link{list_account_codes}} for a vector of account codes that you have
 #' @seealso \code{\link{account_brands}} for listing the brands in an account.

@@ -31,7 +31,7 @@
 #' @seealso \code{\link{listAccountCodes}} for a vector of account codes that you have
 #' @seealso \code{\link{account.brands}} for listing the brands in an account.
 #' @seealso \code{\link{account.phrases}} for listing the phrases used in an account.
-#' @seealso \code{\link{account.tags}} for listing the tags used in an account.
+#' @seealso \code{\link{account_tags}} for listing the tags used in an account.
 #' 
 #' @examples
 #' \dontrun{
@@ -337,11 +337,16 @@ account.phrases.list <- function(accounts) {
 #' 
 #' This returns a data frame of tags available in an account, along with the 
 #' IDs of those tags.
-account.tags <- function(account, ...) {
-    UseMethod("account.tags", account)
+account_tags <- function(account, ...) {
+    UseMethod("account_tags", account)
 }
 
-account.tags.brandseye.account <- function(account, .process = TRUE) {
+#' @describeIn account_tags
+#' 
+#' Returns tag information for \code{\link{account}} objects.
+#' 
+#' @param .process Set to \code{FALSE} if you do not want IDs set as factors.
+account_tags.brandseye.account <- function(account, .process = TRUE) {
     ids <- integer()
     names <- character()
         
@@ -355,27 +360,28 @@ account.tags.brandseye.account <- function(account, .process = TRUE) {
                              stringsAsFactors = FALSE))
 }
 
-#' @describeIn account.tags
+#' @describeIn account_tags
 #' 
 #' Returns tag information an account identified using an account code
 #' 
 #' @examples
 #' \dontrun{
-#' account.tags("QUIR01BA")
+#' account_tags("QUIR01BA")
+#' account_tags(c("QUIR01BA", "BEAD33AA")
 #' }
-account.tags.character <- function(account) {
-    account.tags(account(account))
+account_tags.character <- function(account) {
+    account_tags(account(account))
 }
 
-#' @describeIn account.tags
+#' @describeIn account_tags
 #' 
 #' Returns tag information for a list of \code{\link{account}} objects
-account.tags.list <- function(accounts) {
+account_tags.list <- function(accounts) {
     `%>%` <- dplyr::`%>%`    
     
     accounts %>% 
         lapply(function(ac) data.frame(code = account.code(ac),                                                      
-                                       account.tags(ac, .process = FALSE), 
+                                       account_tags(ac, .process = FALSE), 
                                        stringsAsFactors = FALSE)) %>%
         dplyr::bind_rows() %>%
         dplyr::mutate(code = factor(code),

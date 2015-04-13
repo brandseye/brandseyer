@@ -34,5 +34,7 @@ summary(ac)
 \code{\link{account.brands}} for listing the brands in an account.
 
 \code{\link{account.phrases}} for listing the phrases used in an account.
+
+\code{\link{account_tags}} for listing the tags used in an account.
 }
 

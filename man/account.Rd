@@ -49,5 +49,8 @@ summary(ac)
 \code{\link{account_phrases}} for listing the phrases used in an account.
 
 \code{\link{account_tags}} for listing the tags used in an account.
+
+\code{\link{client_service}} for the details of the client service
+  person related to the account.
 }
 

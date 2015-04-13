@@ -44,6 +44,8 @@
 #' @seealso \code{\link{account_brands}} for listing the brands in an account.
 #' @seealso \code{\link{account_phrases}} for listing the phrases used in an account.
 #' @seealso \code{\link{account_tags}} for listing the tags used in an account.
+#' @seealso \code{\link{client_service}} for the details of the client service
+#'   person related to the account.
 #' 
 #' @examples
 #' \dontrun{
@@ -162,6 +164,80 @@ account_name.character <- function(accounts) {
 'account_name<-.brandseye.account' <- function(account, value) {
     account$name <- value
     account
+}
+
+#' Client service details
+#' 
+#' Find out the details for the client service person to contact
+#' for queries related to your account.
+#' 
+#' @return Returns a structure holding information about the 
+#'  account's client service person, with \code{name} and
+#'  \code{email} fields.
+client_service <- function(account) {
+    UseMethod("client_service", account)
+}
+
+#' @describeIn client_service
+#' 
+#' Returns client service details for an account object
+#' 
+#' @examples
+#' \dontrun{
+#' 
+#' details <- client_service(account("QUIR01BA"))
+#' details$name
+#' details$email
+#' 
+#' }
+client_service.brandseye.account <- function(account) {
+    structure(
+        list(name = account$data$clientService$name,
+             email = account$data$clientService$email),
+        class = "brandseye.clientService"        
+    )    
+}
+
+#' @describeIn client_service
+#' 
+#' Returns client service information for an account code
+#' 
+#' @examples
+#' \dontrun{
+#' 
+#' client_service("QUIR01BA")
+#' 
+#' }
+client_service.character <- function(code) {
+    client_service(account(code))
+}
+
+#' @describeIn client_service
+#' 
+#' @return As a special case, when given a list of accounts, 
+#'   this function returns a data frame with name and email columns,
+#'   and a row per account.
+#'   
+#' @examples 
+#' \dontrun{
+#' 
+#' client_service(c("QUIR01BA", "BEAD33AA"))
+#' client_service(list_account_codes())
+#' 
+#' }
+client_service.list <- function(accounts) {
+    cs <- lapply(accounts, function(ac) client_service(ac))
+    
+     data.frame(name = sapply(cs, function(cs) cs$name),
+                email = sapply(cs, function(cs) cs$email))
+}
+
+#' Prints a client service S3 class.
+print.brandseye.clientService <- function(client_service) {
+    display <- matrix(c(client_service$name, client_service$email), 2, 1)
+    rownames(display) <- c("name", "email")
+    colnames(display) <- ""
+    print(display, quote = FALSE)
 }
 
 #' Listing brands in an account

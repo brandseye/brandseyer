@@ -16,3 +16,5 @@ Imports:
     dplyr,
     foreach,
     stringr
+Suggests: knitr
+VignetteBuilder: knitr

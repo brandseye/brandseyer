@@ -35,8 +35,8 @@ and then you can query it using *account\_count*:
 ``` r
 library(dplyr)
 # Break down mention counts per country for the month of January, 2015.
-countries <- account_count(ac, "published after '2015/01/01' and published before '2015/02/01'",
-                           groupby = "country") %>%
+filter <- "published after '2015/01/01' and published before '2015/02/01'"
+countries <- account_count(ac, filter, groupby = "country") %>%
              # And here we sort by the count field using the dplyr package
              arrange(desc(count))
 ```

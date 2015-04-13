@@ -12,7 +12,7 @@ to access your data. This library is a wrapper for that data, providing
 easy access to the data in your various BrandsEye accounts for use in 
 any R analyses and data visualisations. 
 
-# Installing
+## Installing
 
 Installation is currently done via the [devtools package][devtools]:
 

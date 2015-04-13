@@ -1,7 +1,7 @@
 BrandsEyeR
 ==========
 
-[BrandsEye](http://www.brandseye.com) is a company that provides online monitoring, analytics, and insights for social media data. We provide an extensive JSON / RESTful API to access your data. This library is a wrapper for that data, providing easy access to the data in your various BrandsEye accounts for use in any R analyses and data visualisations.
+[BrandsEye](http://www.brandseye.com) is a company that provides online monitoring, analytics, and insights for social media data. We provide an extensive JSON / RESTful API to access to the data that makes up your various BrandsEye accounts. This library is a wrapper for that API, and makes it easy to access the data outside of the BrandsEye application in any [R](http://www.r-project.org/) analyses that you might want to perform.
 
 Installing
 ----------
@@ -14,7 +14,7 @@ install.packages("devtools")
 library(devtools)
 
 # Install the library
-install_bitbucket("brandseye/brandseyer", auth_user="my bitbucket user", password="my bitbucket password")
+install_github("brandseye/brandseyer")
 
 # Load the library
 library(brandseyer)
@@ -51,6 +51,14 @@ And here are the first few entries of the returned data frame:
 | Canada         |   1293| CA      |
 | India          |    950| IN      |
 | France         |    710| FR      |
+
+The call to BrandsEye can be simplified to one line, and can also be done across all of the accounts that you have:
+
+``` r
+account_count(list_account_codes(), 
+              "published after '2015/01/01' and published before '2015/02/01'",
+              groupby = "country")
+```
 
 Authentication
 --------------

@@ -1,23 +1,14 @@
----
-output:
-  md_document:
-    variant: markdown_github
----
+BrandsEyeR
+==========
 
-# BrandsEyeR
+[BrandsEye](http://www.brandseye.com) is a company that provides online monitoring, analytics, and insights for social media data. We provide an extensive JSON / RESTful API to access your data. This library is a wrapper for that data, providing easy access to the data in your various BrandsEye accounts for use in any R analyses and data visualisations.
 
-[BrandsEye][brandseye] is a company that provides online monitoring, analytics,
-and insights for social media data. We provide an extensive JSON / RESTful API
-to access your data. This library is a wrapper for that data, providing 
-easy access to the data in your various BrandsEye accounts for use in 
-any R analyses and data visualisations. 
+Installing
+----------
 
-## Installing
+Installation is currently done via the [devtools package](http://www.rstudio.com/products/rpackages/devtools/):
 
-Installation is currently done via the [devtools package][devtools]:
-
-
-```r
+``` r
 # Install the devtools package
 install.packages("devtools")
 library(devtools)
@@ -29,22 +20,19 @@ install_bitbucket("brandseye/brandseyer", auth_user="my bitbucket user", passwor
 library(brandseyer)
 ```
 
-## Examples of use
+Examples of use
+---------------
 
 You can create an account object using:
 
-
-```r
+``` r
 library(brandseyer)
 ac <- account("QUIR01BA", user = "my mash username", password="my mash password")    
 ```
 
+and then you can query it using *account\_count*:
 
-
-and then you can query it using *account_count*:
-
-
-```r
+``` r
 library(dplyr)
 # Break down mention counts per country for the month of January, 2015.
 countries <- account_count(ac, "published after '2015/01/01' and published before '2015/02/01'",
@@ -55,74 +43,50 @@ countries <- account_count(ac, "published after '2015/01/01' and published befor
 
 And here are the first few entries of the returned data frame:
 
+| countryName    |  count| country |
+|:---------------|------:|:--------|
+| Unknown        |  23523| NA      |
+| United States  |  12781| US      |
+| United Kingdom |   3238| GB      |
+| Canada         |   1293| CA      |
+| India          |    950| IN      |
+| France         |    710| FR      |
 
-|countryName    | count|country |
-|:--------------|-----:|:-------|
-|Unknown        | 23523|NA      |
-|United States  | 12781|US      |
-|United Kingdom |  3238|GB      |
-|Canada         |  1293|CA      |
-|India          |   950|IN      |
-|France         |   710|FR      |
-    
-    
-## Authentication
+Authentication
+--------------
 
 You can automate this using the authenticate function:
 
     ?authenticate
-    
-Specifically, if you're happy having your credentials saved on your hard drive, 
-you can do this:
 
+Specifically, if you're happy having your credentials saved on your hard drive, you can do this:
 
-```r
+``` r
 authenticate(key = "this is my key", save = TRUE)
 ```
-    
+
 Please see the documentation for *authenticate* for some advice on securing that file.
 
-Contact your client service representative to get your API key. If you are ever 
-concerned that others may have acquired your key, contact client service and they'll
-supply you with a new one (and invalidate your old).
-    
-## Documentation
+Contact your client service representative to get your API key. If you are ever concerned that others may have acquired your key, contact client service and they'll supply you with a new one (and invalidate your old).
 
-All functions are documented within *R* itself. Interesting functions to read
-up on are: 
+Documentation
+-------------
 
-* *account*
-* *account_count*
-* *list_account_codes*
-    
-The ultimate documentation for the filter language (the *filter* argument 
-taken by many of the functions for selecting data sets) and the various
-grouping and inclusions options is the [BrandsEye api documentation][api-docs]. 
+All functions are documented within *R* itself. Interesting functions to read up on are:
 
-## License
+-   *account*
+-   *account\_count*
+-   *list\_account\_codes*
 
-Copyright (c) 2015, Brandseye PTY (LTD) 
+The ultimate documentation for the filter language (the *filter* argument taken by many of the functions for selecting data sets) and the various grouping and inclusions options is the [BrandsEye api documentation](https://api.brandseye.com/docs).
 
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-"Software"), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
+License
+-------
 
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
+Copyright (c) 2015, Brandseye PTY (LTD)
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-[brandseye]: http://www.brandseye.com
-[api-docs]: https://api.brandseye.com/docs
-[devtools]: http://www.rstudio.com/products/rpackages/devtools/
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

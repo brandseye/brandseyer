@@ -31,6 +31,7 @@
 #' @seealso \code{\link{listAccountCodes}} for a vector of account codes that you have
 #' @seealso \code{\link{account.brands}} for listing the brands in an account.
 #' @seealso \code{\link{account.phrases}} for listing the phrases used in an account.
+#' @seealso \code{\link{account.tags}} for listing the tags used in an account.
 #' 
 #' @examples
 #' \dontrun{
@@ -193,10 +194,10 @@ account.brands.brandseye.account <- function(account, .process = TRUE) {
     }
     
     
-    dplyr::tbl_df(data.frame(id = ifelse(.process, factor(id), id), 
+    dplyr::tbl_df(data.frame(id = if(.process) factor(id) else id, 
                              name = name, 
                              deleted = deleted, 
-                             parent = ifelse(.process, factor(parents), parents),
+                             parent = if(.process) factor(parents) else parents,
                              stringsAsFactors = FALSE))
 }
 
@@ -290,8 +291,8 @@ account.phrases.brandseye.account <- function(account, .process = TRUE) {
     }
     
     
-    dplyr::tbl_df(data.frame(id = ifelse(.process, factor(id), id), 
-                             brand.id = ifelse(.process, factor(brand.id), brand.id), 
+    dplyr::tbl_df(data.frame(id = if(.process) factor(id) else id, 
+                             brand.id = if(.process) factor(brand.id) else brand.id, 
                              phrase = phrase, 
                              inactive = inactive, 
                              deleted = deleted, 
@@ -330,6 +331,28 @@ account.phrases.list <- function(accounts) {
         mutate(code = factor(code),
                id = factor(id),
                brand.id = factor(brand.id))
+}
+
+#' List tags in an account
+#' 
+#' This returns a data frame of tags available in an account, along with the 
+#' IDs of those tags.
+account.tags <- function(account, ...) {
+    UseMethod("accounts", account)
+}
+
+account.tags <- function(account, .process = TRUE) {
+    ids <- integer()
+    names <- character()
+        
+    for (t in account$data$tags) {        
+        ids <- c(ids, t$id)
+        names <- c(names, t$name)
+    }
+        
+    dplyr::tbl_df(data.frame(id = if(.process) factor(ids) else ids, 
+                             name = names,
+                             stringsAsFactors = FALSE))
 }
 
 

@@ -49,9 +49,11 @@ library(dplyr)
 # Break down mention counts per country for the month of January, 2015.
 countries <- account_count(ac, "published after '2015/01/01' and published before '2015/02/01'",
                            groupby = "country") %>%
-             # And here we sort by the count field
+             # And here we sort by the count field using the dplyr package
              arrange(desc(count))
 ```
+
+And here are the first few entries of the returned data frame:
 
 
 |countryName    | count|country |

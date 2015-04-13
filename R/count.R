@@ -64,7 +64,7 @@ count <- function(account, ...) {
 #' \verb{
 #'  library(doMC)
 #'  registerDoMC(8)
-#'  count(listAccountCodes(), "published inthelast day")
+#'  count(list_account_codes(), "published inthelast day")
 #' }
 #' 
 #' 
@@ -110,7 +110,7 @@ count <- function(account, ...) {
 #' count(c("QUIR01BA", "BEAD33AA"), "published inthelast month")      
 #' 
 #' # Return results for all accounts
-#' count(listAccountCodes(), "published inthelast month") 
+#' count(list_account_codes(), "published inthelast month") 
 #' 
 #' # Return results grouped by publication date
 #' count("QUIR01BA", "published inthelast month", groupby = "published)

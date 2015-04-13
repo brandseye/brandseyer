@@ -25,7 +25,7 @@ Installation is currently done via the [devtools package][devtools]:
     ac <- account("QUIR01BA", user = "my mash username", password="my mash password")
     count(ac, "published inthelast week")
     count(ac, "published inthelast week", groupby="published")
-    listAccounts(user = "my mash user", password = "my mash password")
+    list_accounts(user = "my mash user", password = "my mash password")
     
 ## Authentication
 
@@ -51,7 +51,7 @@ up on are:
 
 * *count*
 * *account*
-* *listAccountCodes*
+* *list_account_codes*
     
 The ultimate documentation for the filter language (the *filter* argument 
 taken by many of the functions for selecting data sets) and the various

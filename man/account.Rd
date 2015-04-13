@@ -27,13 +27,13 @@ summary(ac)
 }
 }
 \seealso{
-\code{\link{listAccounts}} to see the accounts that you have access to.
+\code{\link{list_accounts}} to see the accounts that you have access to.
 
-\code{\link{listAccountCodes}} for a vector of account codes that you have
+\code{\link{list_account_codes}} for a vector of account codes that you have
 
-\code{\link{account.brands}} for listing the brands in an account.
+\code{\link{account_brands}} for listing the brands in an account.
 
-\code{\link{account.phrases}} for listing the phrases used in an account.
+\code{\link{account_phrases}} for listing the phrases used in an account.
 
 \code{\link{account_tags}} for listing the tags used in an account.
 }

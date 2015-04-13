@@ -27,8 +27,8 @@
 #' 
 #' \code{summary} can be used to briefly summarise an account.
 #' 
-#' @seealso \code{\link{listAccounts}} to see the accounts that you have access to.
-#' @seealso \code{\link{listAccountCodes}} for a vector of account codes that you have
+#' @seealso \code{\link{list_accounts}} to see the accounts that you have access to.
+#' @seealso \code{\link{list_account_codes}} for a vector of account codes that you have
 #' @seealso \code{\link{account_brands}} for listing the brands in an account.
 #' @seealso \code{\link{account_phrases}} for listing the phrases used in an account.
 #' @seealso \code{\link{account_tags}} for listing the tags used in an account.
@@ -60,7 +60,7 @@ account <- function (code, key = NULL, user = NULL, password = NULL,
 }
 
 print.brandseye.account <- function(account, ...) {
-    output <- matrix(c(account$code, account.name(account), account$auth$user), ncol = 1)
+    output <- matrix(c(account$code, account_name(account), account$auth$user), ncol = 1)
     colnames(output) <- ""
     rownames(output) <- c("Code", "Name", "Login")    
     print(output, quote=F)
@@ -111,43 +111,43 @@ account.load <- function(account) {
         url = paste0("https://api.brandseye.com/rest/accounts/", account$code)
         data <- httr::GET(url, httr::authenticate(account$auth$user, account$auth$password))    
         account$data <- httr::content(data)        
-        account.name(account) <- account$data$name
+        account_name(account) <- account$data$name
         
     }
     account
 }
 
-account.code <- function(account) {
-    UseMethod("account.code", account)
+account_code <- function(account) {
+    UseMethod("account_code", account)
 }
 
-account.code.brandseye.account <- function(account) {
+account_code.brandseye.account <- function(account) {
     account$code
 }
 
-account.code.list <- function(accounts) {
-    sapply(accounts, function(ac) account.code(ac))
+account_code.list <- function(accounts) {
+    sapply(accounts, function(ac) account_code(ac))
 }
 
-account.name <- function(account) {
-    UseMethod("account.name", account)
+account_name <- function(account) {
+    UseMethod("account_name", account)
 }
 
-account.name.brandseye.account <- function(account) {    
+account_name.brandseye.account <- function(account) {    
     account$name
 }
 
-account.name.character <- function(accounts) {
+account_name.character <- function(accounts) {
     sapply(accounts, function(ac) {
-        account.name(account(ac))
+        account_name(account(ac))
     })
 }
 
-'account.name<-' <- function(account, value) {
-    UseMethod('account.name<-', account)
+'account_name<-' <- function(account, value) {
+    UseMethod('account_name<-', account)
 }
 
-'account.name<-.brandseye.account' <- function(account, value) {
+'account_name<-.brandseye.account' <- function(account, value) {
     account$name <- value
     account
 }
@@ -211,13 +211,13 @@ account_brands.brandseye.account <- function(account, .process = TRUE) {
 #' account_brands(c("QUIR01BA", "BEAD33AA"))
 #' 
 #' # Return brand information for all accounts that you have access to
-#' account_brands(listAccountCodes())
+#' account_brands(list_account_codes())
 #' }
 account_brands.list <- function(accounts) {
     `%>%` <- dplyr::`%>%`    
     
     accounts %>% 
-        lapply(function(ac) data.frame(code = account.code(ac),                                                      
+        lapply(function(ac) data.frame(code = account_code(ac),                                                      
                                        account_brands(ac, .process = FALSE), 
                                        stringsAsFactors = FALSE)) %>%
         dplyr::bind_rows() %>%
@@ -324,7 +324,7 @@ account_phrases.list <- function(accounts) {
     `%>%` <- dplyr::`%>%`    
         
     accounts %>% 
-        lapply(function(ac) data.frame(code = account.code(ac),                                                      
+        lapply(function(ac) data.frame(code = account_code(ac),                                                      
                                        account_phrases(ac, .process = FALSE), 
                                        stringsAsFactors = FALSE)) %>%
         dplyr::bind_rows() %>%
@@ -380,7 +380,7 @@ account_tags.list <- function(accounts) {
     `%>%` <- dplyr::`%>%`    
     
     accounts %>% 
-        lapply(function(ac) data.frame(code = account.code(ac),                                                      
+        lapply(function(ac) data.frame(code = account_code(ac),                                                      
                                        account_tags(ac, .process = FALSE), 
                                        stringsAsFactors = FALSE)) %>%
         dplyr::bind_rows() %>%
@@ -395,15 +395,15 @@ account_tags.list <- function(accounts) {
 #' along with their name and status.
 #' 
 #' @examples
-#' listAccounts(key = "my api key")
+#' list_accounts(key = "my api key")
 #' 
-#' listAccounts(user = "rudy.neeser@@brandseye.com", 
-#'              password = "my brandseye password")
+#' list_accounts(user = "rudy.neeser@@brandseye.com", 
+#'               password = "my brandseye password")
 #' 
 #' auth <- authentication(user = "rudy.neeser@@brandseye.com", 
 #'                        password = "my brandseye password")
-#' listAccounts(auth)
-listAccounts <- function(auth = pkg.env$defaultAuthentication, key = NULL, user = NULL, password = NULL) {
+#' list_accounts(auth)
+list_accounts <- function(auth = pkg.env$defaultAuthentication, key = NULL, user = NULL, password = NULL) {
     if (is.null(auth)) auth <- authentication(key = key, user = user, password = password)
     url <- paste0("https://api.brandseye.com/rest/accounts/")
     data <- httr::GET(url, httr::authenticate(auth$user, auth$password))
@@ -411,14 +411,14 @@ listAccounts <- function(auth = pkg.env$defaultAuthentication, key = NULL, user 
     results
 }
 
-#' @describeIn listAccounts
+#' @describeIn list_accounts
 #' 
 #' Returns a character vector of account codes that you have access to.
 #'
 #' @examples
 #' # Get the number of mentions published in the last day across all 
 #' # of your accounts.
-#' count(listAccountCodes(), "published inthelast day")
-listAccountCodes <- function(auth = pkg.env$defaultAuthentication, key = NULL, user = NULL, password = NULL) {
-    listAccounts(auth, key, user, password)$code
+#' count(list_account_codes(), "published inthelast day")
+list_account_codes <- function(auth = pkg.env$defaultAuthentication, key = NULL, user = NULL, password = NULL) {
+    list_accounts(auth, key, user, password)$code
 }

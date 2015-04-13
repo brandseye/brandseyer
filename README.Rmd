@@ -30,12 +30,33 @@ Installation is currently done via the [devtools package][devtools]:
 
 ## Examples of use
 
+You can create an account object using:
+
 ```{r eval=FALSE}
-    ac <- account("QUIR01BA", user = "my mash username", password="my mash password")
-    count(ac, "published inthelast week")
-    count(ac, "published inthelast week", groupby="published")
-    list_accounts(user = "my mash user", password = "my mash password")
+library(brandseyer)
+ac <- account("QUIR01BA", user = "my mash username", password="my mash password")    
 ```    
+
+```{r include=FALSE}
+library(brandseyer)
+library(dplyr)
+ac <- account("QUIR01BA")    # This requires you to be authenticated
+```
+
+and then you can query it using *account_count*:
+
+```{r}
+library(dplyr)
+# Break down mention counts per country for the month of January, 2015.
+countries <- account_count(ac, "published after '2015/01/01' and published before '2015/02/01'",
+                           groupby = "country") %>%
+             # And here we sort by the count field
+             arrange(desc(count))
+```
+
+```{r echo=FALSE}
+knitr::kable(head(countries))
+```
     
     
 ## Authentication

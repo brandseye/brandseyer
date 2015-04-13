@@ -31,13 +31,37 @@ Installation is currently done via the [devtools package][devtools]:
 
 ## Examples of use
 
+You can create an account object using:
+
 
 ```r
-    ac <- account("QUIR01BA", user = "my mash username", password="my mash password")
-    count(ac, "published inthelast week")
-    count(ac, "published inthelast week", groupby="published")
-    list_accounts(user = "my mash user", password = "my mash password")
+library(brandseyer)
+ac <- account("QUIR01BA", user = "my mash username", password="my mash password")    
 ```
+
+
+
+and then you can query it using *account_count*:
+
+
+```r
+library(dplyr)
+# Break down mention counts per country for the month of January, 2015.
+countries <- account_count(ac, "published after '2015/01/01' and published before '2015/02/01'",
+                           groupby = "country") %>%
+             # And here we sort by the count field
+             arrange(desc(count))
+```
+
+
+|countryName    | count|country |
+|:--------------|-----:|:-------|
+|Unknown        | 23523|NA      |
+|United States  | 12781|US      |
+|United Kingdom |  3238|GB      |
+|Canada         |  1293|CA      |
+|India          |   950|IN      |
+|France         |   710|FR      |
     
     
 ## Authentication

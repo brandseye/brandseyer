@@ -16,8 +16,7 @@ any R analyses and data visualisations.
 
 Installation is currently done via the [devtools package][devtools]:
 
-
-```r
+```{r eval=FALSE}
     # Install the devtools package
     install.packages("devtools")
     library(devtools)
@@ -31,13 +30,12 @@ Installation is currently done via the [devtools package][devtools]:
 
 ## Examples of use
 
-
-```r
+```{r eval=FALSE}
     ac <- account("QUIR01BA", user = "my mash username", password="my mash password")
     count(ac, "published inthelast week")
     count(ac, "published inthelast week", groupby="published")
     list_accounts(user = "my mash user", password = "my mash password")
-```
+```    
     
     
 ## Authentication
@@ -49,8 +47,7 @@ You can automate this using the authenticate function:
 Specifically, if you're happy having your credentials saved on your hard drive, 
 you can do this:
 
-
-```r
+```{r eval=FALSE}
     authenticate(key = "this is my key", save = TRUE)
 ```
     

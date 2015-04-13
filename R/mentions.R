@@ -29,8 +29,12 @@ mentions <- function(account, ...) {
 #' @param offset Mentions are returned in an order. Offset says how many of the 
 #'   first mentions should be skipped.
 #' @examples
+#' \dontrun{
+#' 
 #' # Read mentions using the default authentication
 #' mentions("QUIR01BA", "published inthelast day")
+#' 
+#' }
 mentions.character <- function(code, filter, 
                                limit = 30, offset = 0,
                                include = NULL,

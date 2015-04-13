@@ -20,6 +20,8 @@ along with their name and status.
 \item \code{list_account_codes}: Returns a character vector of account codes that you have access to.
 }}
 \examples{
+\dontrun{
+
 list_accounts(key = "my api key")
 
 list_accounts(user = "rudy.neeser@brandseye.com",
@@ -28,8 +30,12 @@ list_accounts(user = "rudy.neeser@brandseye.com",
 auth <- authentication(user = "rudy.neeser@brandseye.com",
                        password = "my brandseye password")
 list_accounts(auth)
+
+}
+\dontrun{
 # Get the number of mentions published in the last day across all
 # of your accounts.
-count(list_account_codes(), "published inthelast day")
+account_count(list_account_codes(), "published inthelast day")
+}
 }
 

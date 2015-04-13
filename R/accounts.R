@@ -320,7 +320,6 @@ account_brands.list <- function(accounts) {
 #' Returns brand information for an account identified by an account code.
 #' 
 #' @examples
-#' 
 #' \dontrun{
 #' # Fetching brands for a particular account
 #' account_brands("QUIR01BA")
@@ -483,6 +482,8 @@ account_tags.list <- function(accounts) {
 #' along with their name and status.
 #' 
 #' @examples
+#' \dontrun{
+#' 
 #' list_accounts(key = "my api key")
 #' 
 #' list_accounts(user = "rudy.neeser@@brandseye.com", 
@@ -491,6 +492,8 @@ account_tags.list <- function(accounts) {
 #' auth <- authentication(user = "rudy.neeser@@brandseye.com", 
 #'                        password = "my brandseye password")
 #' list_accounts(auth)
+#' 
+#' }
 list_accounts <- function(auth = pkg.env$defaultAuthentication, key = NULL, user = NULL, password = NULL) {
     if (is.null(auth)) auth <- authentication(key = key, user = user, password = password)
     url <- paste0("https://api.brandseye.com/rest/accounts/")
@@ -504,9 +507,11 @@ list_accounts <- function(auth = pkg.env$defaultAuthentication, key = NULL, user
 #' Returns a character vector of account codes that you have access to.
 #'
 #' @examples
+#' \dontrun{
 #' # Get the number of mentions published in the last day across all 
 #' # of your accounts.
-#' count(list_account_codes(), "published inthelast day")
+#' account_count(list_account_codes(), "published inthelast day")
+#' }
 list_account_codes <- function(auth = pkg.env$defaultAuthentication, key = NULL, user = NULL, password = NULL) {
     list_accounts(auth, key, user, password)$code
 }

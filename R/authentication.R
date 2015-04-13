@@ -25,13 +25,18 @@
 #' you will want to do this using a BrandsEye API key.
 #' 
 #' @examples
-#' # Authenticating with a key
+#' \dontrun{
+#' 
+# Authenticating with a key
 #' authentication("adfd42345f534fgdfgd")
 #' authentication(key = "adfd42345f534fgdfgd")
 #' 
 #' # Authenticating with a username and password
 #' authentication(user = "jo.blogs@@brandseye.com", 
 #'                password ="This is a safe password!!")
+#'                
+#' }
+#' 
 authentication <- function(key = NULL, user = NULL, password = NULL) {
     if (is.null(key) & (is.null(user) | is.null(password)))
         stop("You must choose to authenticate with an API key or a username / password pair")
@@ -68,7 +73,7 @@ authentication.filename <- function() {
 #' loaded automatically every time you load the BrandsEyeR library.
 #' 
 #' In your home directory,
-#' create the file \code{$HOME/.brandseyerd/authentication.json}. 
+#' create the file \code{$HOME/.brandseyerd/authentication.json}.
 #'     
 #' This file can contain either a key, or a user / password pair. For example, to
 #' specify your key, the file should contain:
@@ -94,7 +99,7 @@ authentication.filename <- function() {
 #' function to find the directory and file name to save the authentication file in.
 #' 
 #' You can also use the \code{authenticate} file to create the file for 
-#' you in the appropriate place. Call it with no arguments to just make an empty file.
+#' you in the appropriate place. Call it with no arguments to just make an empty file.
 #' If you provide arguments, it will fill in the file for you, as needed.
 #' 
 #' Be wary of calling it with arguments, since your key or password will
@@ -113,6 +118,8 @@ authentication.filename <- function() {
 #'   across sessions.
 #'   
 #' @examples
+#' \dontrun{
+#' 
 #' # Create a json stub to fill in your authentication details:
 #' authenticate(save = TRUE)
 #' # And this will be created at:
@@ -121,7 +128,10 @@ authentication.filename <- function() {
 #' # Log in for the session
 #' authenticate(key = "this is my api key")
 #' # Use the API with those credentials
-#' count("QUIR01BA", "published inthelast month")
+#' account_count("QUIR01BA", "published inthelast month")
+#' 
+#' }
+#' 
 authenticate <- function(key = NULL, user = NULL, password = NULL, save = FALSE) {
     if (!is.null(key) | !is.null(user) | !is.null(password)) {
         pkg.env$defaultAuthentication <- authentication(key = key, user = user, password = password)        

@@ -29,7 +29,11 @@ Read mentions from your account
 \item \code{brandseye.account}: 
 }}
 \examples{
+\dontrun{
+
 # Read mentions using the default authentication
 mentions("QUIR01BA", "published inthelast day")
+
+}
 }
 

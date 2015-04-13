@@ -17,15 +17,15 @@ any R analyses and data visualisations.
 Installation is currently done via the [devtools package][devtools]:
 
 ```{r eval=FALSE}
-    # Install the devtools package
-    install.packages("devtools")
-    library(devtools)
-   
-    # Install the library
-    install_bitbucket("brandseye/brandseyer", auth_user="my bitbucket user", password="my bitbucket password")
-   
-    # Load the library
-    library(brandseyer)
+# Install the devtools package
+install.packages("devtools")
+library(devtools)
+
+# Install the library
+install_bitbucket("brandseye/brandseyer", auth_user="my bitbucket user", password="my bitbucket password")
+
+# Load the library
+library(brandseyer)
 ```
 
 ## Examples of use
@@ -69,7 +69,7 @@ Specifically, if you're happy having your credentials saved on your hard drive,
 you can do this:
 
 ```{r eval=FALSE}
-    authenticate(key = "this is my key", save = TRUE)
+authenticate(key = "this is my key", save = TRUE)
 ```
     
 Please see the documentation for *authenticate* for some advice on securing that file.

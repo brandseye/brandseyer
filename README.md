@@ -18,15 +18,15 @@ Installation is currently done via the [devtools package][devtools]:
 
 
 ```r
-    # Install the devtools package
-    install.packages("devtools")
-    library(devtools)
-   
-    # Install the library
-    install_bitbucket("brandseye/brandseyer", auth_user="my bitbucket user", password="my bitbucket password")
-   
-    # Load the library
-    library(brandseyer)
+# Install the devtools package
+install.packages("devtools")
+library(devtools)
+
+# Install the library
+install_bitbucket("brandseye/brandseyer", auth_user="my bitbucket user", password="my bitbucket password")
+
+# Load the library
+library(brandseyer)
 ```
 
 ## Examples of use
@@ -75,7 +75,7 @@ you can do this:
 
 
 ```r
-    authenticate(key = "this is my key", save = TRUE)
+authenticate(key = "this is my key", save = TRUE)
 ```
     
 Please see the documentation for *authenticate* for some advice on securing that file.

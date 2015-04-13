@@ -29,8 +29,8 @@
 #' 
 #' @seealso \code{\link{listAccounts}} to see the accounts that you have access to.
 #' @seealso \code{\link{listAccountCodes}} for a vector of account codes that you have
-#' @seealso \code{\link{account.brands}} for listing the brands in an account.
-#' @seealso \code{\link{account.phrases}} for listing the phrases used in an account.
+#' @seealso \code{\link{account_brands}} for listing the brands in an account.
+#' @seealso \code{\link{account_phrases}} for listing the phrases used in an account.
 #' @seealso \code{\link{account_tags}} for listing the tags used in an account.
 #' 
 #' @examples
@@ -156,11 +156,11 @@ account.name.character <- function(accounts) {
 #' 
 #' This returns a \code{data.frame} containing brand IDs, their names,
 #' whether they've been deleted or not, and the ID of the parent brand.
-account.brands <- function(account, ...) {
-    UseMethod("account.brands", account)
+account_brands <- function(account, ...) {
+    UseMethod("account_brands", account)
 }
 
-#' @describeIn account.brands
+#' @describeIn account_brands
 #' 
 #' Returns brand information for a particular \code{\link{account}} object.
 #' 
@@ -168,9 +168,9 @@ account.brands <- function(account, ...) {
 #' \dontrun{
 #' # Fetch brands for an \code{\link{account}} object.
 #' ac <- account("QUIR01BA")
-#' account.brands(ac)
+#' account_brands(ac)
 #' }
-account.brands.brandseye.account <- function(account, .process = TRUE) {
+account_brands.brandseye.account <- function(account, .process = TRUE) {
     id <- integer()
     name <- character()
     deleted <- logical()
@@ -201,24 +201,24 @@ account.brands.brandseye.account <- function(account, .process = TRUE) {
                              stringsAsFactors = FALSE))
 }
 
-#' @describeIn account.brands
+#' @describeIn account_brands
 #' 
 #' Returns brand information for a list of accounts
 #' 
 #' @examples
 #' \dontrun{
 #' # Returns a data.frame containing brand information for two accounts
-#' account.brands(c("QUIR01BA", "BEAD33AA"))
+#' account_brands(c("QUIR01BA", "BEAD33AA"))
 #' 
 #' # Return brand information for all accounts that you have access to
-#' account.brands(listAccountCodes())
+#' account_brands(listAccountCodes())
 #' }
-account.brands.list <- function(accounts) {
+account_brands.list <- function(accounts) {
     `%>%` <- dplyr::`%>%`    
     
     accounts %>% 
         lapply(function(ac) data.frame(code = account.code(ac),                                                      
-                                       account.brands(ac, .process = FALSE), 
+                                       account_brands(ac, .process = FALSE), 
                                        stringsAsFactors = FALSE)) %>%
         dplyr::bind_rows() %>%
         dplyr::mutate(code = factor(code),
@@ -227,7 +227,7 @@ account.brands.list <- function(accounts) {
                
 }
 
-#' @describeIn account.brands
+#' @describeIn account_brands
 #' 
 #' Returns brand information for an account identified by an account code.
 #' 
@@ -235,11 +235,11 @@ account.brands.list <- function(accounts) {
 #' 
 #' \dontrun{
 #' # Fetching brands for a particular account
-#' account.brands("QUIR01BA")
+#' account_brands("QUIR01BA")
 #' }
 #' 
-account.brands.character <- function(account) {
-    account.brands(account(account))
+account_brands.character <- function(account) {
+    account_brands(account(account))
 }
 
 
@@ -248,11 +248,11 @@ account.brands.character <- function(account) {
 #' The returns a \code{data.frame} listing the phrases in an
 #' account, their IDs, the IDs of the brands that the phrase is associated
 #' with, and a flag indicating whether the phrase is inactive or deleted.
-account.phrases <- function(account, ...) {
-    UseMethod("account.phrases", account)
+account_phrases <- function(account, ...) {
+    UseMethod("account_phrases", account)
 }
 
-#' @describeIn account.phrases
+#' @describeIn account_phrases
 #' 
 #' Returns phrase information for a particular account object.
 #' 
@@ -260,9 +260,9 @@ account.phrases <- function(account, ...) {
 #' \dontrun{
 #' # Returns account information for an account object
 #' ac <- account("QUIR01BA")
-#' account.phrases(ac)
+#' account_phrases(ac)
 #' }
-account.phrases.brandseye.account <- function(account, .process = TRUE) {
+account_phrases.brandseye.account <- function(account, .process = TRUE) {
     id <- integer()
     brand.id <- character()
     phrase <- character()
@@ -299,33 +299,33 @@ account.phrases.brandseye.account <- function(account, .process = TRUE) {
                              stringsAsFactors = FALSE))
 }
 
-#' @describeIn account.phrases
+#' @describeIn account_phrases
 #' 
 #' Returns account information for an account identified using an account code
 #' 
 #' @examples
 #' \dontrun{
-#' account.phrases("QUIR01BA")
+#' account_phrases("QUIR01BA")
 #' }
-account.phrases.character <- function(account) {
-    account.phrases(account(account))
+account_phrases.character <- function(account) {
+    account_phrases(account(account))
 }
 
-#' @describeIn account.phrases
+#' @describeIn account_phrases
 #' 
 #' Given a list of \code{account} objects, this will return
 #' a combined \code{data.frame} for the phrases in all of those accounts.
 #' 
 #' @examples
 #' \dontrun{
-#' account.phrases(c("QUIR01BA", "BEAD33AA"))
+#' account_phrases(c("QUIR01BA", "BEAD33AA"))
 #' }
-account.phrases.list <- function(accounts) {
+account_phrases.list <- function(accounts) {
     `%>%` <- dplyr::`%>%`    
         
     accounts %>% 
         lapply(function(ac) data.frame(code = account.code(ac),                                                      
-                                       account.phrases(ac, .process = FALSE), 
+                                       account_phrases(ac, .process = FALSE), 
                                        stringsAsFactors = FALSE)) %>%
         dplyr::bind_rows() %>%
         dplyr::mutate(code = factor(code),

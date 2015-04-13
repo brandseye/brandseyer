@@ -1,3 +1,4 @@
+<!-- README.md is generated from README.Rmd. Please edit that file -->
 BrandsEyeR
 ==========
 
@@ -55,6 +56,7 @@ And here are the first few entries of the returned data frame:
 The call to BrandsEye can be simplified to one line, and can also be done across all of the accounts that you have:
 
 ``` r
+
 account_count(list_account_codes(), 
               "published after '2015/01/01' and published before '2015/02/01'",
               groupby = "country")

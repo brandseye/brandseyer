@@ -91,7 +91,7 @@ Specifically, if you're happy having your credentials saved on your hard drive,
 you can do this:
 
 ```{r eval=FALSE}
-authenticate(key = "this is my key", save = TRUE)
+authenticate(key = "<MY API KEY>", save = TRUE)
 ```
     
 Please see the documentation for *authenticate* for some advice on securing that file.

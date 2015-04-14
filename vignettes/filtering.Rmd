@@ -1,0 +1,23 @@
+---
+title: "Filtering"
+author: "Rudy Neeser"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Filtering}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+- What accounts do you have?
+- Just counting
+- Handling dates
+- grouping by published
+- Relevancy
+- sentiment
+- including OTS, AVE, engagement
+- country and location
+- language
+- The crowd
+- Some more grouping
+

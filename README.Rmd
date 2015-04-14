@@ -45,7 +45,7 @@ You can create an account object using:
 
 ```{r eval=FALSE}
 library(brandseyer)
-ac <- account("QUIR01BA", user = "my mash username", password="my mash password")    
+ac <- account("QUIR01BA", key = "<MY API KEY>")    
 ```    
 
 ```{r include=FALSE}

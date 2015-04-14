@@ -28,7 +28,7 @@ You can create an account object using:
 
 ``` r
 library(brandseyer)
-ac <- account("QUIR01BA", user = "my mash username", password="my mash password")    
+ac <- account("QUIR01BA", key = "<MY API KEY>")    
 ```
 
 and then you can query it using *account\_count*:

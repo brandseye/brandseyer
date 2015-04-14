@@ -3,12 +3,12 @@
 \name{authentication}
 \alias{authenticate}
 \alias{authentication}
-\alias{authentication.filename}
+\alias{authentication_filename}
 \title{Authenticate yourself with BrandsEye}
 \usage{
 authentication(key = NULL, user = NULL, password = NULL)
 
-authentication.filename()
+authentication_filename()
 
 authenticate(key = NULL, user = NULL, password = NULL, save = FALSE)
 }
@@ -59,7 +59,7 @@ To specify a username and password pair, the file should contain:
 
 You can use the \code{authenticate} function to save a stub file
 for you to edit in your home directory. On windows, this might be in your
-\code{My Documents} directory. You can use the \code{authentication.filename}
+\code{My Documents} directory. You can use the \code{authentication_filename}
 function to find the directory and file name to save the authentication file in.
 
 You can also use the \code{authenticate} file to create the file for
@@ -75,7 +75,7 @@ can read it. Your authentication details are saved in plain text.
 }
 \section{Functions}{
 \itemize{
-\item \code{authentication.filename}: Returns the file name in which you can save your authentication information.
+\item \code{authentication_filename}: Returns the file name in which you can save your authentication information.
 
 \item \code{authenticate}: Save your authentication for your current R session, or in a file for later R sessions.
 }}
@@ -95,7 +95,7 @@ authentication(user = "jo.blogs@brandseye.com",
 # Create a json stub to fill in your authentication details:
 authenticate(save = TRUE)
 # And this will be created at:
-authentication.filename()
+authentication_filename()
 
 # Log in for the session
 authenticate(key = "this is my api key")

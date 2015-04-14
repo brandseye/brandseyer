@@ -23,7 +23,7 @@ pkg.env <- new.env()
 
 .onLoad <- function(libname, pkgname) {
     # Reads in default authentication information
-    auth_file <- authentication.filename()
+    auth_file <- authentication_filename()
     if (file.exists(auth_file)) {        
         auth_data <- jsonlite::fromJSON(txt = auth_file)
         pkg.env$defaultAuthentication <- authentication(key = auth_data$key, user = auth_data$user, password = auth_data$password)

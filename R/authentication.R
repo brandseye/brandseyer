@@ -57,7 +57,7 @@ print.brandseye.auth <- function(auth) {
 
 #' @describeIn authentication
 #' Returns the file name in which you can save your authentication information.
-authentication.filename <- function() {
+authentication_filename <- function() {
     file.path(Sys.getenv("HOME"), ".brandseyerd", "authentication.json")
 }
 
@@ -95,7 +95,7 @@ authentication.filename <- function() {
 #' 
 #' You can use the \code{authenticate} function to save a stub file 
 #' for you to edit in your home directory. On windows, this might be in your 
-#' \code{My Documents} directory. You can use the \code{authentication.filename}
+#' \code{My Documents} directory. You can use the \code{authentication_filename}
 #' function to find the directory and file name to save the authentication file in.
 #' 
 #' You can also use the \code{authenticate} file to create the file for 
@@ -123,7 +123,7 @@ authentication.filename <- function() {
 #' # Create a json stub to fill in your authentication details:
 #' authenticate(save = TRUE)
 #' # And this will be created at:
-#' authentication.filename()
+#' authentication_filename()
 #' 
 #' # Log in for the session
 #' authenticate(key = "this is my api key")
@@ -149,15 +149,18 @@ authenticate <- function(key = NULL, user = NULL, password = NULL, save = FALSE)
             contents <- '{ "key": "you API key goes here" }'
         }
         
-        if (!file.exists(authentication.filename())) {
-            message(paste("Authentication file created at", authentication.filename()))
+        if (!file.exists(authentication_filename())) {
+            message(paste("Authentication file created at", authentication_filename()))
+            if (!file.exists(dirname(authentication_filename()))) {
+                dir.create(dirname(authentication_filename()))
+            }
             if (!is.null(contents)) {
-                fileConn<-file(authentication.filename())        
+                fileConn<-file(authentication_filename())        
                 writeLines(contents, fileConn)                        
                 close(fileConn)        
             }
             else {
-                file.create(authentication.filename())
+                file.create(authentication_filename())
             }
             
         }

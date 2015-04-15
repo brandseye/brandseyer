@@ -138,10 +138,20 @@ account_count.character <- function(accounts,
                          "language", "media", "process", "region", "relevancy",
                          "sentiment", "tag", "countryiso3")
         
+        # In many of the if branches to follow we need to cast to a data frame,
+        # since we are likely to get something with class tbl_df (from dplyr), 
+        # which, when subset, returns another data frame, causing the call 
+        # to factor to break. See the documentation for tbl_df and the [ operator.
         for (n in names(results)) {
-            if (tolower(n) %in% dates) results[, n] <- as.POSIXct(ifelse(results[, n] == "UNKNOWN", NA, results[, n]))
-            else if (n == "country") results[, n] <- factor(replace(results[, n], results[, n] == "UN", NA))
-            else if (tolower(n) %in% factorItems) results[, n] <- factor(replace(results[, n], results[, n] == "UNKNOWN", NA))
+            if (tolower(n) %in% dates) {
+                 results[, n] <- as.POSIXct(as.data.frame(replace(results[, n], results[, n] == "UNKNOWN", NA))[, n])
+            }
+            else if (n == "country") {
+                results[, n] <- factor(as.data.frame(replace(results[, n], results[, n] == "UN", NA))[, n])
+            }
+            else if (tolower(n) %in% factorItems) {                
+                results[, n] <- factor(as.data.frame(replace(results[, n], results[, n] == "UNKNOWN", NA))[, n])
+            }
             else results[, n] <- replace(results[, n], results[, n] == "UNKNOWN", NA)  
         }
         
@@ -160,7 +170,7 @@ account_count.character <- function(accounts,
             stop("BrandsEye API error: ", message)
         }
         
-        results <- data.frame(jsonlite::fromJSON(httr::content(data, "text")))
+        results <- dplyr::tbl_df(data.frame(jsonlite::fromJSON(httr::content(data, "text"))))
         if (.process) results <- process(results)
         return(results)
     }    
@@ -190,7 +200,7 @@ account_count.character <- function(accounts,
     if (!is.null(pb)) close(pb)
     
     if (.process) results <- process(results)    
-    results
+    dplyr::tbl_df(results)
 }
 
 #' @describeIn account_count

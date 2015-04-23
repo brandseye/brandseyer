@@ -32,6 +32,9 @@
 #'       more than one per mention.
 #' }
 #' 
+#' @seealso \code{\link{account_phrases}} to see a list of phrases in an account, with
+#'          their associated brands.
+#' @seealso \code{\link{account_brands}} for a list of brands associated with the account.
 account_mentions <- function(account, ...) {
     UseMethod("account_mentions", account)
 }
@@ -60,7 +63,6 @@ account_mentions.character <- function(code, filter,
                       query = list(filter = filter, limit = limit, offset = offset, include=include))    
     results <- jsonlite::fromJSON(httr::content(data, "text"), flatten=TRUE)
     
-    message("GOT RESULTS")
     mentions <- dplyr::tbl_df(results$data %>%
                                   dplyr::select(-matches("mediaLinks"), -matches("tags"), 
                                                 -matches("matchedPhrases"), -matches("sentiments")))

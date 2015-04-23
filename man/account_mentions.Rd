@@ -48,4 +48,10 @@ account_mentions("QUIR01BA", "published inthelast day")
 
 }
 }
+\seealso{
+\code{\link{account_phrases}} to see a list of phrases in an account, with
+         their associated brands.
+
+\code{\link{account_brands}} for a list of brands associated with the account.
+}
 

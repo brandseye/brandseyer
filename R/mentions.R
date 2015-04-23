@@ -20,6 +20,18 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #' Read mentions from your account
+#' 
+#' @return Returns a list containing the following items:
+#' \itemize{
+#' \item \code{mentions}, a \code{data.frame} of the mention data.
+#' \item \code{media}, a \code{data.frame} listing mime types and urls for media
+#'       associated with each mention.
+#' \item \code{tags}, a \code{data.frame} containing the tags that match the mentions.
+#' \item \code{phrases{}}, a \code{data.frame} listing the phrases that a mention matched.
+#' \item \code{sentiment}, a \code{data.frame} listing the sentiment associated with a mention, possibly
+#'       more than one per mention.
+#' }
+#' 
 account_mentions <- function(account, ...) {
     UseMethod("account_mentions", account)
 }
@@ -48,10 +60,11 @@ account_mentions.character <- function(code, filter,
                       query = list(filter = filter, limit = limit, offset = offset, include=include))    
     results <- jsonlite::fromJSON(httr::content(data, "text"), flatten=TRUE)
     
+    message("GOT RESULTS")
     mentions <- dplyr::tbl_df(results$data %>%
                                   dplyr::select(-matches("mediaLinks"), -matches("tags"), 
                                                 -matches("matchedPhrases"), -matches("sentiments")))
-    
+        
     # Media, tags, and so on, are stored as an embedded lists which we now need to extract.
     # A mention may have multiple media entities, tags, etc, attached.
     data_names <- names(results$data)
@@ -145,9 +158,7 @@ account_mentions.character <- function(code, filter,
         tags <- data.frame(mention.id = tag_mention_ids,
                            tag.id = tag_ids,
                            tag = tag_names)
-    }
-    
-        
+    }    
         
     list(mentions = mentions, 
          media = media,

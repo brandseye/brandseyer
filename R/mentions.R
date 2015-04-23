@@ -60,60 +60,82 @@ account_mentions.character <- function(code, filter,
     
     media <- NULL
     tags <- NULL
+    sentiment <- NULL    
+        
+    media_mention_ids <- c()
+    mimetypes <- c()
+    urls <- c()
     
-    if (media_present || tags_present) {
+    tag_mention_ids <- c()
+    tag_ids <- c()
+    tag_names <- c()
+    
+    raw_media <- if (media_present) results$data[, 'mediaLinks'] else NULL
+    raw_tags <- if (tags_present) results$data[, 'tags'] else NULL
+    raw_sentiment <- results$data[, 'sentiments']
+    
+    s_mention_ids <- c()
+    s_brand_ids <- c()
+    s_names <- c()
+    s_sentiments <- c()
+    s_sentiment_names <- c()
+    
+    for (i in 1:nrow(results$data)) {    
+        sentiment_data <- raw_sentiment[[i]]
+        s_mention_ids <- c(s_mention_ids, 
+                           rep(results$data[i, 1], nrow(sentiment_data)))
+        s_brand_ids <- c(s_brand_ids, sentiment_data[,1])
+        s_names <- c(s_names, sentiment_data[, 2])
+        s_sentiments <- c(s_sentiments, sentiment_data[, 3])
+        s_sentiment_names <- c(s_sentiment_names, sentiment_data[, 4])
         
-        media_mention_ids <- c()
-        mimetypes <- c()
-        urls <- c()
         
-        tag_mention_ids <- c()
-        tag_ids <- c()
-        tag_names <- c()
+        if (media_present) {
+            if (!is.null(raw_media[[i]])) {
+                media_data <- raw_media[[i]]
+                for (j in 1:nrow(media_data)) {
+                    media_mention_ids <- c(media_mention_ids, results$data[i, 1])
+                    mimetypes <- c(mimetypes, media_data[j, 1])
+                    urls <- c(urls, media_data[j, 2])
+                }                
+            }
+        }            
         
-        raw_media <- results$data[, 'mediaLinks']
-        raw_tags <- results$data[, 'tags']
-        
-        for (i in 1:nrow(results$data)) {            
-            if (media_present) {
-                if (!is.null(raw_media[[i]])) {
-                    media_data <- raw_media[[i]]
-                    for (j in 1:nrow(media_data)) {
-                        media_mention_ids <- c(media_mention_ids, results$data[i, 1])
-                        mimetypes <- c(mimetypes, media_data[j, 1])
-                        urls <- c(urls, media_data[j, 2])
-                    }                
-                }
-            }            
-            
-            if (tags_present) {
-                if (!is.null(raw_tags[[i]])) {
-                    tag_data <- raw_tags[[i]]
-                    for (j in 1:nrow(tag_data)) {
-                        tag_mention_ids <- c(tag_mention_ids, results$data[i, 1])
-                        tag_ids <- c(tag_ids, tag_data[j, 1])
-                        tag_names <- c(tag_names, tag_data[j, 2])
-                    }
+        if (tags_present) {
+            if (!is.null(raw_tags[[i]])) {
+                tag_data <- raw_tags[[i]]
+                for (j in 1:nrow(tag_data)) {
+                    tag_mention_ids <- c(tag_mention_ids, results$data[i, 1])
+                    tag_ids <- c(tag_ids, tag_data[j, 1])
+                    tag_names <- c(tag_names, tag_data[j, 2])
                 }
             }
         }
-        
-        if (media_present) {
-            media <- data.frame(mention.id = media_mention_ids, 
-                                mimetype = mimetypes,
-                                url = urls)    
-        }
-        if (tags_present) {
-            tags <- data.frame(mention.id = tag_mention_ids,
-                               tag.id = tag_ids,
-                               tag = tag_names)
-        }
     }
+    
+    sentiment <- data.frame(mention.id = s_mention_ids,
+                            brand.id = s_brand_ids,
+                            brand = s_names,
+                            sentiment = s_sentiments,
+                            description = s_sentiment_names)
+    
+    if (media_present) {
+        media <- data.frame(mention.id = media_mention_ids, 
+                            mimetype = mimetypes,
+                            url = urls)    
+    }
+    if (tags_present) {
+        tags <- data.frame(mention.id = tag_mention_ids,
+                           tag.id = tag_ids,
+                           tag = tag_names)
+    }
+    
         
         
     list(mentions = mentions, 
          media = media,
          tags = tags,
+         sentiment = sentiment,
          raw = results$data)
     
     

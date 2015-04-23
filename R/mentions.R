@@ -60,7 +60,8 @@ account_mentions.character <- function(code, filter,
     
     media <- NULL
     tags <- NULL
-    sentiment <- NULL    
+    sentiment <- NULL 
+    phrases <- NULL
         
     media_mention_ids <- c()
     mimetypes <- c()
@@ -73,12 +74,19 @@ account_mentions.character <- function(code, filter,
     raw_media <- if (media_present) results$data[, 'mediaLinks'] else NULL
     raw_tags <- if (tags_present) results$data[, 'tags'] else NULL
     raw_sentiment <- results$data[, 'sentiments']
+    raw_phrases <- results$data[, 'matchedPhrases']
     
+    # Sentiment data
     s_mention_ids <- c()
     s_brand_ids <- c()
     s_names <- c()
     s_sentiments <- c()
     s_sentiment_names <- c()
+    
+    # Phrase data
+    p_mention_ids <- c()
+    p_phrase_ids <- c()
+    p_phrase <- c()
     
     for (i in 1:nrow(results$data)) {    
         sentiment_data <- raw_sentiment[[i]]
@@ -89,6 +97,11 @@ account_mentions.character <- function(code, filter,
         s_sentiments <- c(s_sentiments, sentiment_data[, 3])
         s_sentiment_names <- c(s_sentiment_names, sentiment_data[, 4])
         
+        phrase_data <- raw_phrases[[i]]
+        p_mention_ids <- c(p_mention_ids, 
+                           rep(results$data[i, 1], nrow(phrase_data)))
+        p_phrase_ids <- c(p_phrase_ids, phrase_data[, 1])
+        p_phrase <- c(p_phrase, phrase_data[, 2])        
         
         if (media_present) {
             if (!is.null(raw_media[[i]])) {
@@ -119,6 +132,10 @@ account_mentions.character <- function(code, filter,
                             sentiment = s_sentiments,
                             description = s_sentiment_names)
     
+    phrases <- data.frame(mention.id = p_mention_ids,
+                          phrase.id = p_phrase_ids,
+                          phrase = p_phrase)
+    
     if (media_present) {
         media <- data.frame(mention.id = media_mention_ids, 
                             mimetype = mimetypes,
@@ -136,9 +153,7 @@ account_mentions.character <- function(code, filter,
          media = media,
          tags = tags,
          sentiment = sentiment,
-         raw = results$data)
-    
-    
+         phrases = phrases)        
 }
 
 #' @describeIn account_mentions

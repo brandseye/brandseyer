@@ -20,11 +20,11 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #' Read mentions from your account
-mentions <- function(account, ...) {
-    UseMethod("mentions", account)
+account_mentions <- function(account, ...) {
+    UseMethod("account_mentions", account)
 }
 
-#' @describeIn mentions
+#' @describeIn account_mentions
 #' @param limit The maximum number of mentions to be returned
 #' @param offset Mentions are returned in an order. Offset says how many of the 
 #'   first mentions should be skipped.
@@ -32,21 +32,94 @@ mentions <- function(account, ...) {
 #' \dontrun{
 #' 
 #' # Read mentions using the default authentication
-#' mentions("QUIR01BA", "published inthelast day")
+#' account_mentions("QUIR01BA", "published inthelast day")
 #' 
 #' }
-mentions.character <- function(code, filter, 
+account_mentions.character <- function(code, filter, 
                                limit = 30, offset = 0,
                                include = NULL,
                                authentication = pkg.env$defaultAuthentication) {
+    
+    `%>%` <- dplyr::`%>%`
+    embedded <- c("medialinks", "tags", "matchedphrases", "sentiments")
+    
     url <- paste0("https://api.brandseye.com/rest/accounts/", code, "/mentions")
     data <- httr::GET(url, httr::authenticate(authentication$user, authentication$password), 
                       query = list(filter = filter, limit = limit, offset = offset, include=include))    
     results <- jsonlite::fromJSON(httr::content(data, "text"), flatten=TRUE)
-    results$data
+    
+    mentions <- dplyr::tbl_df(results$data %>%
+                                  dplyr::select(-matches("mediaLinks"), -matches("tags"), 
+                                                -matches("matchedPhrases"), -matches("sentiments")))
+    
+    # Media, tags, and so on, are stored as an embedded lists which we now need to extract.
+    # A mention may have multiple media entities, tags, etc, attached.
+    data_names <- names(results$data)
+    media_present <- 'mediaLinks' %in% data_names
+    tags_present <- 'tags' %in% data_names    
+    
+    media <- NULL
+    tags <- NULL
+    
+    if (media_present || tags_present) {
+        
+        media_mention_ids <- c()
+        mimetypes <- c()
+        urls <- c()
+        
+        tag_mention_ids <- c()
+        tag_ids <- c()
+        tag_names <- c()
+        
+        raw_media <- results$data[, 'mediaLinks']
+        raw_tags <- results$data[, 'tags']
+        
+        for (i in 1:nrow(results$data)) {            
+            if (media_present) {
+                if (!is.null(raw_media[[i]])) {
+                    media_data <- raw_media[[i]]
+                    for (j in 1:nrow(media_data)) {
+                        media_mention_ids <- c(media_mention_ids, results$data[i, 1])
+                        mimetypes <- c(mimetypes, media_data[j, 1])
+                        urls <- c(urls, media_data[j, 2])
+                    }                
+                }
+            }            
+            
+            if (tags_present) {
+                if (!is.null(raw_tags[[i]])) {
+                    tag_data <- raw_tags[[i]]
+                    for (j in 1:nrow(tag_data)) {
+                        tag_mention_ids <- c(tag_mention_ids, results$data[i, 1])
+                        tag_ids <- c(tag_ids, tag_data[j, 1])
+                        tag_names <- c(tag_names, tag_data[j, 2])
+                    }
+                }
+            }
+        }
+        
+        if (media_present) {
+            media <- data.frame(mention.id = media_mention_ids, 
+                                mimetype = mimetypes,
+                                url = urls)    
+        }
+        if (tags_present) {
+            tags <- data.frame(mention.id = tag_mention_ids,
+                               tag.id = tag_ids,
+                               tag = tag_names)
+        }
+    }
+        
+        
+    list(mentions = mentions, 
+         media = media,
+         tags = tags,
+         raw = results$data)
+    
+    
 }
 
-#' @describeIn mentions
-mentions.brandseye.account <- function(account, filter) {
-    mentions(account$code, filter, account$auth)
+#' @describeIn account_mentions
+account_mentions.brandseye.account <- function(account, filter) {
+    account_mentions(account$code, filter, account$auth)
 }

@@ -34,7 +34,7 @@
 #' 
 #' @seealso \code{\link{account}} for information on querying account information, including
 #'      seeing the brands and phrases associated with an account.
-#' @seealso \code{\link{mentions}} for querying raw mention data.
+#' @seealso \code{\link{account_mentions}} for querying raw mention data.
 account_count <- function(account, ...) {
     UseMethod("account_count", account)
 }

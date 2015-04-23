@@ -141,6 +141,6 @@ account_count(ac, "published inthelast month and relevancy isnt irrelevant",
 \code{\link{account}} for information on querying account information, including
      seeing the brands and phrases associated with an account.
 
-\code{\link{mentions}} for querying raw mention data.
+\code{\link{account_mentions}} for querying raw mention data.
 }
 

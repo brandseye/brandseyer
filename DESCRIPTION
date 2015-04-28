@@ -10,6 +10,7 @@ Description: BrandsEye is a social media tracking and analytics company. This
     library provides access to the data stored in BrandsEye account directly
     from R itself.
 License: MIT
+URL: https://github.com/brandseye/brandseyer
 Imports: 
     httr,
     jsonlite,

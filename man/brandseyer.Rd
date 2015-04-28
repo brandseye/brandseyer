@@ -13,9 +13,9 @@ easy access to the data in your various BrandsEye accounts for use in
 any R analyses and data visualisations.
 }
 \details{
-The home page is https://github.com/brandseye/brandseyer/
+The home page is \url{https://github.com/brandseye/brandseyer/}
 
 If you have found a bug in the library, you can report it using the
-library's GitHub issue tracker: https://github.com/brandseye/brandseyer/issues
+library's GitHub issue tracker: \url{https://github.com/brandseye/brandseyer/issues}
 }
 

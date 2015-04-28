@@ -2,6 +2,9 @@
 % Please edit documentation in R/brandseyer.R
 \docType{package}
 \name{brandseyer}
+\alias{BrandsEye}
+\alias{BrandsEyeR}
+\alias{brandseye}
 \alias{brandseyer}
 \alias{brandseyer-package}
 \title{brandseyer: access and perform analytics on your BrandsEye accounts}

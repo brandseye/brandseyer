@@ -13,4 +13,5 @@
 #'
 #' @docType package
 #' @name brandseyer
+#' @aliases brandseye BrandsEye BrandsEyeR
 NULL

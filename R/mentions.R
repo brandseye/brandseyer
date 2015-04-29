@@ -35,6 +35,7 @@
 #' @seealso \code{\link{account_phrases}} to see a list of phrases in an account, with
 #'          their associated brands.
 #' @seealso \code{\link{account_brands}} for a list of brands associated with the account.
+#' @export
 account_mentions <- function(account, ...) {
     UseMethod("account_mentions", account)
 }

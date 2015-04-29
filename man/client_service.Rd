@@ -34,7 +34,7 @@ for queries related to your account.
 
 \item \code{character}: Returns client service information for an account code.
 
-\item \code{list}: 
+\item \code{list}: Returns client service information for a list of \code{\link{account}} objects.
 }}
 \examples{
 \dontrun{

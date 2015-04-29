@@ -243,6 +243,8 @@ client_service.character <- function(code) {
 
 #' @describeIn client_service
 #' 
+#' Returns client service information for a list of \code{\link{account}} objects.
+#' 
 #' @return As a special case, when given a list of accounts, 
 #'   this function returns a data frame with name and email columns,
 #'   and a row per account.

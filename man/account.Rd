@@ -39,6 +39,9 @@ account("QUIR01BA", key="<api key here>")
 summary(ac)
 }
 }
+\author{
+Rudy Neeser
+}
 \seealso{
 \code{\link{list_accounts}} to see the accounts that you have access to.
 

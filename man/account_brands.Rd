@@ -45,4 +45,7 @@ account_brands(list_account_codes())
 account_brands("QUIR01BA")
 }
 }
+\author{
+Rudy Neeser
+}
 

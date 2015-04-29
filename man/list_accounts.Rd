@@ -38,4 +38,7 @@ list_accounts(auth)
 account_count(list_account_codes(), "published inthelast day")
 }
 }
+\author{
+Rudy Neeser
+}
 

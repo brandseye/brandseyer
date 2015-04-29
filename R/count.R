@@ -35,6 +35,8 @@
 #' @seealso \code{\link{account}} for information on querying account information, including
 #'      seeing the brands and phrases associated with an account.
 #' @seealso \code{\link{account_mentions}} for querying raw mention data.
+#' @export
+#' @author Rudy Neeser
 account_count <- function(account, ...) {
     UseMethod("account_count", account)
 }
@@ -119,6 +121,7 @@ account_count <- function(account, ...) {
 #' account_count("QUIR01BA", "published inthelast month", groupby = "published, 
 #'         include = c("ave", "ots"))
 #' } 
+#' @export
 account_count.character <- function(accounts, 
                                     filter = NULL, 
                                     groupby = NULL, 
@@ -221,6 +224,7 @@ account_count.character <- function(accounts,
 #' account_count(ac, "published inthelast month and relevancy isnt irrelevant", 
 #'         groupby="published")
 #' }
+#' @export
 account_count.brandseye.account <- function(account, filter = NULL, groupby = NULL, 
                                     include = NULL) {
     account_count(account$code, account$auth, filter = filter, groupby = groupby, include = include)

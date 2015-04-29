@@ -32,7 +32,7 @@ for queries related to your account.
 \itemize{
 \item \code{brandseye.account}: Returns client service details for an account object
 
-\item \code{character}: Returns client service information for an account code
+\item \code{character}: Returns client service information for an account code.
 
 \item \code{list}: 
 }}
@@ -55,5 +55,8 @@ client_service(c("QUIR01BA", "BEAD33AA"))
 client_service(list_account_codes())
 
 }
+}
+\author{
+Rudy Neeser
 }
 

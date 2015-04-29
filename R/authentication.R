@@ -37,6 +37,8 @@
 #'                
 #' }
 #' 
+#' @export
+#' @author Rudy Neeser
 authentication <- function(key = NULL, user = NULL, password = NULL) {
     if (is.null(key) & (is.null(user) | is.null(password)))
         stop("You must choose to authenticate with an API key or a username / password pair")
@@ -57,6 +59,7 @@ print.brandseye.auth <- function(auth) {
 
 #' @describeIn authentication
 #' Returns the file name in which you can save your authentication information.
+#' @export
 authentication_filename <- function() {
     file.path(Sys.getenv("HOME"), ".brandseyerd", "authentication.json")
 }
@@ -132,6 +135,7 @@ authentication_filename <- function() {
 #' 
 #' }
 #' 
+#' @export
 authenticate <- function(key = NULL, user = NULL, password = NULL, save = FALSE) {
     if (!is.null(key) | !is.null(user) | !is.null(password)) {
         pkg.env$defaultAuthentication <- authentication(key = key, user = user, password = password)        

@@ -48,6 +48,9 @@ account_mentions("QUIR01BA", "published inthelast day")
 
 }
 }
+\author{
+Rudy Neeser
+}
 \seealso{
 \code{\link{account_phrases}} to see a list of phrases in an account, with
          their associated brands.

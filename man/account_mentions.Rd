@@ -20,13 +20,14 @@ account_mentions(account, ...)
 first mentions should be skipped.}
 }
 \value{
-Returns a list containing the following items:
+Returns an object of class \code{mention.results}, which is a list
+containing at least the following items:
 \itemize{
 \item \code{mentions}, a \code{data.frame} of the mention data.
 \item \code{media}, a \code{data.frame} listing mime types and urls for media
       associated with each mention.
 \item \code{tags}, a \code{data.frame} containing the tags that match the mentions.
-\item \code{phrases{}}, a \code{data.frame} listing the phrases that a mention matched.
+\item \code{phrases}, a \code{data.frame} listing the phrases that a mention matched.
 \item \code{sentiment}, a \code{data.frame} listing the sentiment associated with a mention, possibly
       more than one per mention.
 }

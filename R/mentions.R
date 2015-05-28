@@ -21,13 +21,14 @@
 
 #' Read mentions from your account
 #' 
-#' @return Returns a list containing the following items:
+#' @return Returns an object of class \code{mention.results}, which is a list
+#' containing at least the following items:
 #' \itemize{
 #' \item \code{mentions}, a \code{data.frame} of the mention data.
 #' \item \code{media}, a \code{data.frame} listing mime types and urls for media
 #'       associated with each mention.
 #' \item \code{tags}, a \code{data.frame} containing the tags that match the mentions.
-#' \item \code{phrases{}}, a \code{data.frame} listing the phrases that a mention matched.
+#' \item \code{phrases}, a \code{data.frame} listing the phrases that a mention matched.
 #' \item \code{sentiment}, a \code{data.frame} listing the sentiment associated with a mention, possibly
 #'       more than one per mention.
 #' }
@@ -57,7 +58,6 @@ account_mentions.character <- function(code, filter,
                                limit = 30, offset = 0,
                                include,
                                authentication = pkg.env$defaultAuthentication) {
-    
     query <- list(limit = limit, offset = offset)
     if (!missing(filter)) query <- c(filter = filter, query)
     if (!missing(include)) query <- c(include = include, query)
@@ -72,6 +72,7 @@ account_mentions.character <- function(code, filter,
     
     results <- jsonlite::fromJSON(httr::content(data, "text"), flatten=TRUE)
     
+    total <- results$total
     mentions <- dplyr::tbl_df(results$data %>%
                                   dplyr::select(-matches("mediaLinks"), -matches("tags"), 
                                                 -matches("matchedPhrases"), -matches("sentiments")))
@@ -171,15 +172,34 @@ account_mentions.character <- function(code, filter,
                            tag = tag_names)
     }    
         
-    list(mentions = mentions, 
-         media = media,
-         tags = tags,
-         sentiment = sentiment,
-         phrases = phrases)        
+    structure(
+        list(mentions = mentions, 
+             media = media,
+             tags = tags,
+             sentiment = sentiment,
+             phrases = phrases,
+             total = total,
+             call = match.call()),
+        class = "mention.results"
+    )
+    
 }
 
 #' @describeIn account_mentions
 #' @export
 account_mentions.brandseye.account <- function(account, filter) {
     account_mentions(account$code, filter, account$auth)
+}
+
+#' Prints a summary of the results from a call to \code{\link{account_mentions}}
+#' @export
+#' @author Rudy Neeser
+print.mention.results <- function(mentions, ...) {
+    cat("\nCall:\n")
+    print(mentions$call)
+    cat("\nNumber of mentions matching the filter:\n")
+    cat(mentions$total, "\n")
+    cat("\nNumber of mentions returned:\n")
+    cat(nrow(mentions$mentions))
+    cat("\n\n")
 }

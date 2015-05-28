@@ -7,3 +7,4 @@
   filter is given.
 * *account_mentions* can be called without a default filter.
 * Better error messages for bad filters when using *account_mentions*.
+* Objects returned by *account_mentions* store their call parameters.

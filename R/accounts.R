@@ -111,10 +111,12 @@ summary.brandseye.account <- function(account, ...) {
     colnames(averages) <- ""
     
     structure(list(
-        account = account,
-        counts = counts,
-        averages = averages
-    ), class = "summary.brandseye.account")
+            account = account,
+            counts = counts,
+            averages = averages
+        ), 
+        class = "summary.brandseye.account"
+    )
 }
 
 #' Prints a summary of a BrandsEye \code{\link{account}}

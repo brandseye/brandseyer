@@ -61,7 +61,7 @@ account_mentions.character <- function(code, filter,
                                limit = 30, offset = 0,
                                include,
                                authentication = pkg.env$defaultAuthentication) {
-    if (length(include) > 1) include <- do.call(stringr::str_c, as.list(c(include, sep = ',')))
+    if (!missing(include) && length(include) > 1) include <- do.call(stringr::str_c, as.list(c(include, sep = ',')))
     
     query <- list(limit = limit, offset = offset)
     if (!missing(filter)) query <- c(filter = filter, query)

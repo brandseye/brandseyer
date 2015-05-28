@@ -164,7 +164,9 @@ account_count.character <- function(accounts,
     if (length(accounts) == 1) {
         url <- paste0("https://api.brandseye.com/rest/accounts/", accounts, "/mentions/count")
         query <- list()
-        if (!is.null(filter)) query <- list(filter = filter, groupby=groupby, include=include)
+        if (!is.null(filter)) query <- c(filter = filter, query)
+        if (!is.null(groupby)) query <- c(groupby = groupby, query)
+        if (!is.null(include)) query <- c(include = include, query)
         
         data <- httr::GET(url, httr::authenticate(authentication$user, authentication$password), query = query)    
         if (httr::status_code(data) == 401) stop("You are not authorised to access this account")

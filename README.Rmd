@@ -113,6 +113,10 @@ The ultimate documentation for the filter language (the *filter* argument
 taken by many of the functions for selecting data sets) and the various
 grouping and inclusions options is the [BrandsEye api documentation][api-docs]. 
 
+## Recent changes
+
+Recent changes are listed in the [news file](https://github.com/brandseye/brandseyer/blob/master/NEWS.md).
+
 ## License
 
 Copyright (c) 2015, Brandseye PTY (LTD) 

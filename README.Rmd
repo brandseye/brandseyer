@@ -105,9 +105,10 @@ supply you with a new one (and invalidate your old).
 All functions are documented within *R* itself. Interesting functions to read
 up on are: 
 
-* *account*
-* *account_count*
-* *list_account_codes*
+* *account*, to access account information.
+* *list_account_codes*, to see which accounts you have access to.
+* *account_count*, to pull aggregate data over mentions using the BrandsEye filter language.
+* *account_mentions*, to pull mention data.
     
 The ultimate documentation for the filter language (the *filter* argument 
 taken by many of the functions for selecting data sets) and the various

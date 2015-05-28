@@ -84,9 +84,10 @@ Documentation
 
 All functions are documented within *R* itself. Interesting functions to read up on are:
 
--   *account*
--   *account\_count*
--   *list\_account\_codes*
+-   *account*, to access account information.
+-   *list\_account\_codes*, to see which accounts you have access to.
+-   *account\_count*, to pull aggregate data over mentions using the BrandsEye filter language.
+-   *account\_mentions*, to pull mention data.
 
 The ultimate documentation for the filter language (the *filter* argument taken by many of the functions for selecting data sets) and the various grouping and inclusions options is the [BrandsEye api documentation](https://api.brandseye.com/docs).
 

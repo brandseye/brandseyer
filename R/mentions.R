@@ -36,6 +36,7 @@
 #'          their associated brands.
 #' @seealso \code{\link{account_brands}} for a list of brands associated with the account.
 #' @author Rudy Neeser
+#' @export
 account_mentions <- function(account, ...) {
     UseMethod("account_mentions", account)
 }
@@ -51,6 +52,7 @@ account_mentions <- function(account, ...) {
 #' account_mentions("QUIR01BA", "published inthelast day")
 #' 
 #' }
+#' @export
 account_mentions.character <- function(code, filter, 
                                limit = 30, offset = 0,
                                include = NULL,
@@ -171,6 +173,7 @@ account_mentions.character <- function(code, filter,
 }
 
 #' @describeIn account_mentions
+#' @export
 account_mentions.brandseye.account <- function(account, filter) {
     account_mentions(account$code, filter, account$auth)
 }

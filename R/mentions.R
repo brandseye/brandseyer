@@ -68,6 +68,8 @@ account_mentions.character <- function(code, filter,
     url <- paste0("https://api.brandseye.com/rest/accounts/", code, "/mentions")
     data <- httr::GET(url, httr::authenticate(authentication$user, authentication$password), 
                       query = query)    
+    check_errors(data)
+    
     results <- jsonlite::fromJSON(httr::content(data, "text"), flatten=TRUE)
     
     mentions <- dplyr::tbl_df(results$data %>%

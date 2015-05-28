@@ -169,11 +169,7 @@ account_count.character <- function(accounts,
         if (!is.null(include)) query <- c(include = include, query)
         
         data <- httr::GET(url, httr::authenticate(authentication$user, authentication$password), query = query)    
-        if (httr::status_code(data) == 401) stop("You are not authorised to access this account")
-        if (httr::status_code(data) != 200) {
-            message = jsonlite::fromJSON(httr::content(data, "text"))$error
-            stop("BrandsEye API error: ", message)
-        }
+        check_errors(data)
         
         results <- dplyr::tbl_df(data.frame(jsonlite::fromJSON(httr::content(data, "text"))))
         # This is a sanity process for some bad data that might break merging data

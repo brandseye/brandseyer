@@ -55,15 +55,19 @@ account_mentions <- function(account, ...) {
 #' @export
 account_mentions.character <- function(code, filter, 
                                limit = 30, offset = 0,
-                               include = NULL,
+                               include,
                                authentication = pkg.env$defaultAuthentication) {
+    
+    query <- list(limit = limit, offset = offset)
+    if (!missing(filter)) query <- c(filter = filter, query)
+    if (!missing(include)) query <- c(include = include, query)
     
     `%>%` <- dplyr::`%>%`
     embedded <- c("medialinks", "tags", "matchedphrases", "sentiments")
     
     url <- paste0("https://api.brandseye.com/rest/accounts/", code, "/mentions")
     data <- httr::GET(url, httr::authenticate(authentication$user, authentication$password), 
-                      query = list(filter = filter, limit = limit, offset = offset, include=include))    
+                      query = query)    
     results <- jsonlite::fromJSON(httr::content(data, "text"), flatten=TRUE)
     
     mentions <- dplyr::tbl_df(results$data %>%

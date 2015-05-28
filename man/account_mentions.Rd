@@ -18,6 +18,10 @@ account_mentions(account, ...)
 
 \item{offset}{Mentions are returned in an order. Offset says how many of the
 first mentions should be skipped.}
+
+\item{include}{A character vector of extra information to include in the mentions
+You can see this list in the api documentation available at
+\url{https://api.brandseye.com/docs}}
 }
 \value{
 Returns an object of class \code{mention.results}, which is a list

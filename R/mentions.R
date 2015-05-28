@@ -46,6 +46,9 @@ account_mentions <- function(account, ...) {
 #' @param limit The maximum number of mentions to be returned
 #' @param offset Mentions are returned in an order. Offset says how many of the 
 #'   first mentions should be skipped.
+#' @param include A character vector of extra information to include in the mentions
+#'        You can see this list in the api documentation available at
+#'        \url{https://api.brandseye.com/docs}
 #' @examples
 #' \dontrun{
 #' 
@@ -58,6 +61,8 @@ account_mentions.character <- function(code, filter,
                                limit = 30, offset = 0,
                                include,
                                authentication = pkg.env$defaultAuthentication) {
+    if (length(include) > 1) include <- do.call(stringr::str_c, as.list(c(include, sep = ',')))
+    
     query <- list(limit = limit, offset = offset)
     if (!missing(filter)) query <- c(filter = filter, query)
     if (!missing(include)) query <- c(include = include, query)

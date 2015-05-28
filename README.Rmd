@@ -115,9 +115,11 @@ grouping and inclusions options is the [BrandsEye api documentation][api-docs].
 
 ## Recent changes
 
-Recent changes are listed in the [news file](https://github.com/brandseye/brandseyer/blob/master/NEWS.md).
+Recent changes are listed in the [news file][NEWS].
 
 ## License
+
+This project is licensed under the MIT license. 
 
 Copyright (c) 2015, Brandseye PTY (LTD) 
 
@@ -144,3 +146,4 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 [brandseye]: http://www.brandseye.com
 [api-docs]: https://api.brandseye.com/docs
 [devtools]: http://www.rstudio.com/products/rpackages/devtools/
+[news]: https://github.com/brandseye/brandseyer/blob/master/NEWS.md

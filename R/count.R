@@ -174,6 +174,13 @@ account_count.character <- function(accounts,
         }
         
         results <- dplyr::tbl_df(data.frame(jsonlite::fromJSON(httr::content(data, "text"))))
+        # This is a sanity process for some bad data that might break merging data
+        # frames. A big example are mentions with unknown sentiment forcing
+        # sentiment to be a mixture of numeric and character between different accounts.
+        if ("sentiment" %in% names(results) && (is.factor(results$sentiment) || is.character(results$sentiment))) {
+            results$sentiment[results$sentiment == "UNKNOWN"] <- NA
+            results$sentiment <- as.numeric(as.character(results$sentiment))
+        }
         if (.process) results <- process(results)
         return(results)
     }    

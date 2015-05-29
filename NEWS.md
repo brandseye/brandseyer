@@ -1,5 +1,9 @@
 # News
 
+## 0.1.2 2015-05-29
+* bug fix: calling *account* on an unrecognised account code now results
+  in a usable error message.
+
 ## 0.1.1 2015-05-28
 * bug fix: using *account_count* across multiple accounts would break when
   one of those accounts had mentions with missing (unknown) sentiment.

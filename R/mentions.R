@@ -60,7 +60,8 @@ account_mentions <- function(account, ...) {
 account_mentions.character <- function(code, filter, 
                                limit = 30, offset = 0,
                                include,
-                               authentication = pkg.env$defaultAuthentication) {
+                               authentication = pkg.env$defaultAuthentication,
+                               showProgress = length(code) != 0) {
     if (!missing(include) && length(include) > 1) include <- do.call(stringr::str_c, as.list(c(include, sep = ',')))
     
     # The sprintf is to avoid scientific notation for large numbers without
@@ -72,124 +73,170 @@ account_mentions.character <- function(code, filter,
     `%>%` <- dplyr::`%>%`
     embedded <- c("medialinks", "tags", "matchedphrases", "sentiments")
     
-    url <- paste0("https://api.brandseye.com/rest/accounts/", code, "/mentions")
-    data <- httr::GET(url, httr::authenticate(authentication$user, authentication$password), 
-                      query = query)    
-    check_errors(data)
     
-    results <- jsonlite::fromJSON(httr::content(data, "text"), flatten=TRUE)
-    
-    total <- results$total
-    mentions <- dplyr::tbl_df(results$data %>%
-                                  dplyr::select(-matches("mediaLinks"), -matches("tags"), 
-                                                -matches("matchedPhrases"), -matches("sentiments")))
+    if (length(code) == 1) {
+        url <- paste0("https://api.brandseye.com/rest/accounts/", code, "/mentions")
+        data <- httr::GET(url, httr::authenticate(authentication$user, authentication$password), 
+                          query = query)    
+        check_errors(data)
         
-    # Media, tags, and so on, are stored as an embedded lists which we now need to extract.
-    # A mention may have multiple media entities, tags, etc, attached.
-    data_names <- names(results$data)
-    media_present <- 'mediaLinks' %in% data_names
-    tags_present <- 'tags' %in% data_names    
-    
-    media <- NULL
-    tags <- NULL
-    sentiment <- NULL 
-    phrases <- NULL
+        results <- jsonlite::fromJSON(httr::content(data, "text"), flatten=TRUE)
         
-    media_mention_ids <- c()
-    mimetypes <- c()
-    urls <- c()
-    
-    tag_mention_ids <- c()
-    tag_ids <- c()
-    tag_names <- c()
-    
-    raw_media <- if (media_present) results$data[, 'mediaLinks'] else NULL
-    raw_tags <- if (tags_present) results$data[, 'tags'] else NULL
-    raw_sentiment <- results$data[, 'sentiments']
-    raw_phrases <- results$data[, 'matchedPhrases']
-    
-    # Sentiment data
-    s_mention_ids <- c()
-    s_brand_ids <- c()
-    s_names <- c()
-    s_sentiments <- c()
-    s_sentiment_names <- c()
-    
-    # Phrase data
-    p_mention_ids <- c()
-    p_phrase_ids <- c()
-    p_phrase <- c()
-    
-    for (i in 1:nrow(results$data)) {    
-        sentiment_data <- raw_sentiment[[i]]
-        s_mention_ids <- c(s_mention_ids, 
-                           rep(results$data[i, 1], nrow(sentiment_data)))
-        s_brand_ids <- c(s_brand_ids, sentiment_data[,1])
-        s_names <- c(s_names, sentiment_data[, 2])
-        s_sentiments <- c(s_sentiments, sentiment_data[, 3])
-        s_sentiment_names <- c(s_sentiment_names, sentiment_data[, 4])
+        total <- results$total
+        mentions <- dplyr::tbl_df(results$data %>%
+                                      dplyr::select(-matches("mediaLinks"), -matches("tags"), 
+                                                    -matches("matchedPhrases"), -matches("sentiments")))
         
-        phrase_data <- raw_phrases[[i]]
-        p_mention_ids <- c(p_mention_ids, 
-                           rep(results$data[i, 1], nrow(phrase_data)))
-        p_phrase_ids <- c(p_phrase_ids, phrase_data[, 1])
-        p_phrase <- c(p_phrase, phrase_data[, 2])        
+        # Media, tags, and so on, are stored as an embedded lists which we now need to extract.
+        # A mention may have multiple media entities, tags, etc, attached.
+        data_names <- names(results$data)
+        media_present <- 'mediaLinks' %in% data_names
+        tags_present <- 'tags' %in% data_names    
         
-        if (media_present) {
-            if (!is.null(raw_media[[i]])) {
-                media_data <- raw_media[[i]]
-                for (j in 1:nrow(media_data)) {
-                    media_mention_ids <- c(media_mention_ids, results$data[i, 1])
-                    mimetypes <- c(mimetypes, media_data[j, 1])
-                    urls <- c(urls, media_data[j, 2])
-                }                
-            }
-        }            
+        media <- NULL
+        tags <- NULL
+        sentiment <- NULL 
+        phrases <- NULL
         
-        if (tags_present) {
-            if (!is.null(raw_tags[[i]])) {
-                tag_data <- raw_tags[[i]]
-                for (j in 1:nrow(tag_data)) {
-                    tag_mention_ids <- c(tag_mention_ids, results$data[i, 1])
-                    tag_ids <- c(tag_ids, tag_data[j, 1])
-                    tag_names <- c(tag_names, tag_data[j, 2])
+        media_mention_ids <- c()
+        mimetypes <- c()
+        urls <- c()
+        
+        tag_mention_ids <- c()
+        tag_ids <- c()
+        tag_names <- c()
+        
+        raw_media <- if (media_present) results$data[, 'mediaLinks'] else NULL
+        raw_tags <- if (tags_present) results$data[, 'tags'] else NULL
+        raw_sentiment <- results$data[, 'sentiments']
+        raw_phrases <- results$data[, 'matchedPhrases']
+        
+        # Sentiment data
+        s_mention_ids <- c()
+        s_brand_ids <- c()
+        s_names <- c()
+        s_sentiments <- c()
+        s_sentiment_names <- c()
+        
+        # Phrase data
+        p_mention_ids <- c()
+        p_phrase_ids <- c()
+        p_phrase <- c()
+        
+        for (i in 1:nrow(results$data)) {    
+            sentiment_data <- raw_sentiment[[i]]
+            s_mention_ids <- c(s_mention_ids, 
+                               rep(results$data[i, 1], nrow(sentiment_data)))
+            s_brand_ids <- c(s_brand_ids, sentiment_data[,1])
+            s_names <- c(s_names, sentiment_data[, 2])
+            s_sentiments <- c(s_sentiments, sentiment_data[, 3])
+            s_sentiment_names <- c(s_sentiment_names, sentiment_data[, 4])
+            
+            phrase_data <- raw_phrases[[i]]
+            p_mention_ids <- c(p_mention_ids, 
+                               rep(results$data[i, 1], nrow(phrase_data)))
+            p_phrase_ids <- c(p_phrase_ids, phrase_data[, 1])
+            p_phrase <- c(p_phrase, phrase_data[, 2])        
+            
+            if (media_present) {
+                if (!is.null(raw_media[[i]])) {
+                    media_data <- raw_media[[i]]
+                    for (j in 1:nrow(media_data)) {
+                        media_mention_ids <- c(media_mention_ids, results$data[i, 1])
+                        mimetypes <- c(mimetypes, media_data[j, 1])
+                        urls <- c(urls, media_data[j, 2])
+                    }                
+                }
+            }            
+            
+            if (tags_present) {
+                if (!is.null(raw_tags[[i]])) {
+                    tag_data <- raw_tags[[i]]
+                    for (j in 1:nrow(tag_data)) {
+                        tag_mention_ids <- c(tag_mention_ids, results$data[i, 1])
+                        tag_ids <- c(tag_ids, tag_data[j, 1])
+                        tag_names <- c(tag_names, tag_data[j, 2])
+                    }
                 }
             }
         }
-    }
-    
-    sentiment <- data.frame(mention.id = s_mention_ids,
-                            brand.id = s_brand_ids,
-                            brand = s_names,
-                            sentiment = s_sentiments,
-                            description = s_sentiment_names)
-    
-    phrases <- data.frame(mention.id = p_mention_ids,
-                          phrase.id = p_phrase_ids,
-                          phrase = p_phrase)
-    
-    if (media_present) {
-        media <- data.frame(mention.id = media_mention_ids, 
-                            mimetype = mimetypes,
-                            url = urls)    
-    }
-    if (tags_present) {
-        tags <- data.frame(mention.id = tag_mention_ids,
-                           tag.id = tag_ids,
-                           tag = tag_names)
-    }    
         
-    structure(
-        list(mentions = mentions, 
-             media = media,
-             tags = tags,
-             sentiment = sentiment,
-             phrases = phrases,
-             total = total,
-             call = match.call()),
-        class = "mention.results"
-    )
+        sentiment <- data.frame(mention.id = s_mention_ids,
+                                brand.id = s_brand_ids,
+                                brand = s_names,
+                                sentiment = s_sentiments,
+                                description = s_sentiment_names)
+        
+        phrases <- data.frame(mention.id = p_mention_ids,
+                              phrase.id = p_phrase_ids,
+                              phrase = p_phrase)
+        
+        if (media_present) {
+            media <- data.frame(mention.id = media_mention_ids, 
+                                mimetype = mimetypes,
+                                url = urls)    
+        }
+        if (tags_present) {
+            tags <- data.frame(mention.id = tag_mention_ids,
+                               tag.id = tag_ids,
+                               tag = tag_names)
+        }    
+        
+        return(structure(
+            list(mentions = mentions, 
+                 media = media,
+                 tags = tags,
+                 sentiment = sentiment,
+                 phrases = phrases,
+                 total = total,
+                 call = match.call()),
+            class = "mention.results"
+        ))    
+    }
     
+    # ---------------------------------
+    # Multiple calls
+    
+    filterMissing <- missing(filter)
+    global_call <- match.call()
+    pb <- NULL
+    if (showProgress) pb <- txtProgressBar(min = 0, max = length(code), style=3)
+    i <- 0
+    
+    combine <- function(lhs, rhs) {
+        structure(
+            list(mentions = dplyr::bind_rows(lhs$mentions, rhs$mentions), 
+                 media = dplyr::bind_rows(lhs$media, rhs$media),
+                 tags = dplyr::bind_rows(lhs$tags, rhs$tags),
+                 sentiment = dplyr::bind_rows(lhs$sentiment, rhs$sentiment),
+                 phrases = dplyr::bind_rows(lhs$phrases, rhs$phrases),
+                 total = lhs$total + rhs$total,
+                 call = global_call),
+            class = "mention.results"
+        )
+    }
+    
+    block <- function(cd) {
+        if (!is.null(pb)) setTxtProgressBar(pb, i)
+        i <<- i + 1
+        
+        args <- list(cd, authentication = authentication)
+        if (!filterMissing) args <- c(filter = filter, args)
+        results <- do.call("account_mentions", args)
+        if (length(results$mentions)) results$mentions <- data.frame(code = factor(cd, levels = code), results$mentions)
+        if (length(results$media)) results$media <- data.frame(code = factor(cd, levels = code), results$media)
+        if (length(results$tags)) results$tags <- data.frame(code = factor(cd, levels = code), results$tags)
+        if (length(results$sentiment)) results$sentiment <- data.frame(code = factor(cd, levels = code), results$sentiment) 
+        if (length(results$phrases)) results$phrases <- data.frame(code = factor(cd, levels = code), results$phrases) 
+        
+        results
+    }
+    
+    dopar <- foreach::`%dopar%`
+    results <- dopar(foreach::foreach(code = code, .combine = combine), #, .multicombine = TRUE), 
+                     block(code))
+    if (!is.null(pb)) setTxtProgressBar(pb, i)
+    results
 }
 
 #' @describeIn account_mentions

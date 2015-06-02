@@ -114,6 +114,11 @@ The ultimate documentation for the filter language (the *filter* argument
 taken by many of the functions for selecting data sets) and the various
 grouping and inclusions options is the [BrandsEye api documentation][api-docs]. 
 
+The following resources will be useful when using this library:
+
+* [The BrandsEye api documentation][api-docs]
+* [The BrandsEye Help & Documentation site][help]
+
 ## Recent changes
 
 Recent changes are listed in the [news file][NEWS].
@@ -148,3 +153,4 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 [api-docs]: https://api.brandseye.com/docs
 [devtools]: http://www.rstudio.com/products/rpackages/devtools/
 [news]: https://github.com/brandseye/brandseyer/blob/master/NEWS.md
+[help]: https://help.brandseye.com/

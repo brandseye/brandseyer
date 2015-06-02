@@ -96,6 +96,8 @@ The following resources will be useful when using this library:
 -   [The BrandsEye api documentation](https://api.brandseye.com/docs)
 -   [The BrandsEye Help & Documentation site](https://help.brandseye.com/)
 
+Both of the above require access to the BrandsEye app. If you don't already have access, you can contact your client service representative to create a login.
+
 Recent changes
 --------------
 

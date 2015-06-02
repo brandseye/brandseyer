@@ -5,6 +5,7 @@
   factors with class c("sentiment", "ordered", "factor"). A function, 
   *sentiment*, exists to easily create sentiment values for comparison
   purposes.
+
 ## 0.1.2 2015-05-29
 * bug fix: calling *account* on an unrecognised account code now results
   in a usable error message.

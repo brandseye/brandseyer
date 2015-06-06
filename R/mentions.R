@@ -176,7 +176,7 @@ account_mentions.character <- function(code, filter,
         sentiment <- data.frame(mention.id = s_mention_ids,
                                 brand.id = s_brand_ids,
                                 brand = s_names,
-                                sentiment = s_sentiments,
+                                sentiment = sentiment(s_sentiments),
                                 description = s_sentiment_names)
         
         phrases <- data.frame(mention.id = p_mention_ids,

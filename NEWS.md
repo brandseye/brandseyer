@@ -1,5 +1,9 @@
 # News
 
+## 0.3.0 2015-06-06
+* There is now experimental support to query mentions from across
+  multiple accounts by passing a vector of accounts to *account_mentions*.
+
 ## 0.2.0 2015-06-02
 * sentiment values from the count endpoint are now represented as ordered
   factors with class c("sentiment", "ordered", "factor"). A function, 

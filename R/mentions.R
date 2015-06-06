@@ -73,6 +73,11 @@ account_mentions.character <- function(code, filter,
     `%>%` <- dplyr::`%>%`
     embedded <- c("medialinks", "tags", "matchedphrases", "sentiments")
     
+    process_mentions <- function(mentions) {
+        mentions$sentiment$sentiment <- sentiment(mentions$sentiment$sentiment)
+        mentions
+    }
+    
     
     if (length(code) == 1) {
         url <- paste0("https://api.brandseye.com/rest/accounts/", code, "/mentions")
@@ -176,7 +181,7 @@ account_mentions.character <- function(code, filter,
         sentiment <- data.frame(mention.id = s_mention_ids,
                                 brand.id = s_brand_ids,
                                 brand = s_names,
-                                sentiment = sentiment(s_sentiments),
+                                sentiment = s_sentiments,
                                 description = s_sentiment_names)
         
         phrases <- data.frame(mention.id = p_mention_ids,
@@ -194,7 +199,7 @@ account_mentions.character <- function(code, filter,
                                tag = tag_names)
         }    
         
-        return(structure(
+        return(process_mentions(structure(
             list(mentions = mentions, 
                  media = media,
                  tags = tags,
@@ -203,7 +208,7 @@ account_mentions.character <- function(code, filter,
                  total = total,
                  call = match.call()),
             class = "mention.results"
-        ))    
+        )))    
     }
     
     # ---------------------------------
@@ -248,7 +253,7 @@ account_mentions.character <- function(code, filter,
     results <- dopar(foreach::foreach(code = code, .combine = combine), #, .multicombine = TRUE), 
                      block(code))
     if (!is.null(pb)) setTxtProgressBar(pb, i)
-    results
+    process_mentions(results)
 }
 
 #' @describeIn account_mentions

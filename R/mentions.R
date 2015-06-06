@@ -83,6 +83,18 @@ account_mentions.character <- function(code, filter,
         results <- jsonlite::fromJSON(httr::content(data, "text"), flatten=TRUE)
         
         total <- results$total
+        if (total == 0) {
+            return(structure(
+                list(mentions = data.frame(), 
+                     media = data.frame(),
+                     tags = data.frame(),
+                     sentiment = data.frame(),
+                     phrases = data.frame(),
+                     total = total,
+                     call = match.call()),
+                class = "mention.results"
+            ))    
+        }
         mentions <- dplyr::tbl_df(results$data %>%
                                       dplyr::select(-matches("mediaLinks"), -matches("tags"), 
                                                     -matches("matchedPhrases"), -matches("sentiments")))

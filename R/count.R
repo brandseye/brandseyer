@@ -35,6 +35,7 @@
 #' @seealso \code{\link{account}} for information on querying account information, including
 #'      seeing the brands and phrases associated with an account.
 #' @seealso \code{\link{account_mentions}} for querying raw mention data.
+#' @seealso \code{\link{sentiment}} for comparing sentiment values.
 #' @export
 #' @author Rudy Neeser
 account_count <- function(account, ...) {
@@ -139,7 +140,7 @@ account_count.character <- function(accounts,
         dates <- c("published", "pickedup", "updated")
         factorItems <- c("action", "authorname", "country", "feed", "gender",
                          "language", "media", "process", "region", "relevancy",
-                         "sentiment", "tag", "countryiso3")
+                         "tag", "countryiso3")
         
         # In many of the if branches to follow we need to cast to a data frame,
         # since we are likely to get something with class tbl_df (from dplyr), 
@@ -153,7 +154,12 @@ account_count.character <- function(accounts,
                 results[, n] <- factor(as.data.frame(replace(results[, n], results[, n] == "UN", NA))[, n])
             }
             else if (tolower(n) %in% factorItems) {                
-                results[, n] <- factor(as.data.frame(replace(results[, n], results[, n] == "UNKNOWN", NA))[, n])
+                results[, n] <- factor(as.data.frame(replace(results[, n], 
+                                                             results[, n] == "UNKNOWN",
+                                                             NA))[, n])
+            }
+            else if (tolower(n) == "sentiment") {
+                results[, n] <- sentiment(as.data.frame(replace(results[, n], results[, n] == "UN", NA))[, n])
             }
             else results[, n] <- replace(results[, n], results[, n] == "UNKNOWN", NA)  
         }

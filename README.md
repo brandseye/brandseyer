@@ -46,7 +46,7 @@ And here are the first few entries of the returned data frame:
 
 | countryName    |  count| country |
 |:---------------|------:|:--------|
-| Unknown        |  23532| NA      |
+| Unknown        |  23534| NA      |
 | United States  |  12782| US      |
 | United Kingdom |   3238| GB      |
 | Canada         |   1293| CA      |
@@ -90,6 +90,13 @@ All functions are documented within *R* itself. Interesting functions to read up
 -   *account\_mentions*, to pull mention data.
 
 The ultimate documentation for the filter language (the *filter* argument taken by many of the functions for selecting data sets) and the various grouping and inclusions options is the [BrandsEye api documentation](https://api.brandseye.com/docs).
+
+The following resources will be useful when using this library:
+
+-   [The BrandsEye api documentation](https://api.brandseye.com/docs)
+-   [The BrandsEye Help & Documentation site](https://help.brandseye.com/)
+
+Both of the above require access to the BrandsEye app. If you don't already have access, you can contact your client service representative to create a login.
 
 Recent changes
 --------------

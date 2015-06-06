@@ -145,5 +145,7 @@ Rudy Neeser
      seeing the brands and phrases associated with an account.
 
 \code{\link{account_mentions}} for querying raw mention data.
+
+\code{\link{sentiment}} for comparing sentiment values.
 }
 

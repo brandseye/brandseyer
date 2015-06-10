@@ -1,5 +1,11 @@
 # News
 
+## 0.4.0 2015-06-10
+* Provided a number of functions for generic methods dealing with accounts
+  that are specialised to handle account codes as factors. This is useful
+  when dealing with account codes returned by *account_count* and 
+  *account_mentions*. 
+
 ## 0.3.0 2015-06-06
 * There is now experimental support to query mentions from across
   multiple accounts by passing a vector of accounts to *account_mentions*.

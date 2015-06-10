@@ -185,6 +185,12 @@ account_name.character <- function(accounts) {
     })
 }
 
+#' @describeIn account_name
+#' @export
+account_name.factor <- function(accounts) {
+    account_name(as.character(accounts))
+}
+
 'account_name<-' <- function(account, value) {
     UseMethod('account_name<-', account)
 }
@@ -241,6 +247,12 @@ client_service.brandseye.account <- function(account) {
 #' }
 #' @export
 client_service.character <- function(code) {
+    client_service(account(code))
+}
+
+#' @describeIn client_service
+#' @export
+client_service.factor <- function(code) {
     client_service(account(code))
 }
 
@@ -371,6 +383,11 @@ account_brands.character <- function(account) {
     account_brands(account(account))
 }
 
+#' @describeIn account_brands
+#' @export
+account_brands.factor <- function(account) {
+    account_brands(account(account))
+}
 
 #' List phrases in an account
 #' 
@@ -445,6 +462,12 @@ account_phrases.character <- function(account) {
 }
 
 #' @describeIn account_phrases
+#' @export
+account_phrases.factor <- function(account) {
+    account_phrases(account(account))
+}
+
+#' @describeIn account_phrases
 #' 
 #' Given a list of \code{account} objects, this will return
 #' a combined \code{data.frame} for the phrases in all of those accounts.
@@ -508,6 +531,12 @@ account_tags.brandseye.account <- function(account, .process = TRUE) {
 #' }
 #' @export
 account_tags.character <- function(account) {
+    account_tags(account(account))
+}
+
+#' @describeIn account_tags
+#' @export
+account_tags.factor <- function(account) {
     account_tags(account(account))
 }
 

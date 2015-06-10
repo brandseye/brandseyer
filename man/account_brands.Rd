@@ -4,6 +4,7 @@
 \alias{account_brands}
 \alias{account_brands.brandseye.account}
 \alias{account_brands.character}
+\alias{account_brands.factor}
 \alias{account_brands.list}
 \title{Listing brands in an account}
 \usage{
@@ -14,6 +15,8 @@ account_brands(account, ...)
 \method{account_brands}{list}(accounts)
 
 \method{account_brands}{character}(account)
+
+\method{account_brands}{factor}(account)
 }
 \description{
 This returns a \code{data.frame} containing brand IDs, their names,
@@ -26,6 +29,8 @@ whether they've been deleted or not, and the ID of the parent brand.
 \item \code{list}: Returns brand information for a list of accounts
 
 \item \code{character}: Returns brand information for an account identified by an account code.
+
+\item \code{factor}: 
 }}
 \examples{
 \dontrun{

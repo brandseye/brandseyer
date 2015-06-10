@@ -4,6 +4,7 @@
 \alias{client_service}
 \alias{client_service.brandseye.account}
 \alias{client_service.character}
+\alias{client_service.factor}
 \alias{client_service.list}
 \title{Client service details}
 \usage{
@@ -12,6 +13,8 @@ client_service(account)
 \method{client_service}{brandseye.account}(account)
 
 \method{client_service}{character}(code)
+
+\method{client_service}{factor}(code)
 
 \method{client_service}{list}(accounts)
 }
@@ -33,6 +36,8 @@ for queries related to your account.
 \item \code{brandseye.account}: Returns client service details for an account object
 
 \item \code{character}: Returns client service information for an account code.
+
+\item \code{factor}: 
 
 \item \code{list}: Returns client service information for a list of \code{\link{account}} objects.
 }}

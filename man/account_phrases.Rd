@@ -4,6 +4,7 @@
 \alias{account_phrases}
 \alias{account_phrases.brandseye.account}
 \alias{account_phrases.character}
+\alias{account_phrases.factor}
 \alias{account_phrases.list}
 \title{List phrases in an account}
 \usage{
@@ -12,6 +13,8 @@ account_phrases(account, ...)
 \method{account_phrases}{brandseye.account}(account, .process = TRUE)
 
 \method{account_phrases}{character}(account)
+
+\method{account_phrases}{factor}(account)
 
 \method{account_phrases}{list}(accounts)
 }
@@ -25,6 +28,8 @@ with, and a flag indicating whether the phrase is inactive or deleted.
 \item \code{brandseye.account}: Returns phrase information for a particular account object.
 
 \item \code{character}: Returns account information for an account identified using an account code
+
+\item \code{factor}: 
 
 \item \code{list}: Given a list of \code{account} objects, this will return
 a combined \code{data.frame} for the phrases in all of those accounts.

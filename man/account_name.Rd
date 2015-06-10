@@ -4,6 +4,7 @@
 \alias{account_name}
 \alias{account_name.brandseye.account}
 \alias{account_name.character}
+\alias{account_name.factor}
 \title{Returns the human readable name of an account}
 \usage{
 account_name(account)
@@ -11,6 +12,8 @@ account_name(account)
 \method{account_name}{brandseye.account}(account)
 
 \method{account_name}{character}(accounts)
+
+\method{account_name}{factor}(accounts)
 }
 \description{
 Returns the human readable name of an account
@@ -20,6 +23,8 @@ Returns the human readable name of an account
 \item \code{brandseye.account}: 
 
 \item \code{character}: 
+
+\item \code{factor}: 
 }}
 \author{
 Rudy Neeser

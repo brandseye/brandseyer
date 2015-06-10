@@ -4,6 +4,7 @@
 \alias{account_tags}
 \alias{account_tags.brandseye.account}
 \alias{account_tags.character}
+\alias{account_tags.factor}
 \alias{account_tags.list}
 \title{List tags in an account}
 \usage{
@@ -12,6 +13,8 @@ account_tags(account, ...)
 \method{account_tags}{brandseye.account}(account, .process = TRUE)
 
 \method{account_tags}{character}(account)
+
+\method{account_tags}{factor}(account)
 
 \method{account_tags}{list}(accounts)
 }
@@ -27,6 +30,8 @@ IDs of those tags.
 \item \code{brandseye.account}: Returns tag information for \code{\link{account}} objects.
 
 \item \code{character}: Returns tag information an account identified using an account code
+
+\item \code{factor}: 
 
 \item \code{list}: Returns tag information for a list of \code{\link{account}} objects
 }}

@@ -258,8 +258,16 @@ account_mentions.character <- function(code, filter,
 
 #' @describeIn account_mentions
 #' @export
-account_mentions.brandseye.account <- function(account, filter) {
-    account_mentions(account$code, filter, account$auth)
+account_mentions.brandseye.account <- function(account, ...) {
+    account_mentions(account$code, ..., authentication = account$auth)
+}
+
+#' @describeIn account_mentions
+#' 
+#' For querying mentions from accounts encoded as \code{factor}s. 
+#' @export
+account_mentions.factor <- function(account, ...) {
+    account_mentions(as.character(account), ...)
 }
 
 #' Prints a summary of the results from a call to \code{\link{account_mentions}}

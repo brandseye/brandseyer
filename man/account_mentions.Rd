@@ -4,6 +4,7 @@
 \alias{account_mentions}
 \alias{account_mentions.brandseye.account}
 \alias{account_mentions.character}
+\alias{account_mentions.factor}
 \title{Read mentions from your account}
 \usage{
 account_mentions(account, ...)
@@ -12,7 +13,9 @@ account_mentions(account, ...)
   include, authentication = pkg.env$defaultAuthentication,
   showProgress = length(code) != 0)
 
-\method{account_mentions}{brandseye.account}(account, filter)
+\method{account_mentions}{brandseye.account}(account, ...)
+
+\method{account_mentions}{factor}(account, ...)
 }
 \arguments{
 \item{limit}{The maximum number of mentions to be returned}
@@ -45,6 +48,8 @@ Read mentions from your account
 \item \code{character}: 
 
 \item \code{brandseye.account}: 
+
+\item \code{factor}: For querying mentions from accounts encoded as \code{factor}s.
 }}
 \examples{
 \dontrun{

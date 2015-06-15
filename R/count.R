@@ -43,6 +43,10 @@ account_count <- function(account, ...) {
 }
 
 #' @describeIn account_count
+#' 
+#' For querying accounts encoded as character strings, or as a vector
+#' of character strings.
+#' 
 #' @param accounts A vector of account codes. If this is a single account code, this function
 #'  will return a data frame of results just from that account. If it contains multiple accounts,
 #'  this will return a data frame containing all the results across accounts, and a column indicating
@@ -219,6 +223,8 @@ account_count.character <- function(accounts,
 
 #' @describeIn account_count
 #' 
+#' For querying objects returned by \code{\link{account}}.
+#' 
 #' @examples
 #' \dontrun{
 #' # Not using global authentication, but authenticating directly in the call
@@ -239,4 +245,13 @@ account_count.character <- function(accounts,
 account_count.brandseye.account <- function(account, filter = NULL, groupby = NULL, 
                                     include = NULL) {
     account_count(account$code, account$auth, filter = filter, groupby = groupby, include = include)
+}
+
+#' @describeIn account_count
+#' 
+#' Useful for querying accounts encoded as \code{factor}s, such as account
+#' codes given in \code{data_frames}.  
+#' @export
+account_count.factor <- function(account, ...) {
+    account_count(as.character(account), ...)
 }

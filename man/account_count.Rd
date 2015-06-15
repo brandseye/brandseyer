@@ -4,6 +4,7 @@
 \alias{account_count}
 \alias{account_count.brandseye.account}
 \alias{account_count.character}
+\alias{account_count.factor}
 \title{Count mentions}
 \usage{
 account_count(account, ...)
@@ -14,6 +15,8 @@ account_count(account, ...)
 
 \method{account_count}{brandseye.account}(account, filter = NULL,
   groupby = NULL, include = NULL)
+
+\method{account_count}{factor}(account, ...)
 }
 \arguments{
 \item{account}{An account to be queried.}
@@ -61,9 +64,13 @@ a Linux or OX X based system, the following will work well:
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{character}: 
+\item \code{character}: For querying accounts encoded as character strings, or as a vector
+of character strings.
 
-\item \code{brandseye.account}: 
+\item \code{brandseye.account}: For querying objects returned by \code{\link{account}}.
+
+\item \code{factor}: Useful for querying accounts encoded as \code{factor}s, such as account
+codes given in \code{data_frames}.
 }}
 \section{Grouping}{
 

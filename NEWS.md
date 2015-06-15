@@ -1,5 +1,9 @@
 # News
 
+## 0.5.0 2015-06-15
+* *account_count* and *account_mentions* both now support account codes
+  given to them as factor variables. 
+
 ## 0.4.0 2015-06-10
 * Provided a number of functions for generic methods dealing with accounts
   that are specialised to handle account codes as factors. This is useful

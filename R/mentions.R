@@ -61,8 +61,17 @@ account_mentions.character <- function(code, filter,
                                limit = 30, offset = 0,
                                include,
                                authentication = pkg.env$defaultAuthentication,
+                               all = FALSE,
                                showProgress = length(code) != 0) {
-    if (!missing(include) && length(include) > 1) include <- do.call(stringr::str_c, as.list(c(include, sep = ',')))
+    # Because we attempt to read all mentions from the account, 
+    # and this can take some time to do, we want
+    # to ensure that we ignore any mentions that might have come in after the call
+    # was initially made. 
+    pickedUpRestriction <- format(Sys.time(), "pickedUp before '%F %R'")
+    
+    if (!missing(include) && length(include) > 1) {
+        include <- do.call(stringr::str_c, as.list(c(include, sep = ',')))
+    }
     
     # The sprintf is to avoid scientific notation for large numbers without
     # globally setting scipen in options.
@@ -80,6 +89,46 @@ account_mentions.character <- function(code, filter,
     
     
     if (length(code) == 1) {
+        if (all) {
+            # Begin setting up to read all mentions matching the filter,
+            # and then recursively execute to fetch the data.
+            if (missing(filter)) {
+                filter <- pickedUpRestriction 
+            }
+            else {
+                filter <- paste('(', filter, ') and', pickedUpRestriction)
+            }
+            
+            results <- account_mentions(code, filter = filter,
+                                        limit = 20000, offset = 0,
+                                        include,
+                                        authentication = authentication,
+                                        showProgress = false,
+                                        all = FALSE)
+            
+            total <- results$total
+            numReturned <- nrow(results$mention)
+            numSeen <- numReturned
+            
+            while (numReturned > 0 && numSeen < total) {
+                seconds <- account_mentions(code, filter = filter,
+                                            limit = 20000, offset = numSeen,
+                                            include,
+                                            authentication = authentication,
+                                            showProgress = false,
+                                            all = FALSE)
+                numReturned <- nrow(seconds$mentions)
+                numSeen <- numSeen + numReturned
+                results$mentions <- dplyr::bind_rows(results$mentions, seconds$mentions)
+                results$media <- dplyr::bind_rows(results$media, seconds$media)
+                results$tags <- dplyr::bind_rows(results$tags, seconds$tags)
+                results$sentiment <- dplyr::bind_rows(results$sentiment, seconds$sentiment)
+                results$phrases <- dplyr::bind_rows(results$phrases, seconds$phrases)
+            }
+            return(results)
+        }
+        
+        # Here we fetch the actual data
         url <- paste0("https://api.brandseye.com/rest/accounts/", code, "/mentions")
         data <- httr::GET(url, httr::authenticate(authentication$user, authentication$password), 
                           query = query)    

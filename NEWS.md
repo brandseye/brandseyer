@@ -1,5 +1,10 @@
 # News
 
+## 0.6.0 2015-06-20
+* Some experimental ability to automatically get all mentions matching 
+  a filter in one call to *account_mentions*, rather than manually 
+  calling it multiple times.
+
 ## 0.5.0 2015-06-15
 * *account_count* and *account_mentions* both now support account codes
   given to them as factor variables. 

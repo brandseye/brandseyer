@@ -10,7 +10,7 @@
 account_mentions(account, ...)
 
 \method{account_mentions}{character}(code, filter, limit = 30, offset = 0,
-  include, authentication = pkg.env$defaultAuthentication,
+  include, authentication = pkg.env$defaultAuthentication, all = FALSE,
   showProgress = length(code) != 0)
 
 \method{account_mentions}{brandseye.account}(account, ...)

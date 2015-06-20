@@ -109,6 +109,13 @@ account_mentions.character <- function(code, filter,
             total <- results$total
             numReturned <- nrow(results$mention)
             numSeen <- numReturned
+            pb <- NULL
+            i <- 0
+            
+            if (numSeen < total && showProgress) {
+                pb <- txtProgressBar(min = 0, max = total, style=3, initial = numSeen)
+                
+            }
             
             while (numReturned > 0 && numSeen < total) {
                 seconds <- account_mentions(code, filter = filter,
@@ -119,6 +126,7 @@ account_mentions.character <- function(code, filter,
                                             all = FALSE)
                 numReturned <- nrow(seconds$mentions)
                 numSeen <- numSeen + numReturned
+                setTxtProgressBar(pb, numSeen)
                 results$mentions <- dplyr::bind_rows(results$mentions, seconds$mentions)
                 results$media <- dplyr::bind_rows(results$media, seconds$media)
                 results$tags <- dplyr::bind_rows(results$tags, seconds$tags)

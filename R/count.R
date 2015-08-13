@@ -19,13 +19,15 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#' Count mentions
+#' Counting mentions, authors, etc
 #' 
 #' \code{account_count} is used to count mentions in a BrandsEye account matching
 #' matching a particular filter, and to produce aggreagate data related to them.
 #' It's possible to group mentions, order the
 #' results, and to include various other bits of useful information. It's also
-#' possible to perform count operations across multiple accounts. 
+#' possible to perform count operations across multiple accounts, or to count
+#' things other than the number of mentions received, such as the number of unique
+#' authors, sites, and so on. 
 #' 
 #' @param account An account to be queried. 
 #' 
@@ -51,10 +53,12 @@ account_count <- function(account, ...) {
 #'  will return a data frame of results just from that account. If it contains multiple accounts,
 #'  this will return a data frame containing all the results across accounts, and a column indicating
 #'  the account that the particular result is from. 
-#' @param filter A filter string describing the mentions that should be counted by this query
-#' Count aggregate mention information from your BrandsEye account
+#' @param filter A filter string describing the mentions that should be counted by this query.
 #' @param groupby A vector of items that should be grouped by. For example, 
-#'        \code{c("published", "language")}
+#'        \code{c("published", "language")}. See below for more information.
+#' @param count A vector items that should be counted instead of mentions themselves. By default,
+#'        \code{account_count} will count mentions (equivalent to passing a value of "id" to \code{count}), 
+#'        but various other items may be counted instead, such as unique authors. See below for more information.
 #' @param include A vector of items naming values that should be included. 
 #'        For example, \code{c("ots", "ave")}
 #' @param .process Indicates whether the types should be cleaned. For instance, date values transformed
@@ -87,6 +91,15 @@ account_count <- function(account, ...) {
 #' phrase, phraseMatches, pickedUp, process, published, region, relevancy, 
 #' relevancyVerified, sentiment, sentimentVerified, tag, title, updated, uri,
 #' replycount, resharecount, responsetime
+#' 
+#' @section Counting:
+#' 
+#' \code{account_count} will by default count the number of mentions matching 
+#' the filter (or the group that the mentions are being grouped by). It is also
+#' possible to count other items. These include:
+#' 
+#' id (the default), credibility, media, action, site, authorName, language, country, 
+#' region, city, assignee, author, gender
 #' 
 #' @section Including extra data:
 #' 
@@ -125,7 +138,14 @@ account_count <- function(account, ...) {
 #' # Include Ad Value Equivalent (AVE) and Opportunity to See
 #' account_count("QUIR01BA", "published inthelast month", groupby = "published, 
 #'         include = c("ave", "ots"))
-#' } 
+#'         
+#' # Count the number of unique authors
+#' account_count("QUIR01BA", "published inthelast month", count="author")
+#' 
+#' # Count the number of unique authors in each country that we have received 
+#' # mentions from
+#' account_count("QUIR01BA", "published inthelast month", count="author", groupby="country")
+#' }  
 #' @export
 account_count.character <- function(accounts, 
                                     filter = NULL, 

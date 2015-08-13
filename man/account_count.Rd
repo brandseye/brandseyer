@@ -5,12 +5,13 @@
 \alias{account_count.brandseye.account}
 \alias{account_count.character}
 \alias{account_count.factor}
-\title{Count mentions}
+\title{Counting mentions, authors, etc}
 \usage{
 account_count(account, ...)
 
 \method{account_count}{character}(accounts, filter = NULL, groupby = NULL,
-  include = NULL, authentication = pkg.env$defaultAuthentication,
+  include = NULL, count = NULL,
+  authentication = pkg.env$defaultAuthentication,
   showProgress = length(accounts) > 10, .process = TRUE)
 
 \method{account_count}{brandseye.account}(account, filter = NULL,
@@ -26,14 +27,17 @@ will return a data frame of results just from that account. If it contains multi
 this will return a data frame containing all the results across accounts, and a column indicating
 the account that the particular result is from.}
 
-\item{filter}{A filter string describing the mentions that should be counted by this query
-Count aggregate mention information from your BrandsEye account}
+\item{filter}{A filter string describing the mentions that should be counted by this query.}
 
 \item{groupby}{A vector of items that should be grouped by. For example,
-\code{c("published", "language")}}
+\code{c("published", "language")}. See below for more information.}
 
 \item{include}{A vector of items naming values that should be included.
 For example, \code{c("ots", "ave")}}
+
+\item{count}{A vector items that should be counted instead of mentions themselves. By default,
+\code{account_count} will count mentions (equivalent to passing a value of "id" to \code{count}),
+but various other items may be counted instead, such as unique authors. See below for more information.}
 
 \item{showProgress}{Set to true if you would like a progress bar to be shown when querying multiple
        accounts.}
@@ -46,7 +50,9 @@ from strings to POSIXct objects, NA values properly handled, etc.}
 matching a particular filter, and to produce aggreagate data related to them.
 It's possible to group mentions, order the
 results, and to include various other bits of useful information. It's also
-possible to perform count operations across multiple accounts.
+possible to perform count operations across multiple accounts, or to count
+things other than the number of mentions received, such as the number of unique
+authors, sites, and so on.
 }
 \details{
 Filters are described in the api documentation \url{https://api.brandseye.com/docs}
@@ -85,6 +91,17 @@ credibility, extract, feed, gender, language, link, linked, media, pageRank,
 phrase, phraseMatches, pickedUp, process, published, region, relevancy,
 relevancyVerified, sentiment, sentimentVerified, tag, title, updated, uri,
 replycount, resharecount, responsetime
+}
+
+\section{Counting}{
+
+
+\code{account_count} will by default count the number of mentions matching
+the filter (or the group that the mentions are being grouped by). It is also
+possible to count other items. These include:
+
+id (the default), credibility, media, action, site, authorName, language, country,
+region, city, assignee, author, gender
 }
 
 \section{Including extra data}{
@@ -127,6 +144,13 @@ account_count("QUIR01BA", "published inthelast month", groupby = "published)
 # Include Ad Value Equivalent (AVE) and Opportunity to See
 account_count("QUIR01BA", "published inthelast month", groupby = "published,
         include = c("ave", "ots"))
+
+# Count the number of unique authors
+account_count("QUIR01BA", "published inthelast month", count="author")
+
+# Count the number of unique authors in each country that we have received
+# mentions from
+account_count("QUIR01BA", "published inthelast month", count="author", groupby="country")
 }
 \dontrun{
 # Not using global authentication, but authenticating directly in the call

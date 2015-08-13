@@ -1,5 +1,9 @@
 # News
 
+## 0.7.0 2015-08-13
+* *account_count* can now count more than just mentions, such as authors, sites,
+  and so on.
+
 ## 0.6.0 2015-06-20
 * Some experimental ability to automatically get all mentions matching 
   a filter in one call to *account_mentions*, rather than manually 

@@ -131,12 +131,14 @@ account_count.character <- function(accounts,
                                     filter = NULL, 
                                     groupby = NULL, 
                                     include = NULL,
+                                    count = NULL,
                                     authentication = pkg.env$defaultAuthentication,
                                     showProgress = length(accounts) > 10,
                                     .process = TRUE) {  
     
     if (length(groupby) > 1) groupby <- do.call(stringr::str_c, as.list(c(groupby, sep = ',')))
     if (length(include) > 1) include <- do.call(stringr::str_c, as.list(c(include, sep = ',')))
+    if (length(count) > 1) count <- do.call(stringr::str_c, as.list(c(count, sep = ',')))
     
     # Transforms a data.frame to clean up the various data types
     # and so on returned as Strings from the API.
@@ -177,6 +179,7 @@ account_count.character <- function(accounts,
         if (!is.null(filter)) query <- c(filter = filter, query)
         if (!is.null(groupby)) query <- c(groupby = groupby, query)
         if (!is.null(include)) query <- c(include = include, query)
+        if (!is.null(count)) query <- c(count = count, query)
         
         data <- httr::GET(url, httr::authenticate(authentication$user, authentication$password), query = query)    
         check_errors(data)

@@ -221,8 +221,8 @@ account_count.character <- function(accounts,
     i <- 0
     
     block <- function(code) {        
-        data <- account_count(code, filter, groupby, include, authentication, 
-                        .process = FALSE, showProgress = FALSE)        
+        data <- account_count(code, filter, groupby, include, count, authentication, 
+                              .process = FALSE, showProgress = FALSE)        
         i <<- i + 1
         if (!is.null(pb)) setTxtProgressBar(pb, i)
         if (nrow(data) == 0) {

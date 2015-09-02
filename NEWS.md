@@ -1,5 +1,8 @@
 # News
 
+## 0.7.1 2015-09-02
+* bug fix: can once again use *account_count* across multiple accounts.
+
 ## 0.7.0 2015-08-13
 * *account_count* can now count more than just mentions, such as authors, sites,
   and so on.

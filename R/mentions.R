@@ -49,6 +49,7 @@ account_mentions <- function(account, ...) {
 #' @param include A character vector of extra information to include in the mentions
 #'        You can see this list in the api documentation available at
 #'        \url{https://api.brandseye.com/docs}
+#' @param all Set to true if you would like to return all mentions from the account.
 #' @examples
 #' \dontrun{
 #' 
@@ -158,7 +159,7 @@ account_mentions.character <- function(code, filter,
             ))    
         }
         mentions <- dplyr::tbl_df(results$data %>%
-                                      dplyr::select(-matches("mediaLinks"), -matches("tags"), 
+                                      dplyr::select(-matches("tags"), -matches("mediaLinks"), 
                                                     -matches("matchedPhrases"), -matches("sentiments")))
         
         # Media, tags, and so on, are stored as an embedded lists which we now need to extract.

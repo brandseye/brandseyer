@@ -1,5 +1,8 @@
 # News
 
+## 0.7.2 2015-09-02
+* bug fix: One account was return 0 mentions even though it had data. 
+
 ## 0.7.1 2015-09-02
 * bug fix: can once again use *account_count* across multiple accounts.
 

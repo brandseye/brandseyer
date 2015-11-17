@@ -159,7 +159,7 @@ account_mentions.character <- function(code, filter,
             ))    
         }
         mentions <- dplyr::tbl_df(results$data %>%
-                                      dplyr::select(-matches("tags"), -matches("mediaLinks"), 
+                                      dplyr::select( -matches("mediaLinks"), -matches("tags"),
                                                     -matches("matchedPhrases"), -matches("sentiments")))
         
         # Media, tags, and so on, are stored as an embedded lists which we now need to extract.

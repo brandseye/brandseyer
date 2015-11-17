@@ -1,5 +1,8 @@
 # News
 
+## 0.7.3 2015-09-17
+* bug fix: Reverting a previous change which resulted in no data being returned.
+
 ## 0.7.2 2015-09-02
 * bug fix: One account was return 0 mentions even though it had data. 
 

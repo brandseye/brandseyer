@@ -161,6 +161,13 @@ account_mentions.character <- function(code, filter,
         mentions <- dplyr::tbl_df(results$data %>%
                                       dplyr::select( -matches("mediaLinks"), -matches("tags"),
                                                     -matches("matchedPhrases"), -matches("sentiments")))
+        # This is a complete hack to solve a problem where sometimes dplyr will select nothing, and just changing column order
+        # sorts it out.
+        if (nrow(mentions) == 0 && nrow(results$data) != 0) {
+            mentions <- dplyr::tbl_df(results$data %>%
+                                          dplyr::select(-matches("sentiments"), -matches("tags"), -matches("mediaLinks"), 
+                                                        -matches("matchedPhrases")))
+        }
         
         # Media, tags, and so on, are stored as an embedded lists which we now need to extract.
         # A mention may have multiple media entities, tags, etc, attached.

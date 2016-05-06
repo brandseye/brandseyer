@@ -1,5 +1,8 @@
 # News
 
+## 0.7.4 2016-05-06
+* bug fix: Fixed a problem with various accounts return 0 data.
+
 ## 0.7.3 2015-09-17
 * bug fix: Reverting a previous change which resulted in no data being returned.
 

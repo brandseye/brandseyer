@@ -159,14 +159,16 @@ account_mentions.character <- function(code, filter,
             ))    
         }
         mentions <- dplyr::tbl_df(results$data %>%
-                                      dplyr::select( -matches("mediaLinks"), -matches("tags"),
-                                                    -matches("matchedPhrases"), -matches("sentiments")))
+                                      dplyr::select( -dplyr::matches("mediaLinks"), -dplyr::matches("tags"),
+                                                    -dplyr::matches("matchedPhrases"), -dplyr::matches("sentiments")))
         # This is a complete hack to solve a problem where sometimes dplyr will select nothing, and just changing column order
         # sorts it out.
         if (nrow(mentions) == 0 && nrow(results$data) != 0) {
             mentions <- dplyr::tbl_df(results$data %>%
-                                          dplyr::select(-matches("sentiments"), -matches("tags"), -matches("mediaLinks"), 
-                                                        -matches("matchedPhrases")))
+                                          dplyr::select(-dplyr::matches("sentiments"), 
+                                                        -dplyr::matches("tags"), 
+                                                        -dplyr::matches("mediaLinks"), 
+                                                        -dplyr::matches("matchedPhrases")))
         }
         
         # Media, tags, and so on, are stored as an embedded lists which we now need to extract.
@@ -187,6 +189,7 @@ account_mentions.character <- function(code, filter,
         tag_mention_ids <- c()
         tag_ids <- c()
         tag_names <- c()
+        tag_namespaces <- c()
         
         raw_media <- if (media_present) results$data[, 'mediaLinks'] else NULL
         raw_tags <- if (tags_present) results$data[, 'tags'] else NULL
@@ -238,6 +241,7 @@ account_mentions.character <- function(code, filter,
                         tag_mention_ids <- c(tag_mention_ids, results$data[i, 1])
                         tag_ids <- c(tag_ids, tag_data[j, 1])
                         tag_names <- c(tag_names, tag_data[j, 2])
+                        tag_namespaces <- c(tag_namespaces, tag_data[j, 3])
                     }
                 }
             }
@@ -261,7 +265,8 @@ account_mentions.character <- function(code, filter,
         if (tags_present) {
             tags <- data.frame(mention.id = tag_mention_ids,
                                tag.id = tag_ids,
-                               tag = tag_names)
+                               tag = tag_names,
+                               namespace = tag_namespaces)
         }    
         
         return(process_mentions(structure(

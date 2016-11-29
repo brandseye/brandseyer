@@ -1,7 +1,7 @@
 Package: brandseyer
 Type: Package
 Title: Provides access to data stored in a BrandsEye account
-Version: 0.7.4
+Version: 0.8.0
 Date: 2015-02-02
 Authors@R: c(
     person("Rudy", "Neeser", email = "rudy.neeser@brandseye.com", role = c("aut", "cre")),

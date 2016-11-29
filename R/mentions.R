@@ -190,6 +190,7 @@ account_mentions.character <- function(code, filter,
         tag_ids <- c()
         tag_names <- c()
         tag_namespaces <- c()
+        tag_descriptions <- c()
         
         raw_media <- if (media_present) results$data[, 'mediaLinks'] else NULL
         raw_tags <- if (tags_present) results$data[, 'tags'] else NULL
@@ -238,10 +239,12 @@ account_mentions.character <- function(code, filter,
                 if (!is.null(raw_tags[[i]])) {
                     tag_data <- raw_tags[[i]]
                     for (j in 1:nrow(tag_data)) {
+                        
                         tag_mention_ids <- c(tag_mention_ids, results$data[i, 1])
                         tag_ids <- c(tag_ids, tag_data[j, 1])
                         tag_names <- c(tag_names, tag_data[j, 2])
                         tag_namespaces <- c(tag_namespaces, tag_data[j, 3])
+                        tag_descriptions <- c(tag_descriptions, tag_data[j, 4])
                     }
                 }
             }
@@ -266,7 +269,8 @@ account_mentions.character <- function(code, filter,
             tags <- data.frame(mention.id = tag_mention_ids,
                                tag.id = tag_ids,
                                tag = tag_names,
-                               namespace = tag_namespaces)
+                               namespace = tag_namespaces, 
+                               description = tag_descriptions)
         }    
         
         return(process_mentions(structure(

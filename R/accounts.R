@@ -509,14 +509,20 @@ account_tags <- function(account, ...) {
 account_tags.brandseye.account <- function(account, .process = TRUE) {
     ids <- integer()
     names <- character()
+    namespaces <- character()
+    descriptions <- character()
         
     for (t in account$data$tags) {        
         ids <- c(ids, t$id)
         names <- c(names, t$name)
+        namespaces <- c(namespaces, t$namespace)
+        descriptions <- c(descriptions, ifelse(is.null(t$description) || nchar(t$description) == 0, "", t$description))
     }
         
     dplyr::tbl_df(data.frame(id = if(.process) factor(ids) else ids, 
                              name = names,
+                             namespace = namespaces,
+                             description = descriptions,
                              stringsAsFactors = FALSE))
 }
 

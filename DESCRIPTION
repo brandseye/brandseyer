@@ -16,6 +16,7 @@ Imports:
     jsonlite,
     dplyr,
     foreach,
-    stringr
+    stringr,
+    stringi
 Suggests: knitr
 VignetteBuilder: knitr

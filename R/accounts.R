@@ -152,13 +152,13 @@ account_code <- function(account) {
     UseMethod("account_code", account)
 }
 
-#' @describeIn account_code
+#' @describeIn account_code Returns the code from an \code{\link{account}} object.
 #' @export
 account_code.brandseye.account <- function(account) {
     account$code
 }
 
-#' @describeIn account_code
+#' @describeIn account_code Returns the code from a list of objects.
 #' @export
 account_code.list <- function(accounts) {
     sapply(accounts, function(ac) account_code(ac))
@@ -171,13 +171,13 @@ account_name <- function(account) {
     UseMethod("account_name", account)
 }
 
-#' @describeIn account_name
+#' @describeIn account_name Returns the name from an \code{\link{account}} object.
 #' @export
 account_name.brandseye.account <- function(account) {    
     account$name
 }
 
-#' @describeIn account_name
+#' @describeIn account_name Returns the name from a vector of account codes.
 #' @export
 account_name.character <- function(accounts) {
     sapply(accounts, function(ac) {
@@ -185,7 +185,7 @@ account_name.character <- function(accounts) {
     })
 }
 
-#' @describeIn account_name
+#' @describeIn account_name Returns the name of an account given by a factor of the account code.
 #' @export
 account_name.factor <- function(accounts) {
     account_name(as.character(accounts))
@@ -251,6 +251,9 @@ client_service.character <- function(code) {
 }
 
 #' @describeIn client_service
+#' 
+#' Returns the client service information for an account represented by a factor object.
+#' 
 #' @export
 client_service.factor <- function(code) {
     client_service(account(code))
@@ -258,9 +261,9 @@ client_service.factor <- function(code) {
 
 #' @describeIn client_service
 #' 
-#' Returns client service information for a list of \code{\link{account}} objects.
+#' Returns client service information for a vector of \code{\link{account}} objects.
 #' 
-#' @return As a special case, when given a list of accounts, 
+#' @return As a special case, when given a vector of accounts, 
 #'   this function returns a data frame with name and email columns,
 #'   and a row per account.
 #'   
@@ -384,6 +387,9 @@ account_brands.character <- function(account) {
 }
 
 #' @describeIn account_brands
+#' 
+#' Returns brand information for an account identified by a factor of its account code.
+#' 
 #' @export
 account_brands.factor <- function(account) {
     account_brands(account(account))
@@ -450,7 +456,7 @@ account_phrases.brandseye.account <- function(account, .process = TRUE) {
 
 #' @describeIn account_phrases
 #' 
-#' Returns account information for an account identified using an account code
+#' Returns account phrase information for an account identified using an account code
 #' 
 #' @examples
 #' \dontrun{
@@ -462,6 +468,10 @@ account_phrases.character <- function(account) {
 }
 
 #' @describeIn account_phrases
+#' 
+#' Returns account phrase information for an account identified by a factor of 
+#' its account code.
+#' 
 #' @export
 account_phrases.factor <- function(account) {
     account_phrases(account(account))
@@ -541,6 +551,9 @@ account_tags.character <- function(account) {
 }
 
 #' @describeIn account_tags
+#' 
+#' Returns tag information for an account represented by a factor of its account code.
+#' 
 #' @export
 account_tags.factor <- function(account) {
     account_tags(account(account))

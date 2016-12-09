@@ -1,22 +1,25 @@
 Package: brandseyer
 Type: Package
 Title: Provides access to data stored in a BrandsEye account
-Version: 0.8.1
+Version: 0.9.0
 Date: 2015-02-02
 Authors@R: c(
     person("Rudy", "Neeser", email = "rudy.neeser@brandseye.com", role = c("aut", "cre")),
-    person("BrandsEye", email = "contact@brandseye.com", role = "cph"))        
+    person("BrandsEye", email = "contact@brandseye.com", role = "cph"))
 Description: BrandsEye is a social media tracking and analytics company. This
     library provides access to the data stored in BrandsEye account directly
     from R itself.
 License: MIT
 URL: https://github.com/brandseye/brandseyer
-Imports: 
+Imports:
     httr,
     jsonlite,
     dplyr,
     foreach,
     stringr,
-    stringi
-Suggests: knitr
+    stringi,
+    tibble
+Suggests:
+    knitr
 VignetteBuilder: knitr
+RoxygenNote: 5.0.1

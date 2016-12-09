@@ -24,12 +24,12 @@
 #' @return Returns an object of class \code{mention.results}, which is a list
 #' containing at least the following items:
 #' \itemize{
-#' \item \code{mentions}, a \code{data.frame} of the mention data.
-#' \item \code{media}, a \code{data.frame} listing mime types and urls for media
+#' \item \code{mentions}, a \code{tibble} of the mention data.
+#' \item \code{media}, a \code{tibble} listing mime types and urls for media
 #'       associated with each mention.
-#' \item \code{tags}, a \code{data.frame} containing the tags that match the mentions.
-#' \item \code{phrases}, a \code{data.frame} listing the phrases that a mention matched.
-#' \item \code{sentiment}, a \code{data.frame} listing the sentiment associated with a mention, possibly
+#' \item \code{tags}, a \code{tibble} containing the tags that match the mentions.
+#' \item \code{phrases}, a \code{tibble} listing the phrases that a mention matched.
+#' \item \code{sentiment}, a \code{tibble} listing the sentiment associated with a mention, possibly
 #'       more than one per mention.
 #' }
 #' 
@@ -43,6 +43,9 @@ account_mentions <- function(account, ...) {
 }
 
 #' @describeIn account_mentions
+#' 
+#' Returns mentions for an account from a vector of character codes.
+#' 
 #' @param limit The maximum number of mentions to be returned
 #' @param offset Mentions are returned in an order. Offset says how many of the 
 #'   first mentions should be skipped.
@@ -81,6 +84,7 @@ account_mentions.character <- function(code, filter,
     if (!missing(include)) query <- c(include = include, query)
     
     `%>%` <- dplyr::`%>%`
+    tibble <- tibble::tibble
     embedded <- c("medialinks", "tags", "matchedphrases", "sentiments")
     
     process_mentions <- function(mentions) {
@@ -148,28 +152,35 @@ account_mentions.character <- function(code, filter,
         total <- results$total
         if (total == 0) {
             return(structure(
-                list(mentions = data.frame(), 
-                     media = data.frame(),
-                     tags = data.frame(),
-                     sentiment = data.frame(),
-                     phrases = data.frame(),
+                list(mentions = tibble(), 
+                     media = tibble(),
+                     tags = tibble(),
+                     sentiment = tibble(),
+                     phrases = tibble(),
                      total = total,
                      call = match.call()),
                 class = "mention.results"
             ))    
         }
-        mentions <- dplyr::tbl_df(results$data %>%
-                                      dplyr::select( -dplyr::matches("mediaLinks"), -dplyr::matches("tags"),
-                                                    -dplyr::matches("matchedPhrases"), -dplyr::matches("sentiments")))
+        mentions <- results$data %>%
+            dplyr::select(
+                -dplyr::matches("mediaLinks"),
+                -dplyr::matches("tags"),-dplyr::matches("matchedPhrases"),
+                -dplyr::matches("sentiments")
+            )
         # This is a complete hack to solve a problem where sometimes dplyr will select nothing, and just changing column order
         # sorts it out.
         if (nrow(mentions) == 0 && nrow(results$data) != 0) {
-            mentions <- dplyr::tbl_df(results$data %>%
-                                          dplyr::select(-dplyr::matches("sentiments"), 
-                                                        -dplyr::matches("tags"), 
-                                                        -dplyr::matches("mediaLinks"), 
-                                                        -dplyr::matches("matchedPhrases")))
+            mentions <- results$data %>%
+                dplyr::select(
+                    -dplyr::matches("sentiments"),
+                    -dplyr::matches("tags"),
+                    -dplyr::matches("mediaLinks"),
+                    -dplyr::matches("matchedPhrases")
+                )
         }
+        
+        mentions <- tibble::as_tibble(mentions)
         
         # Media, tags, and so on, are stored as an embedded lists which we now need to extract.
         # A mention may have multiple media entities, tags, etc, attached.
@@ -250,23 +261,25 @@ account_mentions.character <- function(code, filter,
             }
         }
         
-        sentiment <- data.frame(mention.id = s_mention_ids,
-                                brand.id = s_brand_ids,
-                                brand = s_names,
-                                sentiment = s_sentiments,
-                                description = s_sentiment_names)
+        sentiment <- tibble(
+            mention.id = s_mention_ids,
+            brand.id = s_brand_ids,
+            brand = s_names,
+            sentiment = s_sentiments,
+            description = s_sentiment_names
+        )
         
-        phrases <- data.frame(mention.id = p_mention_ids,
-                              phrase.id = p_phrase_ids,
-                              phrase = p_phrase)
+        phrases <- tibble(mention.id = p_mention_ids,
+                          phrase.id = p_phrase_ids,
+                          phrase = p_phrase)
         
         if (media_present) {
-            media <- data.frame(mention.id = media_mention_ids,
-                                mimetype = mimetypes,
-                                url = urls)    
+            media <- tibble(mention.id = media_mention_ids,
+                            mimetype = mimetypes,
+                            url = urls)    
         }
         if (tags_present) {
-            tags <- data.frame(
+            tags <- tibble(
                 mention.id = tag_mention_ids,
                 tag.id = tag_ids,
                 tag = tag_names,
@@ -289,7 +302,7 @@ account_mentions.character <- function(code, filter,
     
     # ---------------------------------
     # Multiple calls
-    
+    all_codes <- code
     filterMissing <- missing(filter)
     global_call <- match.call()
     pb <- NULL
@@ -316,11 +329,35 @@ account_mentions.character <- function(code, filter,
         args <- list(cd, authentication = authentication)
         if (!filterMissing) args <- c(filter = filter, args)
         results <- do.call("account_mentions", args)
-        if (length(results$mentions)) results$mentions <- data.frame(code = factor(cd, levels = code), results$mentions)
-        if (length(results$media)) results$media <- data.frame(code = factor(cd, levels = code), results$media)
-        if (length(results$tags)) results$tags <- data.frame(code = factor(cd, levels = code), results$tags)
-        if (length(results$sentiment)) results$sentiment <- data.frame(code = factor(cd, levels = code), results$sentiment) 
-        if (length(results$phrases)) results$phrases <- data.frame(code = factor(cd, levels = code), results$phrases) 
+        if (length(results$mentions)) {
+            results$mentions <- tibble::add_column(results$mentions,
+                                                   code = factor(rep(cd, nrow(results$mentions)), levels = all_codes),
+                                                   .before = TRUE)
+        }
+        if (length(results$media)) {
+            results$media <-
+                tibble::add_column(results$media,
+                                   code = factor(rep(cd, nrow(results$media)), levels = all_codes),
+                                   .before = TRUE)
+        }
+        if (length(results$tags)) {
+            results$tags <-
+                tibble::add_column(results$tags,
+                                   code = factor(rep(cd, nrow(results$tags)), levels = all_codes),
+                                   .before = TRUE)
+        }
+        if (length(results$sentiment)) {
+            results$sentiment <-
+                tibble::add_column(results$sentiment,
+                                   code = factor(rep(cd, nrow(results$sentiment)), levels = all_codes),
+                                   .before = TRUE)
+        }
+        if (length(results$phrases)) {
+            results$phrases <-
+                tibble::add_column(results$phrases,
+                                   code = factor(rep(cd, nrow(results$phrases)), levels = all_codes),
+                                   .before = TRUE)
+        }
         
         results
     }
@@ -333,6 +370,9 @@ account_mentions.character <- function(code, filter,
 }
 
 #' @describeIn account_mentions
+#' 
+#' Returns mentions for an account represented by an \code{\link{account}} object.
+#' 
 #' @export
 account_mentions.brandseye.account <- function(account, ...) {
     account_mentions(account$code, ..., authentication = account$auth)

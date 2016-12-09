@@ -1,5 +1,9 @@
 # News
 
+## 0.8.1 2016-12-09
+* bug fix: Tags that did not have descriptions could cause 
+  *account_mentions* to return no data.
+
 ## 0.8.0 2016-11-29
 * Tag information returned by *account_mentions* now returns the tag's namespace as well.
 * bug fix: a bug was introduced that required dplyr to be always loaded. This is

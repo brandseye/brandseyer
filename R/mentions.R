@@ -244,7 +244,7 @@ account_mentions.character <- function(code, filter,
                         tag_ids <- c(tag_ids, tag_data[j, 1])
                         tag_names <- c(tag_names, tag_data[j, 2])
                         tag_namespaces <- c(tag_namespaces, tag_data[j, 3])
-                        tag_descriptions <- c(tag_descriptions, tag_data[j, 4])
+                        tag_descriptions <- c(tag_descriptions, ifelse(is.null(tag_data[j, 4]) || is.na(tag_data[j, 4]), '', tag_data[j, 4]))
                     }
                 }
             }
@@ -261,17 +261,19 @@ account_mentions.character <- function(code, filter,
                               phrase = p_phrase)
         
         if (media_present) {
-            media <- data.frame(mention.id = media_mention_ids, 
+            media <- data.frame(mention.id = media_mention_ids,
                                 mimetype = mimetypes,
                                 url = urls)    
         }
         if (tags_present) {
-            tags <- data.frame(mention.id = tag_mention_ids,
-                               tag.id = tag_ids,
-                               tag = tag_names,
-                               namespace = tag_namespaces, 
-                               description = tag_descriptions)
-        }    
+            tags <- data.frame(
+                mention.id = tag_mention_ids,
+                tag.id = tag_ids,
+                tag = tag_names,
+                namespace = tag_namespaces,
+                description = tag_descriptions
+            )
+        }
         
         return(process_mentions(structure(
             list(mentions = mentions, 

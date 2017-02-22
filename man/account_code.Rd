@@ -21,7 +21,7 @@ Returns a BrandsEye \code{\link{account}}'s code.
 
 \item \code{list}: Returns the code from a list of objects.
 }}
+
 \author{
 Rudy Neeser
 }
-

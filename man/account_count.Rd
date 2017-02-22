@@ -2,8 +2,8 @@
 % Please edit documentation in R/count.R
 \name{account_count}
 \alias{account_count}
-\alias{account_count.brandseye.account}
 \alias{account_count.character}
+\alias{account_count.brandseye.account}
 \alias{account_count.factor}
 \title{Counting mentions, authors, etc}
 \usage{
@@ -78,6 +78,7 @@ of character strings.
 \item \code{factor}: Useful for querying accounts encoded as \code{factor}s, such as account
 codes given in \code{data_frames}.
 }}
+
 \section{Grouping}{
 
 
@@ -126,6 +127,7 @@ The canonical documentation for the filter language, and what fields
 may be grouped and included, is the BrandsEye API documentation
 \url{https://api.brandseye.com/docs}.
 }
+
 \examples{
 \dontrun{
 account_count("QUIR01BA", "published inthelast month") # Uses default authentication, 
@@ -168,9 +170,6 @@ account_count(ac, "published inthelast month and relevancy isnt irrelevant",
         groupby="published")
 }
 }
-\author{
-Rudy Neeser
-}
 \seealso{
 \code{\link{account}} for information on querying account information, including
      seeing the brands and phrases associated with an account.
@@ -179,4 +178,6 @@ Rudy Neeser
 
 \code{\link{sentiment}} for comparing sentiment values.
 }
-
+\author{
+Rudy Neeser
+}

@@ -36,4 +36,3 @@ account_count("QUIR01BA", "published inthelast month", groupby="sentiment") \%>\
 \author{
 Rudy Neeser
 }
-

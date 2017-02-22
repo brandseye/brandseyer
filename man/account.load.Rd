@@ -9,4 +9,3 @@ account.load(account)
 \description{
 Loads an account's details.
 }
-

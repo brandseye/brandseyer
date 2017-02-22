@@ -12,4 +12,3 @@ Prints a client service S3 class.
 \author{
 Rudy Neeser
 }
-

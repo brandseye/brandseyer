@@ -26,7 +26,7 @@ Returns the human readable name of an account
 
 \item \code{factor}: Returns the name of an account given by a factor of the account code.
 }}
+
 \author{
 Rudy Neeser
 }
-

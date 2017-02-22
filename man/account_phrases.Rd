@@ -35,6 +35,7 @@ its account code.
 \item \code{list}: Given a list of \code{account} objects, this will return
 a combined \code{data.frame} for the phrases in all of those accounts.
 }}
+
 \examples{
 \dontrun{
 # Returns account information for an account object
@@ -51,4 +52,3 @@ account_phrases(c("QUIR01BA", "BEAD33AA"))
 \author{
 Rudy Neeser
 }
-

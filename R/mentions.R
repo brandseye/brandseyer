@@ -224,10 +224,11 @@ account_mentions.character <- function(code, filter,
             sentiment_data <- raw_sentiment[[i]]
             s_mention_ids <- c(s_mention_ids, 
                                rep(results$data[i, 1], nrow(sentiment_data)))
-            s_brand_ids <- c(s_brand_ids, sentiment_data[,1])
+            s_brand_ids <- c(s_brand_ids, sentiment_data[, 1])
             s_names <- c(s_names, sentiment_data[, 2])
-            s_sentiments <- c(s_sentiments, sentiment_data[, 3])
-            s_sentiment_names <- c(s_sentiment_names, sentiment_data[, 4])
+            
+            s_sentiments <- c(s_sentiments, ifelse(ncol(sentiment_data) >= 3, sentiment_data[, 3], NA))
+            s_sentiment_names <- c(s_sentiment_names, ifelse(ncol(sentiment_data) >= 4, sentiment_data[, 4], NA))
             
             phrase_data <- raw_phrases[[i]]
             p_mention_ids <- c(p_mention_ids, 

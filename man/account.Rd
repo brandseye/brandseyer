@@ -29,6 +29,7 @@ matching a filter. For example,
 
 The above sums the number of mentions per country in the given account.
 }
+
 \examples{
 \dontrun{
 ac <- account("QUIR01BA", user = "rudy.neeser@brandseye.com", 
@@ -38,9 +39,6 @@ account("QUIR01BA", key="<api key here>")
 # Have a brief summary of an account
 summary(ac)      
 }
-}
-\author{
-Rudy Neeser
 }
 \seealso{
 \code{\link{list_accounts}} to see the accounts that you have access to.
@@ -56,4 +54,6 @@ Rudy Neeser
 \code{\link{client_service}} for the details of the client service
   person related to the account.
 }
-
+\author{
+Rudy Neeser
+}

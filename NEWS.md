@@ -1,8 +1,12 @@
 # News
 
+## 0.9.1 2017-02-22
+* bug fix: mentions that have no sentiment values are now properly read from the
+  api.
+
 ## 0.9.0 2016-12-09
-# * _account_mentions_ now uses tibbles rather than data frames.
-# * The documentation is slightly expanded.
+* _account_mentions_ now uses tibbles rather than data frames.
+* The documentation is slightly expanded.
 
 ## 0.8.1 2016-12-09
 * bug fix: Tags that did not have descriptions could cause 

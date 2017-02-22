@@ -2,8 +2,8 @@
 % Please edit documentation in R/mentions.R
 \name{account_mentions}
 \alias{account_mentions}
-\alias{account_mentions.brandseye.account}
 \alias{account_mentions.character}
+\alias{account_mentions.brandseye.account}
 \alias{account_mentions.factor}
 \title{Read mentions from your account}
 \usage{
@@ -53,6 +53,7 @@ Read mentions from your account
 
 \item \code{factor}: For querying mentions from accounts encoded as \code{factor}s.
 }}
+
 \examples{
 \dontrun{
 
@@ -61,13 +62,12 @@ account_mentions("QUIR01BA", "published inthelast day")
 
 }
 }
-\author{
-Rudy Neeser
-}
 \seealso{
 \code{\link{account_phrases}} to see a list of phrases in an account, with
          their associated brands.
 
 \code{\link{account_brands}} for a list of brands associated with the account.
 }
-
+\author{
+Rudy Neeser
+}

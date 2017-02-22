@@ -2,10 +2,10 @@
 % Please edit documentation in R/brandseyer.R
 \docType{package}
 \name{brandseyer}
+\alias{brandseyer}
+\alias{brandseye}
 \alias{BrandsEye}
 \alias{BrandsEyeR}
-\alias{brandseye}
-\alias{brandseyer}
 \alias{brandseyer-package}
 \title{brandseyer: access and perform analytics on your BrandsEye accounts}
 \description{
@@ -40,6 +40,7 @@ The home page is \url{https://github.com/brandseye/brandseyer/}
 If you have found a bug in the library, you can report it using the 
 library's GitHub issue tracker: \url{https://github.com/brandseye/brandseyer/issues}
 }
+
 \seealso{
 \code{\link{list_account_codes}} Find out what accounts you have access to.
 
@@ -47,4 +48,3 @@ library's GitHub issue tracker: \url{https://github.com/brandseye/brandseyer/iss
 
 \code{\link{account}} Find out about general account queries.
 }
-

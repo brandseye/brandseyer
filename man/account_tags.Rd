@@ -35,6 +35,7 @@ IDs of those tags.
 
 \item \code{list}: Returns tag information for a list of \code{\link{account}} objects
 }}
+
 \examples{
 \dontrun{
 account_tags("QUIR01BA")
@@ -44,4 +45,3 @@ account_tags(c("QUIR01BA", "BEAD33AA")
 \author{
 Rudy Neeser
 }
-

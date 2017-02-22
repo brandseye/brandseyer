@@ -3,9 +3,9 @@
 \name{account_brands}
 \alias{account_brands}
 \alias{account_brands.brandseye.account}
+\alias{account_brands.list}
 \alias{account_brands.character}
 \alias{account_brands.factor}
-\alias{account_brands.list}
 \title{Listing brands in an account}
 \usage{
 account_brands(account, ...)
@@ -32,6 +32,7 @@ whether they've been deleted or not, and the ID of the parent brand.
 
 \item \code{factor}: Returns brand information for an account identified by a factor of its account code.
 }}
+
 \examples{
 \dontrun{
 # Fetch brands for an \\code{\\link{account}} object.
@@ -54,4 +55,3 @@ account_brands("QUIR01BA")
 \author{
 Rudy Neeser
 }
-

@@ -41,6 +41,7 @@ for queries related to your account.
 
 \item \code{list}: Returns client service information for a vector of \code{\link{account}} objects.
 }}
+
 \examples{
 \dontrun{
 
@@ -64,4 +65,3 @@ client_service(list_account_codes())
 \author{
 Rudy Neeser
 }
-

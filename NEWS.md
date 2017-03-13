@@ -1,5 +1,9 @@
 # News
 
+## 0.9.2 2017-03-13
+* bug fix: mentions that have multiple sentiment values are now properly read 
+  from the api.
+
 ## 0.9.1 2017-02-22
 * bug fix: mentions that have no sentiment values are now properly read from the
   api.

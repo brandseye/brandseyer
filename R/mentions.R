@@ -1,4 +1,4 @@
-# Copyright (c) 2015, Brandseye PTY (LTD) 
+# Copyright (c) 2015-2017, Brandseye PTY (LTD) 
 # 
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -52,6 +52,10 @@ account_mentions <- function(account, ...) {
 #' @param include A character vector of extra information to include in the mentions
 #'        You can see this list in the api documentation available at
 #'        \url{https://api.brandseye.com/docs}
+#' @param select A character vector of the mention fields to be returned.
+#'        You can see this list in the api documentation available at
+#'        \url{https://api.brandseye.com/docs}
+#'        
 #' @param all Set to true if you would like to return all mentions from the account.
 #' @examples
 #' \dontrun{
@@ -64,6 +68,7 @@ account_mentions <- function(account, ...) {
 account_mentions.character <- function(code, filter, 
                                limit = 30, offset = 0,
                                include,
+                               select,
                                authentication = pkg.env$defaultAuthentication,
                                all = FALSE,
                                showProgress = length(code) != 0) {
@@ -77,11 +82,16 @@ account_mentions.character <- function(code, filter,
         include <- do.call(stringr::str_c, as.list(c(include, sep = ',')))
     }
     
+    if (!missing(select) && length(select) > 1) {
+        select <- do.call(stringr::str_c, as.list(c(select, sep = ',')))
+    }
+    
     # The sprintf is to avoid scientific notation for large numbers without
     # globally setting scipen in options.
     query <- list(limit = sprintf("%d", limit), offset = sprintf("%d", offset))
     if (!missing(filter)) query <- c(filter = filter, query)
     if (!missing(include)) query <- c(include = include, query)
+    if (!missing(select)) query <- c(select = select, query)
     
     `%>%` <- dplyr::`%>%`
     tibble <- tibble::tibble
@@ -107,6 +117,7 @@ account_mentions.character <- function(code, filter,
             results <- account_mentions(code, filter = filter,
                                         limit = 20000, offset = 0,
                                         include,
+                                        select,
                                         authentication = authentication,
                                         showProgress = false,
                                         all = FALSE)
@@ -187,6 +198,8 @@ account_mentions.character <- function(code, filter,
         data_names <- names(results$data)
         media_present <- 'mediaLinks' %in% data_names
         tags_present <- 'tags' %in% data_names    
+        sentiment_present <- 'sentiments' %in% data_names
+        phrases_present <- 'matchedPhrases' %in% data_names
         
         media <- NULL
         tags <- NULL
@@ -205,8 +218,8 @@ account_mentions.character <- function(code, filter,
         
         raw_media <- if (media_present) results$data[, 'mediaLinks'] else NULL
         raw_tags <- if (tags_present) results$data[, 'tags'] else NULL
-        raw_sentiment <- results$data[, 'sentiments']
-        raw_phrases <- results$data[, 'matchedPhrases']
+        raw_sentiment <- if(sentiment_present) results$data[, 'sentiments'] else NULL
+        raw_phrases <- if(phrases_present) results$data[, 'matchedPhrases'] else NULL
         
         # Sentiment data
         s_mention_ids <- c()
@@ -221,20 +234,25 @@ account_mentions.character <- function(code, filter,
         p_phrase <- c()
         
         for (i in 1:nrow(results$data)) {    
-            sentiment_data <- raw_sentiment[[i]]
-            s_mention_ids <- c(s_mention_ids, 
-                               rep(results$data[i, 1], nrow(sentiment_data)))
-            s_brand_ids <- c(s_brand_ids, sentiment_data[, 1])
-            s_names <- c(s_names, sentiment_data[, 2])
+            if (sentiment_present) {
+                sentiment_data <- raw_sentiment[[i]]
+                s_mention_ids <- c(s_mention_ids, 
+                                   rep(results$data[i, 1], nrow(sentiment_data)))
+                s_brand_ids <- c(s_brand_ids, sentiment_data[, 1])
+                s_names <- c(s_names, sentiment_data[, 2])
+                
+                s_sentiments <- c(s_sentiments, if (ncol(sentiment_data) >= 3) sentiment_data[, 3] else NA)
+                s_sentiment_names <- c(s_sentiment_names, if (ncol(sentiment_data) >= 4) sentiment_data[, 4] else NA)
+            }
             
-            s_sentiments <- c(s_sentiments, if (ncol(sentiment_data) >= 3) sentiment_data[, 3] else NA)
-            s_sentiment_names <- c(s_sentiment_names, if (ncol(sentiment_data) >= 4) sentiment_data[, 4] else NA)
-            
-            phrase_data <- raw_phrases[[i]]
-            p_mention_ids <- c(p_mention_ids, 
-                               rep(results$data[i, 1], nrow(phrase_data)))
-            p_phrase_ids <- c(p_phrase_ids, phrase_data[, 1])
-            p_phrase <- c(p_phrase, phrase_data[, 2])        
+            if (phrases_present) {
+                phrase_data <- raw_phrases[[i]]
+                p_mention_ids <- c(p_mention_ids, 
+                                   rep(results$data[i, 1], nrow(phrase_data)))
+                p_phrase_ids <- c(p_phrase_ids, phrase_data[, 1])
+                p_phrase <- c(p_phrase, phrase_data[, 2])        
+            }
+        
             
             if (media_present) {
                 if (!is.null(raw_media[[i]])) {
@@ -262,17 +280,22 @@ account_mentions.character <- function(code, filter,
             }
         }
         
-        sentiment <- tibble(
-            mention.id = s_mention_ids,
-            brand.id = s_brand_ids,
-            brand = s_names,
-            sentiment = s_sentiments,
-            description = s_sentiment_names
-        )
+        if (sentiment_present) {
+            sentiment <- tibble(
+                mention.id = s_mention_ids,
+                brand.id = s_brand_ids,
+                brand = s_names,
+                sentiment = s_sentiments,
+                description = s_sentiment_names
+            )
+        }
         
-        phrases <- tibble(mention.id = p_mention_ids,
-                          phrase.id = p_phrase_ids,
-                          phrase = p_phrase)
+        if (phrases_present) {
+            phrases <- tibble(mention.id = p_mention_ids,
+                              phrase.id = p_phrase_ids,
+                              phrase = p_phrase)
+        }
+        
         
         if (media_present) {
             media <- tibble(mention.id = media_mention_ids,

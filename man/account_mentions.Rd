@@ -10,8 +10,8 @@
 account_mentions(account, ...)
 
 \method{account_mentions}{character}(code, filter, limit = 30, offset = 0,
-  include, authentication = pkg.env$defaultAuthentication, all = FALSE,
-  showProgress = length(code) != 0)
+  include, select, authentication = pkg.env$defaultAuthentication,
+  all = FALSE, showProgress = length(code) != 0)
 
 \method{account_mentions}{brandseye.account}(account, ...)
 
@@ -24,6 +24,10 @@ account_mentions(account, ...)
 first mentions should be skipped.}
 
 \item{include}{A character vector of extra information to include in the mentions
+You can see this list in the api documentation available at
+\url{https://api.brandseye.com/docs}}
+
+\item{select}{A character vector of the mention fields to be returned.
 You can see this list in the api documentation available at
 \url{https://api.brandseye.com/docs}}
 

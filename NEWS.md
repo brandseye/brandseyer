@@ -1,5 +1,9 @@
 # News
 
+## 0.10.1 2017-05-30
+* bug fix: *account_mentions* now properly reads mentions that have multiple
+  values but are missing sentiment text.
+
 ## 0.10.0 2017-04-18
 * *account_mentions* now supports the _select_ parameter to select only certain
   fields from a mention.

@@ -20,6 +20,10 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #' Updates mentions for accounts
+#' 
+#' @return Nothing useful yet. This method is a placeholder for testing, and 
+#' its return values will likely change. Its interface will probably remain stable,
+#' although extra arguments may be added.
 #'
 #' @export
 account_update <- function(account, ...) {
@@ -28,16 +32,46 @@ account_update <- function(account, ...) {
 
 
 #' Updates mentions for accounts supplied as a vector of character codes.
+#' 
+#' @describeIn account_update
+#' 
+#' @details This function is solely for testing purposes, and its behaviour
+#' may change in future versions.
+#' 
+#' @param code A character string for the account to update
+#' @param filter A filter selecting mentions to update
+#' @param tag Either an id of a tag to update the selected mentions with, or
+#'            a character string holding a tag name.
+#' 
+#' @author Rudy Neeser
 #'
 #' @export
 account_update.character <- function(code, filter, 
-                                     tag = NA,
+                                     tag,
                                      authentication = pkg.env$defaultAuthentication) {
     message("Update")
     message("Authentication is: ", authentication$user)
+    
+    update <- c()
+    if (!missing(tag)) {
+        update <- c(stringr::str_c("tag = ", ifelse(is.numeric(tag), 
+                                                     as.character(tag),
+                                                     stringr::str_c("'", tag, "'"))), 
+                    update)
+    }
+    
+    message("Update is", update)
+    
+    query <- list()
+    if (!missing(filter)) query <- c(filter = filter, query)
+    query <- c(update = stringr::str_c(update, collapse = ','), query)
+    
+    print(query)
+    
+    
     url <- paste0("https://api.brandseye.com/rest/accounts/", code, "/mentions")
     data <- httr::PUT(url, httr::authenticate(authentication$user, authentication$password),
-                      query = list(filter="published inthelast year", update="tag='r tag1'"))
+                      query = query)
     check_errors(data)
 
     results <- jsonlite::fromJSON(httr::content(data, "text"), flatten=TRUE)

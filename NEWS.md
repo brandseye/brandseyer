@@ -1,5 +1,10 @@
 # News
 
+## 0.11.0 2017-06-12
+* Added a test form for a new update function, *account_update*. This is not
+  a stable version of the function, and its behaviour may change in the near 
+  future. 
+
 ## 0.10.1 2017-05-30
 * bug fix: *account_mentions* now properly reads mentions that have multiple
   values but are missing sentiment text.

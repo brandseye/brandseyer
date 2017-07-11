@@ -8,7 +8,7 @@
 account_update(account, ...)
 
 \method{account_update}{character}(code, filter, tag, sentiment,
-  authentication = pkg.env$defaultAuthentication)
+  auto.confirm = FALSE, authentication = pkg.env$defaultAuthentication)
 }
 \arguments{
 \item{code}{A character string for the account to update}
@@ -20,6 +20,11 @@ a character string holding a tag name.}
 
 \item{sentiment}{An integer representing sentiment. A value between -5 and 5. 
 0 is not a valid number, and 1 represents neutral sentiment.}
+
+\item{auto.confirm}{Some actions, such as setting sentiment, will ask for interactive
+confirmation of the action. If you're running from a script, this 
+can be inconvenient. You can override that behaviour by setting
+this parameter to \code{TRUE}. Buyer beware.}
 }
 \value{
 Nothing useful yet. This method is a placeholder for testing, and 

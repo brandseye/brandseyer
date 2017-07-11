@@ -43,7 +43,11 @@ account_update <- function(account, ...) {
 #' @param tag Either an id of a tag to update the selected mentions with, or
 #'            a character string holding a tag name.
 #' @param sentiment An integer representing sentiment. A value between -5 and 5. 
-#'                  0 is not a valid number, and 1 represents neutral sentiment.           
+#'                  0 is not a valid number, and 1 represents neutral sentiment.   
+#' @param auto.confirm Some actions, such as setting sentiment, will ask for interactive
+#'                     confirmation of the action. If you're running from a script, this 
+#'                     can be inconvenient. You can override that behaviour by setting
+#'                     this parameter to \code{TRUE}. Buyer beware.                         
 #' 
 #' @author Rudy Neeser
 #'

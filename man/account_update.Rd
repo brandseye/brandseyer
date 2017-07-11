@@ -7,7 +7,7 @@
 \usage{
 account_update(account, ...)
 
-\method{account_update}{character}(code, filter, tag,
+\method{account_update}{character}(code, filter, tag, sentiment,
   authentication = pkg.env$defaultAuthentication)
 }
 \arguments{
@@ -17,6 +17,9 @@ account_update(account, ...)
 
 \item{tag}{Either an id of a tag to update the selected mentions with, or
 a character string holding a tag name.}
+
+\item{sentiment}{An integer representing sentiment. A value between -5 and 5. 
+0 is not a valid number, and 1 represents neutral sentiment.}
 }
 \value{
 Nothing useful yet. This method is a placeholder for testing, and 

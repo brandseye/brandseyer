@@ -36,12 +36,14 @@ account_update <- function(account, ...) {
 #' @describeIn account_update
 #' 
 #' @details This function is solely for testing purposes, and its behaviour
-#' may change in future versions.
+#' may change in future versions. 
 #' 
 #' @param code A character string for the account to update
 #' @param filter A filter selecting mentions to update
 #' @param tag Either an id of a tag to update the selected mentions with, or
 #'            a character string holding a tag name.
+#' @param sentiment An integer representing sentiment. A value between -5 and 5. 
+#'                  0 is not a valid number, and 1 represents neutral sentiment.           
 #' 
 #' @author Rudy Neeser
 #'

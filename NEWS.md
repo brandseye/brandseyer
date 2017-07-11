@@ -1,5 +1,9 @@
 # News
 
+## 0.12.0 2017-07-11
+* *update_mention* can now update sentiment. 
+* bug fix: grouping by sentimentVerified now works.
+
 ## 0.11.0 2017-06-12
 * Added a test form for a new update function, *account_update*. This is not
   a stable version of the function, and its behaviour may change in the near 

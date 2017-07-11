@@ -48,10 +48,8 @@ account_update <- function(account, ...) {
 #' @export
 account_update.character <- function(code, filter, 
                                      tag,
+                                     sentiment,
                                      authentication = pkg.env$defaultAuthentication) {
-    message("Update")
-    message("Authentication is: ", authentication$user)
-    
     update <- c()
     if (!missing(tag)) {
         update <- c(stringr::str_c("tag = ", ifelse(is.numeric(tag), 
@@ -60,13 +58,18 @@ account_update.character <- function(code, filter,
                     update)
     }
     
-    message("Update is", update)
+    if (!missing(sentiment)) {
+        update <- c(stringr::str_c("sentiment = ", sentiment), update)
+    }
+    
+    if (length(update) == 0) {
+        stop("No update parameters have been supplied, such as tag or sentiment")
+    }
+
     
     query <- list()
     if (!missing(filter)) query <- c(filter = filter, query)
     query <- c(update = stringr::str_c(update, collapse = ','), query)
-    
-    print(query)
     
     
     url <- paste0("https://api.brandseye.com/rest/accounts/", code, "/mentions")

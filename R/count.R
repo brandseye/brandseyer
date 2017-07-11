@@ -1,4 +1,4 @@
-# Copyright (c) 2015, Brandseye PTY (LTD) 
+# Copyright (c) 2015,2017, Brandseye PTY (LTD) 
 # 
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -179,10 +179,8 @@ account_count.character <- function(accounts,
             else if (n == "country") {
                 results[, n] <- factor(as.data.frame(replace(results[, n], results[, n] == "UN", NA))[, n])
             }
-            else if (tolower(n) %in% factorItems) {                
-                results[, n] <- factor(as.data.frame(replace(results[, n], 
-                                                             results[, n] == "UNKNOWN",
-                                                             NA))[, n])
+            else if (tolower(n) %in% factorItems) {    
+                replace(results[, n], results[, n] == "UNKNOWN", NA)
             }
             else if (tolower(n) == "sentiment") {
                 results[, n] <- sentiment(as.data.frame(replace(results[, n], results[, n] == "UN", NA))[, n])

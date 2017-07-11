@@ -34,3 +34,16 @@ check_errors <- function(data) {
         stop("BrandsEye API error: ", message, call. = FALSE)
     }
 }
+
+#' Confirm an action.
+#' 
+#' Asks the user to answer Yes or No after prompting them with a message.
+#' 
+#' @param message A message to display to the user.
+#' 
+#' @author Rudy Neeser
+confirm <- function(message) {
+    answer <- readline(paste(message, "Are you sure you want to proceed? [Y/N] "))
+    if (toupper(answer) != 'Y') return(FALSE)
+    TRUE
+}

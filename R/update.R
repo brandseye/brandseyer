@@ -51,6 +51,7 @@ account_update <- function(account, ...) {
 account_update.character <- function(code, filter, 
                                      tag,
                                      sentiment,
+                                     auto.confirm = FALSE,
                                      authentication = pkg.env$defaultAuthentication) {
     update <- c()
     if (!missing(tag)) {
@@ -61,6 +62,9 @@ account_update.character <- function(code, filter,
     }
     
     if (!missing(sentiment)) {
+        if (!auto.confirm && !confirm("This could damage a lot of data in an account.")) {
+            stop("Action cancelled by the user")
+        }
         update <- c(stringr::str_c("sentiment = ", sentiment), update)
     }
     

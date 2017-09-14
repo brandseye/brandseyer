@@ -351,7 +351,7 @@ account_mentions.character <- function(code, filter,
         i <<- i + 1
         
         args <- list(cd, authentication = authentication)
-        if (!filterMissing) args <- c(filter = filter, args)
+        if (!filterMissing) args <- c(filter = filter, args, all = all)
         results <- do.call("account_mentions", args)
         if (length(results$mentions)) {
             results$mentions <- tibble::add_column(results$mentions,

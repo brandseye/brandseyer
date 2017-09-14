@@ -3,6 +3,7 @@
 ## 0.12.1 2017-09-14
 * *account_mentions* bug fix: we now support the all flag when pulling mentions
   from multiple accounts.
+* *account_mentions* bug fix: better handling of empty sentiment values  
 
 ## 0.12.0 2017-07-11
 * *update_mention* can now update sentiment. 

@@ -236,13 +236,16 @@ account_mentions.character <- function(code, filter,
         for (i in 1:nrow(results$data)) {    
             if (sentiment_present) {
                 sentiment_data <- raw_sentiment[[i]]
+            
+                sent_row <- ifelse(is.null(nrow(sentiment_data)), 0, nrow(sentiment_data))
+                sent_col <- ifelse(is.null(ncol(sentiment_data)), 0, ncol(sentiment_data))
                 s_mention_ids <- c(s_mention_ids, 
-                                   rep(results$data[i, 1], nrow(sentiment_data)))
+                                   rep(results$data[i, 1], sent_row))
                 s_brand_ids <- c(s_brand_ids, sentiment_data[, 1])
                 s_names <- c(s_names, sentiment_data[, 2])
                 
-                s_sentiments <- c(s_sentiments, if (ncol(sentiment_data) >= 3) sentiment_data[, 3] else rep(NA, nrow(sentiment_data)))
-                s_sentiment_names <- c(s_sentiment_names, if (ncol(sentiment_data) >= 4) sentiment_data[, 4] else rep(NA, nrow(sentiment_data)))
+                s_sentiments <- c(s_sentiments, if (sent_col >= 3) sentiment_data[, 3] else rep(NA, sent_row))
+                s_sentiment_names <- c(s_sentiment_names, if (sent_col >= 4) sentiment_data[, 4] else rep(NA, sent_row))
             }
             
             if (phrases_present) {

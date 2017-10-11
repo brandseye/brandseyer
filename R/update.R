@@ -55,6 +55,7 @@ account_update <- function(account, ...) {
 account_update.character <- function(code, filter, 
                                      tag,
                                      sentiment,
+                                     media,
                                      auto.confirm = FALSE,
                                      authentication = pkg.env$defaultAuthentication) {
     update <- c()
@@ -70,6 +71,10 @@ account_update.character <- function(code, filter,
             stop("Action cancelled by the user")
         }
         update <- c(stringr::str_c("sentiment = ", sentiment), update)
+    }
+
+    if (!missing(media)) {
+        update <- c(stringr::str_c("media = ", media), update)
     }
     
     if (length(update) == 0) {

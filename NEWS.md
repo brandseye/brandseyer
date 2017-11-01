@@ -1,5 +1,8 @@
 # News
 
+## 0.13.0 2017-10-11
+* *account_update* Added support for updating media type
+
 ## 0.12.1 2017-09-14
 * *account_mentions* bug fix: we now support the all flag when pulling mentions
   from multiple accounts.

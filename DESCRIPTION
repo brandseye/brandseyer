@@ -5,6 +5,7 @@ Version: 0.13.0
 Date: 2015-02-02
 Authors@R: c(
     person("Constance", "Neeser", email = "connie@brandseye.com", role = c("aut", "cre")),
+    person("Lara", "Basson", email = "lara@brandseye.com", role = c("cbt")),
     person("BrandsEye", email = "contact@brandseye.com", role = "cph"))
 Description: BrandsEye is a social media tracking and analytics company. This
     library provides access to the data stored in BrandsEye account directly

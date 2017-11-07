@@ -50,6 +50,7 @@ account_update <- function(account, ...) {
 #'                     this parameter to \code{TRUE}. Buyer beware.                         
 #' 
 #' @author Rudy Neeser
+#' @author Lara Basson
 #'
 #' @export
 account_update.character <- function(code, filter, 

@@ -49,7 +49,7 @@
 #' 
 #' @examples
 #' \dontrun{
-#' ac <- account("QUIR01BA", user = "rudy.neeser@@brandseye.com", 
+#' ac <- account("QUIR01BA", user = "connie@@brandseye.com", 
 #'               password = "This is not my real password")
 #' account("QUIR01BA", key="<api key here>")        
 #' 
@@ -57,7 +57,7 @@
 #' summary(ac)      
 #' }
 #' @export
-#' @author Rudy Neeser
+#' @author Constance Neeser
 account <- function (code, key = NULL, user = NULL, password = NULL,
                      auth = pkg.env$defaultAuthentication) {        
     if (is.null(auth)) auth <- authentication(user = user, password = password, key = key)
@@ -77,7 +77,7 @@ account <- function (code, key = NULL, user = NULL, password = NULL,
 
 #' Print's details of a brandseye account.
 #' @export
-#' @author Rudy Neeser
+#' @author Constance Neeser
 print.brandseye.account <- function(account, ...) {
     output <- matrix(c(account$code, account_name(account), account$auth$user), ncol = 1)
     colnames(output) <- ""
@@ -89,7 +89,7 @@ print.brandseye.account <- function(account, ...) {
 #' 
 #' \code{summary} method for class "\code{brandseye.account}".
 #' @export
-#' @author Rudy Neeser
+#' @author Constance Neeser
 summary.brandseye.account <- function(account, ...) {
     lastMonthVolume <- count(account, "published inthelast month", groupby="relevancy")
     total <- sum(lastMonthVolume$count)
@@ -121,7 +121,7 @@ summary.brandseye.account <- function(account, ...) {
 
 #' Prints a summary of a BrandsEye \code{\link{account}}
 #' @export
-#' @author Rudy Neeser
+#' @author Constance Neeser
 print.summary.brandseye.account <- function(s.ac, ...) {
     cat("BrandsEye Account:\n")
     print(s.ac$account)
@@ -147,7 +147,7 @@ account.load <- function(account) {
 
 #' Returns a BrandsEye \code{\link{account}}'s code. 
 #' @export
-#' @author Rudy Neeser
+#' @author Constance Neeser
 account_code <- function(account) {
     UseMethod("account_code", account)
 }
@@ -166,7 +166,7 @@ account_code.list <- function(accounts) {
 
 #' Returns the human readable name of an account
 #' @export
-#' @author Rudy Neeser
+#' @author Constance Neeser
 account_name <- function(account) {
     UseMethod("account_name", account)
 }
@@ -209,7 +209,7 @@ account_name.factor <- function(accounts) {
 #'  account's client service person, with \code{name} and
 #'  \code{email} fields.
 #' @export
-#' @author Rudy Neeser 
+#' @author Constance Neeser 
 client_service <- function(account) {
     UseMethod("client_service", account)
 }
@@ -284,7 +284,7 @@ client_service.list <- function(accounts) {
 
 #' Prints a client service S3 class.
 #' @export
-#' @author Rudy Neeser
+#' @author Constance Neeser
 print.brandseye.clientService <- function(client_service) {
     display <- matrix(c(client_service$name, client_service$email), 2, 1)
     rownames(display) <- c("name", "email")
@@ -297,7 +297,7 @@ print.brandseye.clientService <- function(client_service) {
 #' This returns a \code{data.frame} containing brand IDs, their names,
 #' whether they've been deleted or not, and the ID of the parent brand.
 #' @export
-#' @author Rudy Neeser
+#' @author Constance Neeser
 account_brands <- function(account, ...) {
     UseMethod("account_brands", account)
 }
@@ -401,7 +401,7 @@ account_brands.factor <- function(account) {
 #' account, their IDs, the IDs of the brands that the phrase is associated
 #' with, and a flag indicating whether the phrase is inactive or deleted.
 #' @export
-#' @author Rudy Neeser
+#' @author Constance Neeser
 account_phrases <- function(account, ...) {
     UseMethod("account_phrases", account)
 }
@@ -505,7 +505,7 @@ account_phrases.list <- function(accounts) {
 #' This returns a data frame of tags available in an account, along with the 
 #' IDs of those tags.
 #' @export
-#' @author Rudy Neeser
+#' @author Constance Neeser
 account_tags <- function(account, ...) {
     UseMethod("account_tags", account)
 }
@@ -586,16 +586,16 @@ account_tags.list <- function(accounts) {
 #' 
 #' list_accounts(key = "my api key")
 #' 
-#' list_accounts(user = "rudy.neeser@@brandseye.com", 
+#' list_accounts(user = "connie@@brandseye.com", 
 #'               password = "my brandseye password")
 #' 
-#' auth <- authentication(user = "rudy.neeser@@brandseye.com", 
+#' auth <- authentication(user = "connie@@brandseye.com", 
 #'                        password = "my brandseye password")
 #' list_accounts(auth)
 #' 
 #' }
 #' @export
-#' @author Rudy Neeser
+#' @author Constance Neeser
 list_accounts <- function(auth = pkg.env$defaultAuthentication, key = NULL, user = NULL, password = NULL) {
     if (is.null(auth)) auth <- authentication(key = key, user = user, password = password)
     url <- paste0("https://api.brandseye.com/rest/accounts/")

@@ -14,5 +14,5 @@ Pass the results from httr calls to the API to examine errors
 and report on them in a standard way.
 }
 \author{
-Rudy Neeser
+Constance Neeser
 }

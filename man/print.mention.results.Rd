@@ -10,5 +10,5 @@
 Prints a summary of the results from a call to \code{\link{account_mentions}}
 }
 \author{
-Rudy Neeser
+Constance Neeser
 }

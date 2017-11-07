@@ -36,7 +36,7 @@
 #' @seealso \code{\link{account_phrases}} to see a list of phrases in an account, with
 #'          their associated brands.
 #' @seealso \code{\link{account_brands}} for a list of brands associated with the account.
-#' @author Rudy Neeser
+#' @author Constance Neeser
 #' @export
 account_mentions <- function(account, ...) {
     UseMethod("account_mentions", account)
@@ -416,7 +416,7 @@ account_mentions.factor <- function(account, ...) {
 
 #' Prints a summary of the results from a call to \code{\link{account_mentions}}
 #' @export
-#' @author Rudy Neeser
+#' @author Constance Neeser
 print.mention.results <- function(mentions, ...) {
     cat("\nCall:\n")
     print(mentions$call)

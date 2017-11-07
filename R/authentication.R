@@ -38,7 +38,7 @@
 #' }
 #' 
 #' @export
-#' @author Rudy Neeser
+#' @author Constance Neeser
 authentication <- function(key = NULL, user = NULL, password = NULL) {
     if (is.null(key) & (is.null(user) | is.null(password)))
         stop("You must choose to authenticate with an API key or a username / password pair")
@@ -91,7 +91,7 @@ authentication_filename <- function() {
 #' 
 #' \verb{
 #'  \{ 
-#'      "user": "rudy.neeser@@brandseye.com",
+#'      "user": "connie@@brandseye.com",
 #'      "password": "This would be awkward if it were my real password"
 #'  \}
 #' }

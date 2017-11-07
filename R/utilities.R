@@ -26,7 +26,7 @@
 #' 
 #' @param data Data returned from an \code{httr} call.
 #' 
-#' @author Rudy Neeser
+#' @author Constance Neeser
 check_errors <- function(data) {
     if (httr::status_code(data) == 401) stop("You are not authorised to access this account")
     if (httr::status_code(data) != 200) {
@@ -41,7 +41,7 @@ check_errors <- function(data) {
 #' 
 #' @param message A message to display to the user.
 #' 
-#' @author Rudy Neeser
+#' @author Constance Neeser
 confirm <- function(message) {
     answer <- readline(paste(message, "Are you sure you want to proceed? [Y/N] "))
     if (toupper(answer) != 'Y') return(FALSE)

@@ -10,5 +10,5 @@
 Print's details of a brandseye account.
 }
 \author{
-Rudy Neeser
+Constance Neeser
 }

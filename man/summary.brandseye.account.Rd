@@ -10,5 +10,5 @@
 \code{summary} method for class "\code{brandseye.account}".
 }
 \author{
-Rudy Neeser
+Constance Neeser
 }

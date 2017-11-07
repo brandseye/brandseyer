@@ -10,5 +10,5 @@
 Prints a summary of a BrandsEye \code{\link{account}}
 }
 \author{
-Rudy Neeser
+Constance Neeser
 }

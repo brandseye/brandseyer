@@ -74,5 +74,5 @@ account_mentions("QUIR01BA", "published inthelast day")
 \code{\link{account_brands}} for a list of brands associated with the account.
 }
 \author{
-Rudy Neeser
+Constance Neeser
 }

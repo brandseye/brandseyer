@@ -25,10 +25,10 @@ along with their name and status.
 
 list_accounts(key = "my api key")
 
-list_accounts(user = "rudy.neeser@brandseye.com", 
+list_accounts(user = "connie@brandseye.com", 
               password = "my brandseye password")
 
-auth <- authentication(user = "rudy.neeser@brandseye.com", 
+auth <- authentication(user = "connie@brandseye.com", 
                        password = "my brandseye password")
 list_accounts(auth)
 
@@ -40,5 +40,5 @@ account_count(list_account_codes(), "published inthelast day")
 }
 }
 \author{
-Rudy Neeser
+Constance Neeser
 }

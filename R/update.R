@@ -49,7 +49,7 @@ account_update <- function(account, ...) {
 #'                     can be inconvenient. You can override that behaviour by setting
 #'                     this parameter to \code{TRUE}. Buyer beware.                         
 #' 
-#' @author Rudy Neeser
+#' @author Constance Neeser
 #' @author Lara Basson
 #'
 #' @export

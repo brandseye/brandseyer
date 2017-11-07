@@ -52,7 +52,7 @@ To specify a username and password pair, the file should contain:
 
 \verb{
  \{ 
-     "user": "rudy.neeser@brandseye.com",
+     "user": "connie@brandseye.com",
      "password": "This would be awkward if it were my real password"
  \}
 }
@@ -108,5 +108,5 @@ account_count("QUIR01BA", "published inthelast month")
 
 }
 \author{
-Rudy Neeser
+Constance Neeser
 }

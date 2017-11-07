@@ -32,7 +32,7 @@ The above sums the number of mentions per country in the given account.
 
 \examples{
 \dontrun{
-ac <- account("QUIR01BA", user = "rudy.neeser@brandseye.com", 
+ac <- account("QUIR01BA", user = "connie@brandseye.com", 
               password = "This is not my real password")
 account("QUIR01BA", key="<api key here>")        
 
@@ -55,5 +55,5 @@ summary(ac)
   person related to the account.
 }
 \author{
-Rudy Neeser
+Constance Neeser
 }

@@ -39,7 +39,7 @@
 #' @seealso \code{\link{account_mentions}} for querying raw mention data.
 #' @seealso \code{\link{sentiment}} for comparing sentiment values.
 #' @export
-#' @author Rudy Neeser
+#' @author Constance Neeser
 account_count <- function(account, ...) {
     UseMethod("account_count", account)
 }

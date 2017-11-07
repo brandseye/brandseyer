@@ -46,7 +46,7 @@ may change in future versions.
 }}
 
 \author{
-Rudy Neeser
+Constance Neeser
 
 Lara Basson
 }

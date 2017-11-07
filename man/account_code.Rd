@@ -23,5 +23,5 @@ Returns a BrandsEye \code{\link{account}}'s code.
 }}
 
 \author{
-Rudy Neeser
+Constance Neeser
 }

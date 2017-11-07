@@ -179,5 +179,5 @@ account_count(ac, "published inthelast month and relevancy isnt irrelevant",
 \code{\link{sentiment}} for comparing sentiment values.
 }
 \author{
-Rudy Neeser
+Constance Neeser
 }

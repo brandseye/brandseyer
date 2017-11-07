@@ -1,6 +1,6 @@
 ---
 title: "An Introduction to BrandsEyeR"
-author: "Rudy Neeser"
+author: "Constance Neeser"
 date: "`r Sys.Date()`"
 output: 
     rmarkdown::html_vignette:

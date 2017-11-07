@@ -57,6 +57,7 @@ account_mentions <- function(account, ...) {
 #'        \url{https://api.brandseye.com/docs}
 #'        
 #' @param all Set to true if you would like to return all mentions from the account.
+#'            This overides the \code{limit} parameter.
 #' @examples
 #' \dontrun{
 #' 

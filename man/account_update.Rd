@@ -7,7 +7,7 @@
 \usage{
 account_update(account, ...)
 
-\method{account_update}{character}(code, filter, tag, sentiment,
+\method{account_update}{character}(code, filter, tag, sentiment, media,
   auto.confirm = FALSE, authentication = pkg.env$defaultAuthentication)
 }
 \arguments{
@@ -47,4 +47,6 @@ may change in future versions.
 
 \author{
 Rudy Neeser
+
+Lara Basson
 }

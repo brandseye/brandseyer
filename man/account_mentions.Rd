@@ -31,7 +31,8 @@ You can see this list in the api documentation available at
 You can see this list in the api documentation available at
 \url{https://api.brandseye.com/docs}}
 
-\item{all}{Set to true if you would like to return all mentions from the account.}
+\item{all}{Set to true if you would like to return all mentions from the account.
+This overides the \code{limit} parameter.}
 }
 \value{
 Returns an object of class \code{mention.results}, which is a list

@@ -1,6 +1,7 @@
 # News
 
 ## 0.14.0 2018-01-26
+* *account_mentions* No longer returns title and extract for tweets.
 * Better support for reporting to the user that they need to authenticate themselves.
 
 ## 0.13.0 2017-10-11

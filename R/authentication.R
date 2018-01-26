@@ -1,4 +1,4 @@
-# Copyright (c) 2015, Brandseye PTY (LTD) 
+# Copyright (c) 2015, 2018, Brandseye PTY (LTD) 
 # 
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -47,9 +47,17 @@ authentication <- function(key = NULL, user = NULL, password = NULL) {
     if (is.null(password)) password <- key;
     if (is.null(password)) stop("Please provide an API key");
     
+    # Want to see if the user has admin privelages.
+    me <- getUserImpl(user = user, password = password)
+    isAdmin = FALSE
+    if (!is.null(me$admin) && !is.na(me$admin)) {
+        isAdmin = me$admin 
+    }
+    
     structure(list(
         username = user,
-        password = password
+        password = password,
+        admin = isAdmin
     ), class = "brandseye.auth")    
 }
 
@@ -185,4 +193,21 @@ ensureAuthenticated <- function(authentication) {
     if (is.null(authentication)) {
         stop("You are not authenticated. Use the authentication function to do so.")
     }
+    
+    # url <- paste0("https://mash.brandseye.com/rest/users/me")
+    # data <- httr::GET(url, httr::authenticate(authenticaton$user, authenticaton$password))
+    # results <- jsonlite::fromJSON(httr::content(data, "text"))
+    # 
+    # results
+}
+
+#' Low level function to access user information.
+#' 
+#' @author Constance Neeser
+getUserImpl <- function(user, password) {
+    url <- paste0("https://mash.brandseye.com/rest/users/me")
+    data <- httr::GET(url, httr::authenticate(user, password))
+    results <- jsonlite::fromJSON(httr::content(data, "text"))
+    
+    results
 }

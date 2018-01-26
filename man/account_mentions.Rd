@@ -5,7 +5,7 @@
 \alias{account_mentions.character}
 \alias{account_mentions.brandseye.account}
 \alias{account_mentions.factor}
-\title{Read mentions from your account}
+\title{Read mentions from your account.}
 \usage{
 account_mentions(account, ...)
 
@@ -48,7 +48,8 @@ containing at least the following items:
 }
 }
 \description{
-Read mentions from your account
+Returns mentions from your account. Note that, because of service level agreements
+with Twitter, we are not able to provide you with the text of tweets.
 }
 \section{Methods (by class)}{
 \itemize{

@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2017, Brandseye PTY (LTD) 
+# Copyright (c) 2015-2018, Brandseye PTY (LTD) 
 # 
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -19,7 +19,10 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#' Read mentions from your account
+#' Read mentions from your account. 
+#' 
+#' Returns mentions from your account. Note that, because of service level agreements
+#' with Twitter, we are not able to provide you with the text of tweets. 
 #' 
 #' @return Returns an object of class \code{mention.results}, which is a list
 #' containing at least the following items:
@@ -183,6 +186,13 @@ account_mentions.character <- function(code, filter,
                 -dplyr::matches("tags"),-dplyr::matches("matchedPhrases"),
                 -dplyr::matches("sentiments")
             )
+        
+        if (!authentication$admin) {
+            mentions <- mentions %>% 
+                mutate(title = ifelse(site == 'twitter.com', NA, title),
+                       extract = ifelse(site == 'twitter.com', NA, extract))
+        }
+        
         # This is a complete hack to solve a problem where sometimes dplyr will select nothing, and just changing column order
         # sorts it out.
         if (nrow(mentions) == 0 && nrow(results$data) != 0) {

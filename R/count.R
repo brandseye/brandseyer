@@ -156,6 +156,8 @@ account_count.character <- function(accounts,
                                     showProgress = length(accounts) > 10,
                                     .process = TRUE) {  
     
+    ensureAuthenticated(authentication)
+    
     if (length(groupby) > 1) groupby <- do.call(stringr::str_c, as.list(c(groupby, sep = ',')))
     if (length(include) > 1) include <- do.call(stringr::str_c, as.list(c(include, sep = ',')))
     if (length(count) > 1) count <- do.call(stringr::str_c, as.list(c(count, sep = ',')))

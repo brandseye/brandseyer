@@ -73,6 +73,9 @@ account_mentions.character <- function(code, filter,
                                authentication = pkg.env$defaultAuthentication,
                                all = FALSE,
                                showProgress = length(code) != 0) {
+    
+    ensureAuthenticated(authentication)
+    
     # Because we attempt to read all mentions from the account, 
     # and this can take some time to do, we want
     # to ensure that we ignore any mentions that might have come in after the call

@@ -173,3 +173,16 @@ authenticate <- function(key = NULL, user = NULL, password = NULL, save = FALSE)
     
     pkg.env$defaultAuthentication    
 }
+
+#' Check that the user is authenticated.
+#' 
+#' Check that the user is authenticated, and provide a consistent error message.
+#' 
+#' @param authentication The authentication object
+#' 
+#' @author Constance Neeser
+ensureAuthenticated <- function(authentication) {
+    if (is.null(authentication)) {
+        stop("You are not authenticated. Use the authentication function to do so.")
+    }
+}

@@ -1,5 +1,8 @@
 # News
 
+## 0.14.0 2018-01-26
+* Better support for reporting to the user that they need to authenticate themselves.
+
 ## 0.13.0 2017-10-11
 * *account_update* Added support for updating media type
 

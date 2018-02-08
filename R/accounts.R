@@ -100,7 +100,7 @@ summary.brandseye.account <- function(account, ...) {
     rownames(counts) <- c("Total", "Relevant", "Irrelevant")
     colnames(counts) <- c("Mentions")  
     
-    published <- count(account, "published inthelast month", groupby="published", 
+    published <- account_count(account, "published inthelast month", groupby="published", 
                        include="engagement")
     averages <- matrix(c(mean(published$count), 
                          sd(published$count),

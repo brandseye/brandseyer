@@ -267,7 +267,8 @@ account_count.character <- function(accounts,
 #' @export
 account_count.brandseye.account <- function(account, filter = NULL, groupby = NULL, 
                                     include = NULL) {
-    account_count(account$code, account$auth, filter = filter, groupby = groupby, include = include)
+    account_count(account$code, authentication = account$auth, 
+                  filter = filter, groupby = groupby, include = include)
 }
 
 #' @describeIn account_count

@@ -3,6 +3,8 @@
 ## 0.15.0 2018-02-08
 * Account information is now fetched directly from mash.
 * *account_storage* New method added to determine if an account is V3 or V4.
+* bug fix: *account_count* now correctly passes authentication info for account objects.
+* bug fix: *summary* now works again.
 
 ## 0.14.0 2018-01-26
 * *account_mentions* No longer returns title and extract for tweets.

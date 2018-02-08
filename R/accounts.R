@@ -135,12 +135,15 @@ print.summary.brandseye.account <- function(s.ac, ...) {
 #' Loads an account's details.
 account.load <- function(account) {
     if (is.null(account$data)) {
-        url = paste0("https://api.brandseye.com/rest/accounts/", account$code)
-        data <- httr::GET(url, httr::authenticate(account$auth$user, account$auth$password))    
+        url = paste0("https://mash.brandseye.com/rest/accounts/", account$code)
+        query <- list(include="tags,brands")
+        data <- httr::GET(url, httr::authenticate(account$auth$user, account$auth$password), query = query)    
         check_errors(data)
         account$data <- httr::content(data)        
         account_name(account) <- account$data$name
         
+        add_class <- paste0("brandseye.account.", stringr::str_to_lower(account$data$storage))
+        class(account) <-  c(add_class, class(account))
     }
     account
 }

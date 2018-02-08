@@ -2,6 +2,7 @@
 
 ## 0.15.0 2018-02-08
 * Account information is now fetched directly from mash.
+* Account objects now have an additional class indicating their storage type.
 * *account_storage* New method added to determine if an account is V3 or V4.
 * bug fix: *account_count* now correctly passes authentication info for account objects.
 * bug fix: *summary* now works again.

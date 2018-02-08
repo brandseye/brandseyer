@@ -87,8 +87,9 @@ account_update.character <- function(code, filter,
     if (!missing(filter)) query <- c(filter = filter, query)
     query <- c(update = stringr::str_c(update, collapse = ','), query)
     
-    
+    print(glue("Update is {query}"))
     url <- paste0("https://api.brandseye.com/rest/accounts/", code, "/mentions")
+    print(glue("url is '{url}'"))
     data <- httr::PUT(url, httr::authenticate(authentication$user, authentication$password),
                       query = query)
     check_errors(data)

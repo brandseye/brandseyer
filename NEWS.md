@@ -1,5 +1,8 @@
 # News
 
+## 0.15.0 2018-02-08
+* Account information is now fetched directly from mash.
+
 ## 0.14.0 2018-01-26
 * *account_mentions* No longer returns title and extract for tweets.
 * Better support for reporting to the user that they need to authenticate themselves.

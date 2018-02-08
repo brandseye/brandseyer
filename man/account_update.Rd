@@ -3,14 +3,27 @@
 \name{account_update}
 \alias{account_update}
 \alias{account_update.character}
+\alias{account_update.brandseye.account.v3}
+\alias{account_update.brandseye.account.v4}
 \title{Updates mentions for accounts}
 \usage{
 account_update(account, ...)
 
 \method{account_update}{character}(code, filter, tag, sentiment, media,
-  auto.confirm = FALSE, authentication = pkg.env$defaultAuthentication)
+  auto.confirm = FALSE, authentication = pkg.env$defaultAuthentication, ...)
+
+\method{account_update}{brandseye.account.v3}(account, filter, tag, sentiment,
+  media, auto.confirm = FALSE, authentication = account$auth)
+
+\method{account_update}{brandseye.account.v4}(account, filter, relevancy,
+  relevancyVerified, tag, removeTag, sentiment, sentimentVerified, media,
+  gender, language, race, addPhrases, removePhrases, addCrowdJobs,
+  removeCrowdJobs, updateAuthor, auto.confirm = FALSE,
+  authentication = account$auth)
 }
 \arguments{
+\item{account}{An account object.}
+
 \item{code}{A character string for the account to update}
 
 \item{filter}{A filter selecting mentions to update}
@@ -21,10 +34,41 @@ a character string holding a tag name.}
 \item{sentiment}{An integer representing sentiment. A value between -5 and 5. 
 0 is not a valid number, and 1 represents neutral sentiment.}
 
+\item{media}{A string indicating the category of the mentions, such as CONSUMER or PRESS}
+
 \item{auto.confirm}{Some actions, such as setting sentiment, will ask for interactive
 confirmation of the action. If you're running from a script, this 
 can be inconvenient. You can override that behaviour by setting
 this parameter to \code{TRUE}. Buyer beware.}
+
+\item{relevancy}{A string indicating whether mentions are relevant or not.}
+
+\item{relevancyVerified}{A boolean indicating whether to consider the relevancy as verifed or not.}
+
+\item{removeTag}{A list of tag IDs to remove}
+
+\item{sentimentVerified}{A boolean indicating whether to consider sentiment as verified or not.}
+
+\item{gender}{A string indicating the author's gender, such as MALE, FEMALE, OTHER, UNKNOWN.}
+
+\item{language}{A two letter, lowercase string, giving the iso 639-1 language code for the mention.}
+
+\item{race}{A string giving the race of the author}
+
+\item{addPhrases}{A list of integer IDs for phrases to add to the mention}
+
+\item{removePhrases}{A list of integer IDs for the phrases to remove from the mention}
+
+\item{addCrowdJobs}{A list of integer IDs representing crowd jobs related to this mention, to be
+added to the mention.}
+
+\item{removeCrowdJobs}{A list of integer IDs representing crowd jobs to be removed from this mention.}
+
+\item{updateAuthor}{Whether the stored author information related to this mention should be 
+updated with any of the information related to the author on this mention, such as race,
+gender, language or media.}
+
+\item{account}{The account object.}
 }
 \value{
 Nothing useful yet. This method is a placeholder for testing, and 
@@ -32,17 +76,32 @@ its return values will likely change. Its interface will probably remain stable,
 although extra arguments may be added.
 }
 \description{
-Updates mentions for accounts
+The various storage formats are only relevant in terms of what parameters
+they allow you to set on the mention. Calling \code{account} will return
+an account object of the appropriate type, while the \code{account_storage}
+method will indicate the type that it is. Most new accounts are stored in 
+the V4 format, and so support the parameters of the V4 generic method below.
 
 Updates mentions for accounts supplied as a vector of character codes.
+
+Updates mentions for accounts in our older format.
+
+Updates mentions for accounts stored in our newer format.
 }
 \details{
+This function is solely for testing purposes, and its behaviour
+may change in future versions.
+
 This function is solely for testing purposes, and its behaviour
 may change in future versions.
 }
 \section{Methods (by class)}{
 \itemize{
 \item \code{character}: 
+
+\item \code{brandseye.account.v3}: 
+
+\item \code{brandseye.account.v4}: 
 }}
 
 \author{

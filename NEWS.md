@@ -1,6 +1,7 @@
 # News
 
 ## 0.15.0 2018-02-08
+* Can now update V4 accounts
 * Account information is now fetched directly from mash.
 * Account objects now have an additional class indicating their storage type.
 * *account_storage* New method added to determine if an account is V3 or V4.

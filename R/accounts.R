@@ -91,7 +91,7 @@ print.brandseye.account <- function(account, ...) {
 #' @export
 #' @author Constance Neeser
 summary.brandseye.account <- function(account, ...) {
-    lastMonthVolume <- count(account, "published inthelast month", groupby="relevancy")
+    lastMonthVolume <- account_count(account, "published inthelast month", groupby="relevancy")
     total <- sum(lastMonthVolume$count)
     irrelevant <- dplyr::filter(lastMonthVolume, relevancy == 'IRRELEVANT')$count
     relevant <- total - irrelevant
@@ -198,6 +198,35 @@ account_name.factor <- function(accounts) {
 'account_name<-.brandseye.account' <- function(account, value) {
     account$name <- value
     account
+}
+
+#' Indicates the underlying storage type of the account.
+#' 
+#' Indicates the storage type of an account, such as whether it's V4 or the older V3.
+#' @export
+#' @author Constance Neeser
+account_storage <- function(account) {
+    UseMethod("account_storage", account)
+}
+
+#' @describeIn account_storage Returns the storage from an \code{\link{account}} object.
+#' @export
+account_storage.brandseye.account <- function(account) {    
+    account$data$storage
+}
+
+#' @describeIn account_storage Returns the storage from a vector of account codes.
+#' @export
+account_storage.character <- function(accounts) {
+    sapply(accounts, function(ac) {
+        account_storage(account(ac))
+    })
+}
+
+#' @describeIn account_storage Returns the storage of an account given by a factor of the account code.
+#' @export
+account_storage.factor <- function(accounts) {
+    account_storage(as.character(accounts))
 }
 
 #' Client service details

@@ -94,6 +94,8 @@ account_update.brandseye.account.v3 <- function(account, filter,
                                                 media,
                                                 auto.confirm = FALSE,
                                                 authentication = account$auth) {
+    ensureAuthenticated(authentication)
+    
     update <- c()
     if (!missing(tag)) {
         update <- c(stringr::str_c("tag = ", ifelse(is.numeric(tag), 
@@ -173,6 +175,8 @@ account_update.brandseye.account.v4 <- function(account, filter,
                                                 updateAuthor,
                                                 auto.confirm = FALSE,
                                                 authentication = account$auth) {
+    
+    ensureAuthenticated(authentication)
     
     if (missing(filter) || is.na(filter) || is.null(filter)) {
         stop("No filter provided")
@@ -263,5 +267,5 @@ account_update.brandseye.account.v4 <- function(account, filter,
     check_errors(data)
 
     results <- jsonlite::fromJSON(httr::content(data, "text"), flatten=TRUE)
-    results
+    invisible()
 }

@@ -180,6 +180,7 @@ account_mentions.character <- function(code, filter,
                 class = "mention.results"
             ))    
         }
+        
         mentions <- results$data %>%
             dplyr::select(
                 -dplyr::matches("mediaLinks"),

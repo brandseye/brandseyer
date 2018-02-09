@@ -78,7 +78,7 @@ although extra arguments may be added.
 \description{
 The various storage formats are only relevant in terms of what parameters
 they allow you to set on the mention. Calling \code{account} will return
-an account object of the appropriate type, while the \code{account_storage}
+an account object of the appropriate type, while the \code{account_api_version}
 method will indicate the type that it is. Most new accounts are stored in 
 the V4 format, and so support the parameters of the V4 generic method below.
 

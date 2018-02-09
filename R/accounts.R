@@ -203,33 +203,33 @@ account_name.factor <- function(accounts) {
     account
 }
 
-#' Indicates the underlying storage type of the account.
+#' Indicates the api version the account is available through.
 #' 
-#' Indicates the storage type of an account, such as whether it's V4 or the older V3.
+#' Indicates the api version used by the account, such as whether it's V4 or the older V3.
 #' @export
 #' @author Constance Neeser
-account_storage <- function(account) {
-    UseMethod("account_storage", account)
+account_api_version <- function(account) {
+    UseMethod("account_api_version", account)
 }
 
-#' @describeIn account_storage Returns the storage from an \code{\link{account}} object.
+#' @describeIn account_api_version Returns the api version from an \code{\link{account}} object.
 #' @export
-account_storage.brandseye.account <- function(account) {    
+account_api_version.brandseye.account <- function(account) {    
     account$data$storage
 }
 
-#' @describeIn account_storage Returns the storage from a vector of account codes.
+#' @describeIn account_api_version Returns the api version from a vector of account codes.
 #' @export
-account_storage.character <- function(accounts) {
+account_api_version.character <- function(accounts) {
     sapply(accounts, function(ac) {
-        account_storage(account(ac))
+        account_api_version(account(ac))
     })
 }
 
-#' @describeIn account_storage Returns the storage of an account given by a factor of the account code.
+#' @describeIn account_api_version Returns the api version of an account given by a factor of the account code.
 #' @export
-account_storage.factor <- function(accounts) {
-    account_storage(as.character(accounts))
+account_api_version.factor <- function(accounts) {
+    account_api_version(as.character(accounts))
 }
 
 #' Client service details

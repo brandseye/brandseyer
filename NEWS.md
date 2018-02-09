@@ -1,5 +1,11 @@
 # News
 
+## 0.16.0 2018-02-09
+* *update* now checks that there are authentication credentials
+* renamed *account_storage* to *account_api_version*
+* bug fix: can now fetch all data from V4 accounts
+
+
 ## 0.15.0 2018-02-08
 * Can now update V4 accounts
 * Account information is now fetched directly from mash.

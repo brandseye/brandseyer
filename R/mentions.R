@@ -111,6 +111,10 @@ account_mentions.character <- function(code, filter,
     
     
     if (length(code) == 1) {
+        # The V3 translation of V4 data breaks the paging information
+        # from the API, so we need to do our own counting.
+        total <- unlist(account_count(code, filter = filter))
+        
         if (all) {
             # Begin setting up to read all mentions matching the filter,
             # and then recursively execute to fetch the data.
@@ -129,7 +133,7 @@ account_mentions.character <- function(code, filter,
                                         showProgress = false,
                                         all = FALSE)
             
-            total <- results$total
+            results$total <- total
             numReturned <- nrow(results$mention)
             numSeen <- numReturned
             pb <- NULL
@@ -167,7 +171,7 @@ account_mentions.character <- function(code, filter,
         
         results <- jsonlite::fromJSON(httr::content(data, "text"), flatten=TRUE)
         
-        total <- results$total
+        results$total <- total
         if (total == 0) {
             return(structure(
                 list(mentions = tibble(), 

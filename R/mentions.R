@@ -147,6 +147,7 @@ account_mentions.character <- function(code, filter,
                 
             }
             
+            tmp.results <<- results
             cat(file=stderr(), glue::glue("numReturned {numReturned}; numSeen {numSeen}, total {total}"))
             while (numReturned > 0 && numSeen < total) {
                 cat(file=stderr(), "Iterating in while\n")

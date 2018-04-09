@@ -214,15 +214,15 @@ account_mentions.character <- function(code, filter,
         
         # This is a complete hack to solve a problem where sometimes dplyr will select nothing, and just changing column order
         # sorts it out.
-        if (nrow(mentions) == 0 && nrow(results$data) != 0) {
-            mentions <- results$data %>%
-                dplyr::select(
-                    -dplyr::matches("sentiments"),
-                    -dplyr::matches("tags"),
-                    -dplyr::matches("mediaLinks"),
-                    -dplyr::matches("matchedPhrases")
-                )
-        }
+        # if (nrow(mentions) == 0 && nrow(results$data) != 0) {
+        #     mentions <- results$data %>%
+        #         dplyr::select(
+        #             -dplyr::matches("sentiments"),
+        #             -dplyr::matches("tags"),
+        #             -dplyr::matches("mediaLinks"),
+        #             -dplyr::matches("matchedPhrases")
+        #         )
+        # }
         
         cat(file=stderr(), "----------------------------4")
         

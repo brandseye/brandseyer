@@ -78,7 +78,7 @@ account_mentions.character <- function(code, filter,
                                showProgress = length(code) != 0) {
     
     ensureAuthenticated(authentication)
-    cat(file=stderr(), glue::glue("Running on all. Offset: {offset}\n"))
+    cat(file=stderr(), glue::glue("Running on all. Offset: {offset}\n"), "\n")
     
     # Because we attempt to read all mentions from the account, 
     # and this can take some time to do, we want
@@ -115,6 +115,7 @@ account_mentions.character <- function(code, filter,
         # The V3 translation of V4 data breaks the paging information
         # from the API, so we need to do our own counting.
         total <- unlist(account_count(code, filter = filter))
+        cat(file=stderr(), glue::glue("Expecting to see {total} mentions"), "\n")
         
         if (all) {
             cat(file=stderr(), "Beginning of all\n")

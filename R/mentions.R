@@ -78,6 +78,7 @@ account_mentions.character <- function(code, filter,
                                showProgress = length(code) != 0) {
     
     ensureAuthenticated(authentication)
+    cat(file=stderr(), glue::glue("Running on all. Offset: {offset}\n"))
     
     # Because we attempt to read all mentions from the account, 
     # and this can take some time to do, we want
@@ -116,6 +117,7 @@ account_mentions.character <- function(code, filter,
         total <- unlist(account_count(code, filter = filter))
         
         if (all) {
+            cat(file=stderr(), "Beginning of all\n")
             # Begin setting up to read all mentions matching the filter,
             # and then recursively execute to fetch the data.
             if (missing(filter)) {
@@ -144,7 +146,9 @@ account_mentions.character <- function(code, filter,
                 
             }
             
+            cat(file=stderr(), glue::glue("numReturned {numReturned}; numSeen {numSeen}, total {total}"))
             while (numReturned > 0 && numSeen < total) {
+                cat(file=stderr(), "Iterating in while\n")
                 seconds <- account_mentions(code, filter = filter,
                                             limit = 20000, offset = numSeen,
                                             include,
@@ -185,14 +189,14 @@ account_mentions.character <- function(code, filter,
             ))    
         }
         
-        cat(file=stderr(), "--------[1]")
+        cat(file=stderr(), "--------[1]\n")
         mentions <- results$data %>%
             dplyr::select(
                 -dplyr::matches("mediaLinks"),
                 -dplyr::matches("tags"),-dplyr::matches("matchedPhrases"),
                 -dplyr::matches("sentiments")
             )
-        cat(file=stderr(), "--------[2]")
+        cat(file=stderr(), "--------[2]\n")
         
         if (!authentication$admin) {
             mentions <- mentions %>% 

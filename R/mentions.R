@@ -194,12 +194,12 @@ account_mentions.character <- function(code, filter,
         }
         
         cat(file=stderr(), "--------[1]\n")
-        # mentions <- results$data %>%
-        #     dplyr::select(
-        #         -dplyr::matches("mediaLinks"),
-        #         -dplyr::matches("tags"),-dplyr::matches("matchedPhrases"),
-        #         -dplyr::matches("sentiments")
-        #     )
+        mentions <- results$data %>%
+            dplyr::select(
+                -dplyr::matches("mediaLinks"),
+                -dplyr::matches("tags"),-dplyr::matches("matchedPhrases"),
+                -dplyr::matches("sentiments")
+            )
         mentions <- results$data
         # if (!is.null(results$data$mediaLinks)) {
         #     mentions <- subset(mentions, select = -c(mediaLinks))

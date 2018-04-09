@@ -174,6 +174,7 @@ account_mentions.character <- function(code, filter,
         data <- httr::GET(url, httr::authenticate(authentication$user, authentication$password), 
                           query = query)    
         check_errors(data)
+        cat(file = stderr(), glue::glue("Query is {query}"), "\n")
         
         results <- jsonlite::fromJSON(httr::content(data, "text"), flatten=TRUE)
         

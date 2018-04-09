@@ -230,7 +230,7 @@ account_mentions.character <- function(code, filter,
         cat(file=stderr(), "rows", nrow(mentions), nrow(results$data), "\n")
         cat(file=stderr(), "first compare", nrow(mentions) == 0, nrow(results$data) != 0, "\n")
         cat(file=stderr(), "second compare", nrow(mentions) == 0 && nrow(results$data) != 0, "\n")
-        print(mentions)
+        message(glue::glue("Mentions are: {mentions}"))
         if (nrow(mentions) == 0 && nrow(results$data) != 0) {
             cat(file=stderr(), "----------------------------[3.5]\n")
             mentions <- results$data %>%

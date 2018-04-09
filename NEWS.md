@@ -2,6 +2,7 @@
 
 ## 0.16.1 2018-04-09
 * bug fix: brandseyer now works better in shiny
+* *account_mentions* Now properly handles non SAST timezones when querying data.
 
 ## 0.16.0 2018-02-09
 * *update* now checks that there are authentication credentials

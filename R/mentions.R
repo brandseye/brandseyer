@@ -70,12 +70,12 @@ account_mentions <- function(account, ...) {
 #' }
 #' @export
 account_mentions.character <- function(code, filter, 
-                               limit = 30, offset = 0,
-                               include,
-                               select,
-                               authentication = pkg.env$defaultAuthentication,
-                               all = FALSE,
-                               showProgress = length(code) != 0) {
+                                       limit = 30, offset = 0,
+                                       include,
+                                       select,
+                                       authentication = pkg.env$defaultAuthentication,
+                                       all = FALSE,
+                                       showProgress = length(code) != 0) {
     
     ensureAuthenticated(authentication)
     
@@ -83,7 +83,8 @@ account_mentions.character <- function(code, filter,
     # and this can take some time to do, we want
     # to ensure that we ignore any mentions that might have come in after the call
     # was initially made. 
-    pickedUpRestriction <- format(Sys.time(), "pickedUp before '%F %R'")
+    pickedUpRestriction <- format(lubridate::with_tz(Sys.time(), account_timezone(code)),
+                                  "pickedUp before '%F %R'")
     
     if (!missing(include) && length(include) > 1) {
         include <- do.call(stringr::str_c, as.list(c(include, sep = ',')))
@@ -185,53 +186,22 @@ account_mentions.character <- function(code, filter,
             ))    
         }
         
-        cat(file=stderr(), "----------------------------[1]\n")
-        
-        # Using dplyr::select in this case does not work on shiny.
-        mentions <- results$data
-        if (!is.null(results$data$mediaLinks)) {
-            mentions <- subset(mentions, select = -c(mediaLinks))
-        }
-        if (!is.null(results$data$matchedPhrases)) {
-            mentions <- subset(mentions, select = -c(matchedPhrases))
-        }
-        if (!is.null(results$data$tags)) {
-            mentions <- subset(mentions, select = -c(tags))
-        }
-        if (!is.null(results$data$sentiments)) {
-            mentions <- subset(mentions, select = -c(sentiments))
-        }
-        
-        cat(file=stderr(), "----------------------------[2]\n")
-        
+        mentions <- results$data %>%
+            dplyr::select(
+                -dplyr::matches("mediaLinks"),
+                -dplyr::matches("tags"),-dplyr::matches("matchedPhrases"),
+                -dplyr::matches("sentiments")
+            )
+
         if (!authentication$admin) {
-            if (!is.null(results$data$mediaLinks)) {
-                mentions <- subset(mentions, select = -c(mediaLinks))
-            }
-            if (!is.null(results$data$matchedPhrases)) {
-                mentions <- subset(mentions, select = -c(matchedPhrases))
-            }
-            if (!is.null(results$data$tags)) {
-                mentions <- subset(mentions, select = -c(tags))
-            }
-            if (!is.null(results$data$sentiments)) {
-                mentions <- subset(mentions, select = -c(sentiments))
-            }
-            # mentions <- mentions %>% 
-            #     mutate(title = ifelse(site == 'twitter.com', NA, title),
-            #            extract = ifelse(site == 'twitter.com', NA, extract))
+            mentions <- mentions %>% 
+                mutate(title = ifelse(site == 'twitter.com', NA, title),
+                       extract = ifelse(site == 'twitter.com', NA, extract))
         }
-        
-        cat(file=stderr(), "----------------------------[3]\n")
         
         # This is a complete hack to solve a problem where sometimes dplyr will select nothing, and just changing column order
         # sorts it out.
-        
-        cat(file=stderr(), "rows", nrow(mentions), nrow(results$data), "\n")
-        cat(file=stderr(), "first compare", nrow(mentions) == 0, nrow(results$data) != 0, "\n")
-        cat(file=stderr(), "second compare", nrow(mentions) == 0 && nrow(results$data) != 0, "\n")
         if (nrow(mentions) == 0 && nrow(results$data) != 0) {
-            cat(file=stderr(), "----------------------------[3.5]\n")
             mentions <- results$data %>%
                 dplyr::select(
                     -dplyr::matches("sentiments"),
@@ -240,8 +210,6 @@ account_mentions.character <- function(code, filter,
                     -dplyr::matches("matchedPhrases")
                 )
         }
-        
-        cat(file=stderr(), "----------------------------4")
         
         mentions <- tibble::as_tibble(mentions)
         
@@ -288,7 +256,7 @@ account_mentions.character <- function(code, filter,
         for (i in 1:nrow(results$data)) {    
             if (sentiment_present) {
                 sentiment_data <- raw_sentiment[[i]]
-            
+                
                 sent_row <- ifelse(is.null(nrow(sentiment_data)), 0, nrow(sentiment_data))
                 sent_col <- ifelse(is.null(ncol(sentiment_data)), 0, ncol(sentiment_data))
                 s_mention_ids <- c(s_mention_ids, 
@@ -307,7 +275,7 @@ account_mentions.character <- function(code, filter,
                 p_phrase_ids <- c(p_phrase_ids, phrase_data[, 1])
                 p_phrase <- c(p_phrase, phrase_data[, 2])        
             }
-        
+            
             
             if (media_present) {
                 if (!is.null(raw_media[[i]])) {

@@ -101,7 +101,7 @@ summary.brandseye.account <- function(account, ...) {
     colnames(counts) <- c("Mentions")  
     
     published <- account_count(account, "published inthelast month", groupby="published", 
-                       include="engagement")
+                               include="engagement")
     averages <- matrix(c(mean(published$count), 
                          sd(published$count),
                          mean(published$engagement),
@@ -111,11 +111,11 @@ summary.brandseye.account <- function(account, ...) {
     colnames(averages) <- ""
     
     structure(list(
-            account = account,
-            counts = counts,
-            averages = averages
-        ), 
-        class = "summary.brandseye.account"
+        account = account,
+        counts = counts,
+        averages = averages
+    ), 
+    class = "summary.brandseye.account"
     )
 }
 
@@ -232,6 +232,35 @@ account_api_version.factor <- function(accounts) {
     account_api_version(as.character(accounts))
 }
 
+#' Gives the timezone that the account is in.
+#' 
+#' @export
+#' @author Constance Neeser
+account_timezone <- function(account) {
+    UseMethod("account_timezone", account)
+}
+
+#' @describeIn account_timezone Returns the timezone from an \code{\link{account}} object.
+#' @export
+account_timezone.brandseye.account <- function(account) {    
+    account$data$timezone
+}
+
+#' @describeIn account_timezone Returns the timezone from a vector of account codes.
+#' @export
+account_timezone.character <- function(accounts) {
+    sapply(accounts, function(ac) {
+        account_timezone(account(ac))
+    })
+}
+
+#' @describeIn account_timezone Returns the timezone of an account given by a factor of the account code.
+#' @export
+account_timezone.factor <- function(accounts) {
+    account_timezone(as.character(accounts))
+}    
+
+
 #' Client service details
 #' 
 #' Find out the details for the client service person to contact
@@ -310,8 +339,8 @@ client_service.factor <- function(code) {
 client_service.list <- function(accounts) {
     cs <- lapply(accounts, function(ac) client_service(ac))
     
-     data.frame(name = sapply(cs, function(cs) cs$name),
-                email = sapply(cs, function(cs) cs$email))
+    data.frame(name = sapply(cs, function(cs) cs$name),
+               email = sapply(cs, function(cs) cs$email))
 }
 
 #' Prints a client service S3 class.
@@ -400,7 +429,7 @@ account_brands.list <- function(accounts) {
         dplyr::mutate(code = factor(code),
                       id = factor(id),
                       parent = factor(parent))
-               
+    
 }
 
 #' @describeIn account_brands
@@ -521,7 +550,7 @@ account_phrases.factor <- function(account) {
 #' @export
 account_phrases.list <- function(accounts) {
     `%>%` <- dplyr::`%>%`    
-        
+    
     accounts %>% 
         lapply(function(ac) data.frame(code = account_code(ac),                                                      
                                        account_phrases(ac, .process = FALSE), 
@@ -560,11 +589,12 @@ account_tags.brandseye.account <- function(account, .process = TRUE) {
         namespaces <- c(namespaces, t$namespace)
         descriptions <- c(descriptions, ifelse(is.null(t$description) || nchar(t$description) == 0, "", t$description))
     }
-        
-    tibble::tibble(id = if(.process) factor(ids) else ids, 
-                   name = names,
-                   namespace = namespaces,
-                   description = descriptions)
+    
+    dplyr::tbl_df(data.frame(id = if(.process) factor(ids) else ids, 
+                             name = names,
+                             namespace = namespaces,
+                             description = descriptions,
+                             stringsAsFactors = FALSE))
 }
 
 #' @describeIn account_tags
@@ -632,7 +662,7 @@ list_accounts <- function(auth = pkg.env$defaultAuthentication, key = NULL, user
     url <- paste0("https://api.brandseye.com/rest/accounts/")
     data <- httr::GET(url, httr::authenticate(auth$user, auth$password))
     results <- jsonlite::fromJSON(httr::content(data, "text"))
-    tibble::as_tibble(results)
+    results
 }
 
 #' @describeIn list_accounts

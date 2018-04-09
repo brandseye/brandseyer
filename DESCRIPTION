@@ -12,14 +12,15 @@ Description: BrandsEye is a social media tracking and analytics company. This
     from R itself.
 License: MIT
 URL: https://github.com/brandseye/brandseyer
-Imports:
+Imports: 
     httr,
     jsonlite,
     dplyr,
     foreach,
     stringr,
     stringi,
-    tibble
+    tibble,
+    lubridate
 Suggests:
     knitr
 VignetteBuilder: knitr

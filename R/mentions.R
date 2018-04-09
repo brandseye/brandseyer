@@ -187,18 +187,18 @@ account_mentions.character <- function(code, filter,
         
         # Using dplyr::select in this case does not work on shiny.
         mentions <- results$data
-        if (!is.null(results$data$mediaLinks)) {
-            mentions <- subset(mentions, select = -c(mediaLinks))
-        }
-        if (!is.null(results$data$matchedPhrases)) {
-            mentions <- subset(mentions, select = -c(matchedPhrases))
-        }
-        if (!is.null(results$data$tags)) {
-            mentions <- subset(mentions, select = -c(tags))
-        }
-        if (!is.null(results$data$sentiments)) {
-            mentions <- subset(mentions, select = -c(sentiments))
-        }
+        # if (!is.null(results$data$mediaLinks)) {
+        #     mentions <- subset(mentions, select = -c(mediaLinks))
+        # }
+        # if (!is.null(results$data$matchedPhrases)) {
+        #     mentions <- subset(mentions, select = -c(matchedPhrases))
+        # }
+        # if (!is.null(results$data$tags)) {
+        #     mentions <- subset(mentions, select = -c(tags))
+        # }
+        # if (!is.null(results$data$sentiments)) {
+        #     mentions <- subset(mentions, select = -c(sentiments))
+        # }
         
         if (!authentication$admin) {
             mentions <- mentions %>% 

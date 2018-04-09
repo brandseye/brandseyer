@@ -190,12 +190,25 @@ account_mentions.character <- function(code, filter,
         }
         
         cat(file=stderr(), "--------[1]\n")
-        mentions <- results$data %>%
-            dplyr::select(
-                -dplyr::matches("mediaLinks"),
-                -dplyr::matches("tags"),-dplyr::matches("matchedPhrases"),
-                -dplyr::matches("sentiments")
-            )
+        # mentions <- results$data %>%
+        #     dplyr::select(
+        #         -dplyr::matches("mediaLinks"),
+        #         -dplyr::matches("tags"),-dplyr::matches("matchedPhrases"),
+        #         -dplyr::matches("sentiments")
+        #     )
+        mentions <- results$data
+        if (!is.null(results$data$mediaLinks)) {
+            mentions <- subset(mentions, select = -c(mediaLinks))
+        }
+        if (!is.null(results$data$matchedPhrases)) {
+            mentions <- subset(mentions, select = -c(matchedPhrases))
+        }
+        if (!is.null(results$data$tags)) {
+            mentions <- subset(mentions, select = -c(tags))
+        }
+        if (!is.null(results$data$sentiments)) {
+            mentions <- subset(mentions, select = -c(sentiments))
+        }
         cat(file=stderr(), "--------[2]\n")
         
         if (!authentication$admin) {

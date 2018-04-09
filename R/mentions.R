@@ -215,11 +215,11 @@ account_mentions.character <- function(code, filter,
         # This is a complete hack to solve a problem where sometimes dplyr will select nothing, and just changing column order
         # sorts it out.
         
-        cat(file=stderr(), glue::glue("trace {.traceback()}"))
+        traceback()
         
         cat(file=stderr(), "rows", nrow(mentions), nrow(results$data), "\n")
         cat(file=stderr(), "first compare", nrow(mentions) == 0, nrow(results$data) != 0, "\n")
-        cat(file=stderr(), "second compare 3", nrow(mentions) == 0 && nrow(results$data) != 0, "\n")
+        cat(file=stderr(), "second compare 4", nrow(mentions) == 0 && nrow(results$data) != 0, "\n")
         cat(file=stderr(), glue::glue("Mentions are: {mentions}"))
         if (nrow(mentions) == 0 && nrow(results$data) != 0) {
             cat(file=stderr(), "----------------------------[3.5]\n")

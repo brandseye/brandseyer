@@ -205,24 +205,36 @@ account_mentions.character <- function(code, filter,
         cat(file=stderr(), "----------------------------[2]")
         
         if (!authentication$admin) {
-            mentions <- mentions %>% 
-                mutate(title = ifelse(site == 'twitter.com', NA, title),
-                       extract = ifelse(site == 'twitter.com', NA, extract))
+            if (!is.null(results$data$mediaLinks)) {
+                mentions <- subset(mentions, select = -c(mediaLinks))
+            }
+            if (!is.null(results$data$matchedPhrases)) {
+                mentions <- subset(mentions, select = -c(matchedPhrases))
+            }
+            if (!is.null(results$data$tags)) {
+                mentions <- subset(mentions, select = -c(tags))
+            }
+            if (!is.null(results$data$sentiments)) {
+                mentions <- subset(mentions, select = -c(sentiments))
+            }
+            # mentions <- mentions %>% 
+            #     mutate(title = ifelse(site == 'twitter.com', NA, title),
+            #            extract = ifelse(site == 'twitter.com', NA, extract))
         }
         
         cat(file=stderr(), "----------------------------[3]")
         
         # This is a complete hack to solve a problem where sometimes dplyr will select nothing, and just changing column order
         # sorts it out.
-        # if (nrow(mentions) == 0 && nrow(results$data) != 0) {
-        #     mentions <- results$data %>%
-        #         dplyr::select(
-        #             -dplyr::matches("sentiments"),
-        #             -dplyr::matches("tags"),
-        #             -dplyr::matches("mediaLinks"),
-        #             -dplyr::matches("matchedPhrases")
-        #         )
-        # }
+        if (nrow(mentions) == 0 && nrow(results$data) != 0) {
+            mentions <- results$data %>%
+                dplyr::select(
+                    -dplyr::matches("sentiments"),
+                    -dplyr::matches("tags"),
+                    -dplyr::matches("mediaLinks"),
+                    -dplyr::matches("matchedPhrases")
+                )
+        }
         
         cat(file=stderr(), "----------------------------4")
         

@@ -185,7 +185,7 @@ account_mentions.character <- function(code, filter,
             ))    
         }
         
-        cat(file=stderr(), "----------------------------[1]")
+        cat(file=stderr(), "----------------------------[1]\n")
         
         # Using dplyr::select in this case does not work on shiny.
         mentions <- results$data
@@ -202,7 +202,7 @@ account_mentions.character <- function(code, filter,
             mentions <- subset(mentions, select = -c(sentiments))
         }
         
-        cat(file=stderr(), "----------------------------[2]")
+        cat(file=stderr(), "----------------------------[2]\n")
         
         if (!authentication$admin) {
             if (!is.null(results$data$mediaLinks)) {
@@ -222,11 +222,16 @@ account_mentions.character <- function(code, filter,
             #            extract = ifelse(site == 'twitter.com', NA, extract))
         }
         
-        cat(file=stderr(), "----------------------------[3]")
+        cat(file=stderr(), "----------------------------[3]\n")
         
         # This is a complete hack to solve a problem where sometimes dplyr will select nothing, and just changing column order
         # sorts it out.
+        
+        cat(file=stderr(), nrow(mentions), nrow(results$data), "\n")
+        cat(file=stderr(), nrow(mentions) == 0, nrow(results$data) != 0, "\n")
+        cat(file=stderr(), nrow(mentions) == 0 && nrow(results$data) != 0, "\n")
         if (nrow(mentions) == 0 && nrow(results$data) != 0) {
+            cat(file=stderr(), "----------------------------[3.5]\n")
             mentions <- results$data %>%
                 dplyr::select(
                     -dplyr::matches("sentiments"),

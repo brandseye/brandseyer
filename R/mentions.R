@@ -200,7 +200,7 @@ account_mentions.character <- function(code, filter,
                 -dplyr::matches("tags"),-dplyr::matches("matchedPhrases"),
                 -dplyr::matches("sentiments")
             )
-        mentions <- results$data
+
         # if (!is.null(results$data$mediaLinks)) {
         #     mentions <- subset(mentions, select = -c(mediaLinks))
         # }

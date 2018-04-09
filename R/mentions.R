@@ -229,7 +229,7 @@ account_mentions.character <- function(code, filter,
         
         cat(file=stderr(), "rows", nrow(mentions), nrow(results$data), "\n")
         cat(file=stderr(), "first compare", nrow(mentions) == 0, nrow(results$data) != 0, "\n")
-        cat(file=stderr(), "second compare 2", nrow(mentions) == 0 && nrow(results$data) != 0, "\n")
+        cat(file=stderr(), "second compare 3", nrow(mentions) == 0 && nrow(results$data) != 0, "\n")
         cat(file=stderr(), glue::glue("Mentions are: {mentions}"))
         if (nrow(mentions) == 0 && nrow(results$data) != 0) {
             cat(file=stderr(), "----------------------------[3.5]\n")

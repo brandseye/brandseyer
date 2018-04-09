@@ -78,7 +78,7 @@ account_mentions.character <- function(code, filter,
                                showProgress = length(code) != 0) {
     
     ensureAuthenticated(authentication)
-    cat(file=stderr(), glue::glue("Running on all. Offset: {offset}\n"), "\n")
+    cat(file=stderr(), glue::glue("->account_mentions Offset: {offset}\n"), "\n")
     
     # Because we attempt to read all mentions from the account, 
     # and this can take some time to do, we want
@@ -148,9 +148,9 @@ account_mentions.character <- function(code, filter,
             }
             
             tmp.results <<- results
-            cat(file=stderr(), glue::glue("numReturned {numReturned}; numSeen {numSeen}, total {total}"))
+            cat(file=stderr(), glue::glue("numReturned {numReturned}; numSeen {numSeen}, total {total}"), "\n")
             while (numReturned > 0 && numSeen < total) {
-                cat(file=stderr(), "Iterating in while\n")
+                cat(file=stderr(), glue::glue("Iterating on while. numSeen is {numSeen}"), "\n")
                 seconds <- account_mentions(code, filter = filter,
                                             limit = 20000, offset = numSeen,
                                             include,

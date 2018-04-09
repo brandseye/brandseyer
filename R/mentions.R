@@ -185,9 +185,8 @@ account_mentions.character <- function(code, filter,
             ))    
         }
         
-        mentions <- results$data %>%
-            dplyr::select(-mediaLinks, -tags, -matchedPhrases, -sentiments)
-
+        # Using dplyr::select in this case does not work on shiny.
+        mentions <- subset(results$data, select = -c(mediaLinks, tags, matchedPhrases, sentiments))
         
         if (!authentication$admin) {
             mentions <- mentions %>% 

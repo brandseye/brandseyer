@@ -185,12 +185,14 @@ account_mentions.character <- function(code, filter,
             ))    
         }
         
+        cat(file=stderr(), "--------[1]")
         mentions <- results$data %>%
             dplyr::select(
                 -dplyr::matches("mediaLinks"),
                 -dplyr::matches("tags"),-dplyr::matches("matchedPhrases"),
                 -dplyr::matches("sentiments")
             )
+        cat(file=stderr(), "--------[2]")
         
         if (!authentication$admin) {
             mentions <- mentions %>% 

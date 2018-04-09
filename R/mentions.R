@@ -380,6 +380,8 @@ account_mentions.character <- function(code, filter,
         )))    
     }
     
+    cat(file=stderr(), "Multiple calls happening")
+    
     # ---------------------------------
     # Multiple calls
     all_codes <- code

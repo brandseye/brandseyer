@@ -231,6 +231,35 @@ account_api_version.character <- function(accounts) {
 account_api_version.factor <- function(accounts) {
     account_api_version(as.character(accounts))
 }
+    
+#' Gives the timezone that the account is in.
+#' 
+#' @export
+#' @author Constance Neeser
+account_timezone <- function(account) {
+    UseMethod("account_timezone", account)
+}
+
+#' @describeIn account_timezone Returns the timezone from an \code{\link{account}} object.
+#' @export
+account_timezone.brandseye.account <- function(account) {    
+    account$data$timezone
+}
+
+#' @describeIn account_timezone Returns the timezone from a vector of account codes.
+#' @export
+account_timezone.character <- function(accounts) {
+    sapply(accounts, function(ac) {
+        account_timezone(account(ac))
+    })
+}
+
+#' @describeIn account_timezone Returns the timezone of an account given by a factor of the account code.
+#' @export
+account_timezone.factor <- function(accounts) {
+    account_timezone(as.character(accounts))
+}    
+
 
 #' Client service details
 #' 

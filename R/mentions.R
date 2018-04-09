@@ -84,7 +84,8 @@ account_mentions.character <- function(code, filter,
     # and this can take some time to do, we want
     # to ensure that we ignore any mentions that might have come in after the call
     # was initially made. 
-    pickedUpRestriction <- format(Sys.time(), "pickedUp before '%F %R'")
+    pickedUpRestriction <- format(lubridate::with_tz(Sys.time(), account_timezone(code)),
+                                  "pickedUp before '%F %R'")
     
     if (!missing(include) && length(include) > 1) {
         include <- do.call(stringr::str_c, as.list(c(include, sep = ',')))

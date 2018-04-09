@@ -186,11 +186,8 @@ account_mentions.character <- function(code, filter,
         }
         
         mentions <- results$data %>%
-            dplyr::select(
-                -dplyr::matches("mediaLinks"),
-                -dplyr::matches("tags"),-dplyr::matches("matchedPhrases"),
-                -dplyr::matches("sentiments")
-            )
+            dplyr::select(-mediaLinks, -tags, -matchedPhrases, -sentiments)
+
         
         if (!authentication$admin) {
             mentions <- mentions %>% 

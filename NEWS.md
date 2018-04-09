@@ -1,5 +1,8 @@
 # News
 
+## 0.16.1 2018-04-09
+* bug fix: brandseyer now works better in shiny
+
 ## 0.16.0 2018-02-09
 * *update* now checks that there are authentication credentials
 * renamed *account_storage* to *account_api_version*

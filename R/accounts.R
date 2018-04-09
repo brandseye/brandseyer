@@ -553,7 +553,7 @@ account_tags.brandseye.account <- function(account, .process = TRUE) {
     names <- character()
     namespaces <- character()
     descriptions <- character()
-        
+    
     for (t in account$data$tags) {        
         ids <- c(ids, t$id)
         names <- c(names, t$name)
@@ -561,11 +561,10 @@ account_tags.brandseye.account <- function(account, .process = TRUE) {
         descriptions <- c(descriptions, ifelse(is.null(t$description) || nchar(t$description) == 0, "", t$description))
     }
         
-    dplyr::tbl_df(data.frame(id = if(.process) factor(ids) else ids, 
-                             name = names,
-                             namespace = namespaces,
-                             description = descriptions,
-                             stringsAsFactors = FALSE))
+    tibble::tibble(id = if(.process) factor(ids) else ids, 
+                   name = names,
+                   namespace = namespaces,
+                   description = descriptions)
 }
 
 #' @describeIn account_tags
@@ -633,7 +632,7 @@ list_accounts <- function(auth = pkg.env$defaultAuthentication, key = NULL, user
     url <- paste0("https://api.brandseye.com/rest/accounts/")
     data <- httr::GET(url, httr::authenticate(auth$user, auth$password))
     results <- jsonlite::fromJSON(httr::content(data, "text"))
-    results
+    tibble::as_tibble(results)
 }
 
 #' @describeIn list_accounts

@@ -1,5 +1,10 @@
 # News
 
+## 0.17.0 2018-09-10
+* *account_tags* Now supplies the list of child tags.
+* Various account functions have been updated to make better use
+  of tidy universe functions.
+
 ## 0.16.1 2018-04-09
 * bug fix: brandseyer now works better in shiny
 * *account_mentions* Now properly handles non SAST timezones when querying data.

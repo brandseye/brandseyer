@@ -93,7 +93,7 @@ print.brandseye.account <- function(account, ...) {
 summary.brandseye.account <- function(account, ...) {
     lastMonthVolume <- account_count(account, "published inthelast month", groupby="relevancy")
     total <- sum(lastMonthVolume$count)
-    irrelevant <- dplyr::filter(lastMonthVolume, relevancy == 'IRRELEVANT')$count
+    irrelevant <- filter(lastMonthVolume, relevancy == 'IRRELEVANT')$count
     relevant <- total - irrelevant
     
     counts <- matrix(c(total, relevant, irrelevant), ncol = 1)    
@@ -337,11 +337,13 @@ client_service.factor <- function(code) {
 #' }
 #' @export
 client_service.list <- function(accounts) {
-    cs <- lapply(accounts, function(ac) client_service(ac))
-    
-    data.frame(name = sapply(cs, function(cs) cs$name),
-               email = sapply(cs, function(cs) cs$email))
+    purrr::map_df(accounts, function(ac) {
+        cs <- client_service(ac)
+        tibble(name = ifelse(is.null(cs$name), NA, cs$name),
+               email = cs$email)
+    })
 }
+    
 
 #' Prints a client service S3 class.
 #' @export
@@ -355,7 +357,7 @@ print.brandseye.clientService <- function(client_service) {
 
 #' Listing brands in an account
 #' 
-#' This returns a \code{data.frame} containing brand IDs, their names,
+#' This returns a \code{tibble} containing brand IDs, their names,
 #' whether they've been deleted or not, and the ID of the parent brand.
 #' @export
 #' @author Constance Neeser
@@ -374,7 +376,7 @@ account_brands <- function(account, ...) {
 #' account_brands(ac)
 #' }
 #' @export
-account_brands.brandseye.account <- function(account, .process = TRUE) {
+account_brands.brandseye.account <- function(account, .process = FALSE) {
     id <- integer()
     name <- character()
     deleted <- logical()
@@ -398,11 +400,10 @@ account_brands.brandseye.account <- function(account, .process = TRUE) {
     }
     
     
-    dplyr::tbl_df(data.frame(id = if(.process) factor(id) else id, 
-                             name = name, 
-                             deleted = deleted, 
-                             parent = if(.process) factor(parents) else parents,
-                             stringsAsFactors = FALSE))
+    tibble(id = if(.process) factor(id) else id, 
+           name = name, 
+           deleted = deleted, 
+           parent = if(.process) factor(parents) else parents)
 }
 
 #' @describeIn account_brands
@@ -411,7 +412,7 @@ account_brands.brandseye.account <- function(account, .process = TRUE) {
 #' 
 #' @examples
 #' \dontrun{
-#' # Returns a data.frame containing brand information for two accounts
+#' # Returns a tibble containing brand information for two accounts
 #' account_brands(c("QUIR01BA", "BEAD33AA"))
 #' 
 #' # Return brand information for all accounts that you have access to
@@ -419,17 +420,12 @@ account_brands.brandseye.account <- function(account, .process = TRUE) {
 #' }
 #' @export
 account_brands.list <- function(accounts) {
-    `%>%` <- dplyr::`%>%`    
-    
     accounts %>% 
-        lapply(function(ac) data.frame(code = account_code(ac),                                                      
-                                       account_brands(ac, .process = FALSE), 
-                                       stringsAsFactors = FALSE)) %>%
-        dplyr::bind_rows() %>%
-        dplyr::mutate(code = factor(code),
-                      id = factor(id),
-                      parent = factor(parent))
-    
+        purrr::map_df(function(ac) {
+            account_brands(ac) %>% 
+                mutate(code = account_code(ac))
+        }) %>% 
+        select(code, everything())
 }
 
 #' @describeIn account_brands
@@ -458,7 +454,7 @@ account_brands.factor <- function(account) {
 
 #' List phrases in an account
 #' 
-#' The returns a \code{data.frame} listing the phrases in an
+#' The returns a \code{tibble} listing the phrases in an
 #' account, their IDs, the IDs of the brands that the phrase is associated
 #' with, and a flag indicating whether the phrase is inactive or deleted.
 #' @export
@@ -478,7 +474,7 @@ account_phrases <- function(account, ...) {
 #' account_phrases(ac)
 #' }
 #' @export
-account_phrases.brandseye.account <- function(account, .process = TRUE) {
+account_phrases.brandseye.account <- function(account, .process = FALSE) {
     id <- integer()
     brand.id <- character()
     phrase <- character()
@@ -507,12 +503,11 @@ account_phrases.brandseye.account <- function(account, .process = TRUE) {
     }
     
     
-    dplyr::tbl_df(data.frame(id = if(.process) factor(id) else id, 
-                             brand.id = if(.process) factor(brand.id) else brand.id, 
-                             phrase = phrase, 
-                             inactive = inactive, 
-                             deleted = deleted, 
-                             stringsAsFactors = FALSE))
+    tibble(id = if(.process) factor(id) else id, 
+           brand.id = if(.process) factor(brand.id) else brand.id, 
+           phrase = phrase, 
+           inactive = inactive, 
+           deleted = deleted)
 }
 
 #' @describeIn account_phrases
@@ -541,7 +536,7 @@ account_phrases.factor <- function(account) {
 #' @describeIn account_phrases
 #' 
 #' Given a list of \code{account} objects, this will return
-#' a combined \code{data.frame} for the phrases in all of those accounts.
+#' a combined \code{tibble} for the phrases in all of those accounts.
 #' 
 #' @examples
 #' \dontrun{
@@ -549,16 +544,12 @@ account_phrases.factor <- function(account) {
 #' }
 #' @export
 account_phrases.list <- function(accounts) {
-    `%>%` <- dplyr::`%>%`    
-    
     accounts %>% 
-        lapply(function(ac) data.frame(code = account_code(ac),                                                      
-                                       account_phrases(ac, .process = FALSE), 
-                                       stringsAsFactors = FALSE)) %>%
-        dplyr::bind_rows() %>%
-        dplyr::mutate(code = factor(code),
-                      id = factor(id),
-                      brand.id = factor(brand.id))
+        purrr::map_df(function(ac) {
+            account_phrases(ac, .process = FALSE) %>% 
+                mutate(code = account_code(ac))
+        }) %>% 
+        select(code, everything())
 }
 
 #' List tags in an account
@@ -575,26 +566,24 @@ account_tags <- function(account, ...) {
 #' 
 #' Returns tag information for \code{\link{account}} objects.
 #' 
-#' @param .process Set to \code{FALSE} if you do not want IDs set as factors.
+#' @param .process Set to \code{TRUE} if you do not want IDs set as factors.
 #' @export
-account_tags.brandseye.account <- function(account, .process = TRUE) {
-    ids <- integer()
-    names <- character()
-    namespaces <- character()
-    descriptions <- character()
+account_tags.brandseye.account <- function(account, .process = FALSE) {
+    tags <- account$data$tags %>% 
+        purrr::map_df(function(d) {
+            tibble(id = d$id,
+                   name = d$name,
+                   namespace = d$namespace,
+                   description = ifelse(is.null(d$description) || nchar(d$description) == 0, NA, d$description)
+            )
+        }) %>% 
+        mutate(children = purrr::map(account$data$tags, "children"),
+               is_parent = purrr::map(children, function(d) length(d) > 0)) %>% 
+        tidyr::unnest(is_parent)
     
-    for (t in account$data$tags) {        
-        ids <- c(ids, t$id)
-        names <- c(names, t$name)
-        namespaces <- c(namespaces, t$namespace)
-        descriptions <- c(descriptions, ifelse(is.null(t$description) || nchar(t$description) == 0, "", t$description))
-    }
+    if (.process) tags$id <- factor(tags$id)
     
-    dplyr::tbl_df(data.frame(id = if(.process) factor(ids) else ids, 
-                             name = names,
-                             namespace = namespaces,
-                             description = descriptions,
-                             stringsAsFactors = FALSE))
+    tags
 }
 
 #' @describeIn account_tags
@@ -625,15 +614,12 @@ account_tags.factor <- function(account) {
 #' Returns tag information for a list of \code{\link{account}} objects
 #' @export
 account_tags.list <- function(accounts) {
-    `%>%` <- dplyr::`%>%`    
-    
     accounts %>% 
-        lapply(function(ac) data.frame(code = account_code(ac),                                                      
-                                       account_tags(ac, .process = FALSE), 
-                                       stringsAsFactors = FALSE)) %>%
-        dplyr::bind_rows() %>%
-        dplyr::mutate(code = factor(code),
-                      id = factor(id))
+        purrr::map_df(function(ac) {
+            account_tags(ac) %>% 
+                mutate(code = account_code(ac))
+        }) %>% 
+        select(code, everything())
 }
 
 

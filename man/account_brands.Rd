@@ -10,7 +10,7 @@
 \usage{
 account_brands(account, ...)
 
-\method{account_brands}{brandseye.account}(account, .process = TRUE)
+\method{account_brands}{brandseye.account}(account, .process = FALSE)
 
 \method{account_brands}{list}(accounts)
 
@@ -19,7 +19,7 @@ account_brands(account, ...)
 \method{account_brands}{factor}(account)
 }
 \description{
-This returns a \code{data.frame} containing brand IDs, their names,
+This returns a \code{tibble} containing brand IDs, their names,
 whether they've been deleted or not, and the ID of the parent brand.
 }
 \section{Methods (by class)}{
@@ -40,7 +40,7 @@ ac <- account("QUIR01BA")
 account_brands(ac)
 }
 \dontrun{
-# Returns a data.frame containing brand information for two accounts
+# Returns a tibble containing brand information for two accounts
 account_brands(c("QUIR01BA", "BEAD33AA"))
 
 # Return brand information for all accounts that you have access to

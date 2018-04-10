@@ -10,7 +10,7 @@
 \usage{
 account_tags(account, ...)
 
-\method{account_tags}{brandseye.account}(account, .process = TRUE)
+\method{account_tags}{brandseye.account}(account, .process = FALSE)
 
 \method{account_tags}{character}(account)
 
@@ -19,7 +19,7 @@ account_tags(account, ...)
 \method{account_tags}{list}(accounts)
 }
 \arguments{
-\item{.process}{Set to \code{FALSE} if you do not want IDs set as factors.}
+\item{.process}{Set to \code{TRUE} if you do not want IDs set as factors.}
 }
 \description{
 This returns a data frame of tags available in an account, along with the 

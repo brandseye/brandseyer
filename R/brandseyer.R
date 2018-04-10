@@ -35,4 +35,6 @@
 #' @docType package
 #' @name brandseyer
 #' @aliases brandseye BrandsEye BrandsEyeR
+#' @import tibble
+#' @import dplyr
 NULL

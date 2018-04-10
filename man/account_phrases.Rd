@@ -10,7 +10,7 @@
 \usage{
 account_phrases(account, ...)
 
-\method{account_phrases}{brandseye.account}(account, .process = TRUE)
+\method{account_phrases}{brandseye.account}(account, .process = FALSE)
 
 \method{account_phrases}{character}(account)
 
@@ -19,7 +19,7 @@ account_phrases(account, ...)
 \method{account_phrases}{list}(accounts)
 }
 \description{
-The returns a \code{data.frame} listing the phrases in an
+The returns a \code{tibble} listing the phrases in an
 account, their IDs, the IDs of the brands that the phrase is associated
 with, and a flag indicating whether the phrase is inactive or deleted.
 }
@@ -33,7 +33,7 @@ with, and a flag indicating whether the phrase is inactive or deleted.
 its account code.
 
 \item \code{list}: Given a list of \code{account} objects, this will return
-a combined \code{data.frame} for the phrases in all of those accounts.
+a combined \code{tibble} for the phrases in all of those accounts.
 }}
 
 \examples{

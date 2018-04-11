@@ -381,12 +381,16 @@ account_brands.brandseye.account <- function(account, .process = FALSE) {
     name <- character()
     deleted <- logical()
     parents <- integer()
+    tier <- character()
+    topic_tree_id <- integer()
     
     recurse <- function(brand, parent = NA) {    
         id <<- c(id, brand$id)
         name <<- c(name, brand$name)
         deleted <<- c(deleted, ifelse(is.null(brand$deleted) || brand$deleted == FALSE, FALSE, TRUE))
         parents <<- c(parents, parent)
+        tier <<- c(tier, ifelse(is.null(brand$tier), NA, brand$tier))
+        topic_tree_id <<- c(topic_tree_id, ifelse(is.null(brand$topicTreeId), NA, brand$topicTreeId))
         
         if (length(brand$children)) {
             for (b in brand$children) {
@@ -403,7 +407,9 @@ account_brands.brandseye.account <- function(account, .process = FALSE) {
     tibble(id = if(.process) factor(id) else id, 
            name = name, 
            deleted = deleted, 
-           parent = if(.process) factor(parents) else parents)
+           parent = if(.process) factor(parents) else parents,
+           tier = tier,
+           topic_tree_id = topic_tree_id)
 }
 
 #' @describeIn account_brands
@@ -574,7 +580,8 @@ account_tags.brandseye.account <- function(account, .process = FALSE) {
             tibble(id = d$id,
                    name = d$name,
                    namespace = d$namespace,
-                   description = ifelse(is.null(d$description) || nchar(d$description) == 0, NA, d$description)
+                   description = ifelse(is.null(d$description) || nchar(d$description) == 0, NA, d$description),
+                   deleted = ifelse(is.null(d$deleted), FALSE, d$deleted)
             )
         }) %>% 
         mutate(children = purrr::map(account$data$tags, "children"),

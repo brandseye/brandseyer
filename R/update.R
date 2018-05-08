@@ -1,4 +1,4 @@
-# Copyright (c) 2017, Brandseye PTY (LTD) 
+# Copyright (c) 2017-2018, Brandseye PTY (LTD) 
 # 
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -173,6 +173,7 @@ account_update.brandseye.account.v4 <- function(account, filter,
                                                 addCrowdJobs,
                                                 removeCrowdJobs,
                                                 updateAuthor,
+                                                location,
                                                 auto.confirm = FALSE,
                                                 authentication = account$auth) {
     
@@ -255,6 +256,9 @@ account_update.brandseye.account.v4 <- function(account, filter,
         json <- c(json, list(updateAuthor = jsonlite::unbox(updateAuthor)))
     }
     
+    if (!missing(location)) {
+        json <- c(json, list(location = jsonlite::unbox(location)))
+    }
     
     if (length(json) == 1) {
         stop("No update parameters have been supplied, such as tag or sentiment")

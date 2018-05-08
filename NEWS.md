@@ -1,5 +1,8 @@
 # News
 
+## 0.19.0 2018-05-08
+* *update* Now supports setting the location in V4 accounts.
+
 ## 0.18.0 2018-09-11
 * *account_tags* Now indicates if a tag is deleted
 * *account_brands* Now indicates the tier and the associated topic tree for the brand.
